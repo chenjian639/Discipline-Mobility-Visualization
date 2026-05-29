@@ -5,7 +5,7 @@
       "d": [
         {
           "n": "Acoustics-Science & Technology",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 31,
           "i": 0,
           "s": 0
@@ -40,189 +40,189 @@
         },
         {
           "n": "Allergy-Arts & Humanities",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Allergy-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 12,
           "i": 0,
           "s": 0
         },
         {
           "n": "Allergy-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 88,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anatomy & Morphology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anatomy & Morphology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 27,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anesthesiology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anesthesiology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 32,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anesthesiology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anthropology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 8,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anthropology-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 38,
           "i": 0,
           "s": 0
         },
         {
           "n": "Anthropology-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Archaeology-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Archaeology-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Architecture-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Architecture-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Area Studies-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Area Studies-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Art-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Art-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 11,
           "i": 0,
           "s": 0
         },
         {
           "n": "Art-Social Sciences",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 390,
           "i": 0,
           "s": 0
         },
         {
           "n": "Astronomy & Astrophysics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Astronomy & Astrophysics-Science & Technology",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 2024,
           "i": 0,
           "s": 0
         },
         {
           "n": "Audiology & Speech-Language Pathology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Audiology & Speech-Language Pathology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 22,
           "i": 0,
           "s": 0
         },
         {
           "n": "Automation & Control Systems-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Automation & Control Systems-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 30,
           "i": 0,
           "s": 0
@@ -257,406 +257,406 @@
         },
         {
           "n": "Biochemistry & Molecular Biology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 158,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biochemistry & Molecular Biology-Science & Technology",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 3026,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biochemistry & Molecular Biology-Social Sciences",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biodiversity & Conservation-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 32,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biodiversity & Conservation-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 282,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biodiversity & Conservation-Social Sciences",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biophysics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biophysics-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 105,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biotechnology & Applied Microbiology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 43,
           "i": 0,
           "s": 0
         },
         {
           "n": "Biotechnology & Applied Microbiology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 625,
           "i": 0,
           "s": 0
         },
         {
           "n": "Business & Economics-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Business & Economics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Business & Economics-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 229,
           "i": 0,
           "s": 0
         },
         {
           "n": "Business & Economics-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 94,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cardiovascular System & Cardiology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 46,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cardiovascular System & Cardiology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1100,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cardiovascular System & Cardiology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cell Biology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 35,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cell Biology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 738,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cell Biology-Social Sciences",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Chemistry-Arts & Humanities",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Chemistry-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 28,
           "i": 0,
           "s": 0
         },
         {
           "n": "Chemistry-Science & Technology",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 1588,
           "i": 0,
           "s": 0
         },
         {
           "n": "Communication-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Communication-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 10,
           "i": 0,
           "s": 0
         },
         {
           "n": "Communication-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 12,
           "i": 0,
           "s": 0
         },
         {
           "n": "Computer Science-Arts & Humanities",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 13,
           "i": 0,
           "s": 0
         },
         {
           "n": "Computer Science-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 42,
           "i": 0,
           "s": 0
         },
         {
           "n": "Computer Science-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 250,
           "i": 0,
           "s": 0
         },
         {
           "n": "Computer Science-Social Sciences",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 23,
           "i": 0,
           "s": 0
         },
         {
           "n": "Construction & Building Technology-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 40,
           "i": 0,
           "s": 0
         },
         {
           "n": "Construction & Building Technology-Social Sciences",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Criminology & Penology-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Criminology & Penology-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Crystallography-Science & Technology",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 29,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cultural Studies-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cultural Studies-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Cultural Studies-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Demography-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Demography-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Demography-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Demography-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Dentistry, Oral Surgery & Medicine-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Dentistry, Oral Surgery & Medicine-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 89,
           "i": 0,
           "s": 0
         },
         {
           "n": "Dentistry, Oral Surgery & Medicine-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Dermatology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 63,
           "i": 0,
           "s": 0
         },
         {
           "n": "Developmental Biology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 9,
           "i": 0,
           "s": 0
         },
         {
           "n": "Developmental Biology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 73,
           "i": 0,
           "s": 0
         },
         {
           "n": "Education & Educational Research-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Education & Educational Research-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Education & Educational Research-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 43,
           "i": 0,
           "s": 0
         },
         {
           "n": "Education & Educational Research-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 52,
           "i": 0,
           "s": 0
         },
         {
           "n": "Electrochemistry-Science & Technology",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 35,
           "i": 0,
           "s": 0
         },
         {
           "n": "Emergency Medicine-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Emergency Medicine-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Endocrinology & Metabolism-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 51,
           "i": 0,
           "s": 0
         },
         {
           "n": "Endocrinology & Metabolism-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1089,
           "i": 0,
           "s": 0
         },
         {
           "n": "Endocrinology & Metabolism-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 9,
           "i": 0,
           "s": 0
@@ -677,168 +677,168 @@
         },
         {
           "n": "Engineering-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 40,
           "i": 0,
           "s": 0
         },
         {
           "n": "Engineering-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 916,
           "i": 0,
           "s": 0
         },
         {
           "n": "Engineering-Social Sciences",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 17,
           "i": 0,
           "s": 0
         },
         {
           "n": "Entomology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 39,
           "i": 0,
           "s": 0
         },
         {
           "n": "Entomology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 174,
           "i": 0,
           "s": 0
         },
         {
           "n": "Entomology-Social Sciences",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Environmental Sciences & Ecology-Arts & Humanities",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Environmental Sciences & Ecology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 360,
           "i": 0,
           "s": 0
         },
         {
           "n": "Environmental Sciences & Ecology-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 1456,
           "i": 0,
           "s": 0
         },
         {
           "n": "Environmental Sciences & Ecology-Social Sciences",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 58,
           "i": 0,
           "s": 0
         },
         {
           "n": "Ethnic Studies-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Ethnic Studies-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Ethnic Studies-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Evolutionary Biology-Arts & Humanities",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Evolutionary Biology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 30,
           "i": 0,
           "s": 0
         },
         {
           "n": "Evolutionary Biology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 136,
           "i": 0,
           "s": 0
         },
         {
           "n": "Family Studies-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Family Studies-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 16,
           "i": 0,
           "s": 0
         },
         {
           "n": "Fisheries-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 11,
           "i": 0,
           "s": 0
         },
         {
           "n": "Fisheries-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 41,
           "i": 0,
           "s": 0
         },
         {
           "n": "Fisheries-Social Sciences",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Food Science & Technology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Food Science & Technology-Science & Technology",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 295,
           "i": 0,
           "s": 0
         },
         {
           "n": "Food Science & Technology-Social Sciences",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 2,
           "i": 0,
           "s": 0
@@ -866,161 +866,161 @@
         },
         {
           "n": "Gastroenterology & Hepatology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Gastroenterology & Hepatology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 227,
           "i": 0,
           "s": 0
         },
         {
           "n": "Gastroenterology & Hepatology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "General & Internal Medicine-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 577,
           "i": 0,
           "s": 0
         },
         {
           "n": "General & Internal Medicine-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 861,
           "i": 0,
           "s": 0
         },
         {
           "n": "General & Internal Medicine-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Genetics & Heredity-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 71,
           "i": 0,
           "s": 0
         },
         {
           "n": "Genetics & Heredity-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 5977,
           "i": 0,
           "s": 0
         },
         {
           "n": "Genetics & Heredity-Social Sciences",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geochemistry & Geophysics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geochemistry & Geophysics-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 48,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geochemistry & Geophysics-Social Sciences",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geography-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 19,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geography-Social Sciences",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 11,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geology-Arts & Humanities",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geology-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 163,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geriatrics & Gerontology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 14,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geriatrics & Gerontology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 243,
           "i": 0,
           "s": 0
         },
         {
           "n": "Geriatrics & Gerontology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 10,
           "i": 0,
           "s": 0
         },
         {
           "n": "Government & Law-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Government & Law-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Government & Law-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 12,
           "i": 0,
           "s": 0
@@ -1048,364 +1048,364 @@
         },
         {
           "n": "Hematology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 12,
           "i": 0,
           "s": 0
         },
         {
           "n": "Hematology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 201,
           "i": 0,
           "s": 0
         },
         {
           "n": "History & Philosophy of Science-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "History & Philosophy of Science-Social Sciences",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "History-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Imaging Science & Photographic Technology-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 9,
           "i": 0,
           "s": 0
         },
         {
           "n": "Immunology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 22,
           "i": 0,
           "s": 0
         },
         {
           "n": "Immunology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 426,
           "i": 0,
           "s": 0
         },
         {
           "n": "Immunology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Infectious Diseases-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 8,
           "i": 0,
           "s": 0
         },
         {
           "n": "Infectious Diseases-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 151,
           "i": 0,
           "s": 0
         },
         {
           "n": "Information Science & Library Science-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Information Science & Library Science-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Information Science & Library Science-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 18,
           "i": 0,
           "s": 0
         },
         {
           "n": "Information Science & Library Science-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Instruments & Instrumentation-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Instruments & Instrumentation-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 1964,
           "i": 0,
           "s": 0
         },
         {
           "n": "Integrative & Complementary Medicine-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 13,
           "i": 0,
           "s": 0
         },
         {
           "n": "International Relations-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Legal Medicine-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Legal Medicine-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 14,
           "i": 0,
           "s": 0
         },
         {
           "n": "Legal Medicine-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 17822,
           "i": 0,
           "s": 0
         },
         {
           "n": "Linguistics-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Linguistics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Linguistics-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 12,
           "i": 0,
           "s": 0
         },
         {
           "n": "Linguistics-Social Sciences",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Literature-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Literature-Social Sciences",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Marine & Freshwater Biology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 13,
           "i": 0,
           "s": 0
         },
         {
           "n": "Marine & Freshwater Biology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 66,
           "i": 0,
           "s": 0
         },
         {
           "n": "Materials Science-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Materials Science-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 787,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematical & Computational Biology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematical & Computational Biology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 20,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematical Methods In Social Sciences-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematics-Arts & Humanities",
-          "c": "Other",
+          "c": "Mathematics & Computer Science",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Mathematics & Computer Science",
           "o": 9,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematics-Science & Technology",
-          "c": "Other",
+          "c": "Mathematics & Computer Science",
           "o": 55,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mathematics-Social Sciences",
-          "c": "Other",
+          "c": "Mathematics & Computer Science",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mechanics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mechanics-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 26,
           "i": 0,
           "s": 0
         },
         {
           "n": "Medical Informatics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Medical Informatics-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Medical Laboratory Technology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Medical Laboratory Technology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 23,
           "i": 0,
           "s": 0
         },
         {
           "n": "Metallurgy & Metallurgical Engineering-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Metallurgy & Metallurgical Engineering-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 29,
           "i": 0,
           "s": 0
         },
         {
           "n": "Meteorology & Atmospheric Sciences-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Meteorology & Atmospheric Sciences-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 473,
           "i": 0,
           "s": 0
         },
         {
           "n": "Microbiology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 15,
           "i": 0,
           "s": 0
         },
         {
           "n": "Microbiology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 302,
           "i": 0,
           "s": 0
@@ -1419,42 +1419,42 @@
         },
         {
           "n": "Mining & Mineral Processing-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Music-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Music-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mycology-Arts & Humanities",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mycology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Mycology-Science & Technology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 15,
           "i": 0,
           "s": 0
@@ -1482,203 +1482,203 @@
         },
         {
           "n": "Nuclear Science & Technology-Science & Technology",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 11,
           "i": 0,
           "s": 0
         },
         {
           "n": "Nuclear Science & Technology-Social Sciences",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Nursing-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 21,
           "i": 0,
           "s": 0
         },
         {
           "n": "Nursing-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 77,
           "i": 0,
           "s": 0
         },
         {
           "n": "Nutrition & Dietetics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 52,
           "i": 0,
           "s": 0
         },
         {
           "n": "Nutrition & Dietetics-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 297,
           "i": 0,
           "s": 0
         },
         {
           "n": "Nutrition & Dietetics-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Obstetrics & Gynecology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 8,
           "i": 0,
           "s": 0
         },
         {
           "n": "Obstetrics & Gynecology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 137,
           "i": 0,
           "s": 0
         },
         {
           "n": "Obstetrics & Gynecology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Oceanography-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Oceanography-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 8,
           "i": 0,
           "s": 0
         },
         {
           "n": "Oncology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 63,
           "i": 0,
           "s": 0
         },
         {
           "n": "Oncology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2657,
           "i": 0,
           "s": 0
         },
         {
           "n": "Oncology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Operations Research & Management Science-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Operations Research & Management Science-Science & Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Operations Research & Management Science-Social Sciences",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Ophthalmology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Ophthalmology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 73,
           "i": 0,
           "s": 0
         },
         {
           "n": "Ophthalmology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Optics-Arts & Humanities",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Optics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Optics-Science & Technology",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 297,
           "i": 0,
           "s": 0
         },
         {
           "n": "Orthopedics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Orthopedics-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 89,
           "i": 0,
           "s": 0
         },
         {
           "n": "Orthopedics-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Other Topics",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 0,
           "i": 42628,
           "s": 0
         },
         {
           "n": "Other Topics-Acoustics",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 0,
           "i": 25,
           "s": 0
@@ -1692,84 +1692,84 @@
         },
         {
           "n": "Other Topics-Allergy",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 105,
           "s": 0
         },
         {
           "n": "Other Topics-Anatomy & Morphology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 26,
           "s": 0
         },
         {
           "n": "Other Topics-Anesthesiology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 23,
           "s": 0
         },
         {
           "n": "Other Topics-Anthropology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 32,
           "s": 0
         },
         {
           "n": "Other Topics-Archaeology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 14,
           "s": 0
         },
         {
           "n": "Other Topics-Area Studies",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 4,
           "s": 0
         },
         {
           "n": "Other Topics-Art",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 8,
           "s": 0
         },
         {
           "n": "Other Topics-Arts & Humanities - Other Topics",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 301,
           "s": 0
         },
         {
           "n": "Other Topics-Asian Studies",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 1,
           "s": 0
         },
         {
           "n": "Other Topics-Astronomy & Astrophysics",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 0,
           "i": 1848,
           "s": 0
         },
         {
           "n": "Other Topics-Audiology & Speech-Language Pathology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 24,
           "s": 0
         },
         {
           "n": "Other Topics-Automation & Control Systems",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 44,
           "s": 0
@@ -1783,154 +1783,154 @@
         },
         {
           "n": "Other Topics-Biochemistry & Molecular Biology",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 0,
           "i": 3068,
           "s": 0
         },
         {
           "n": "Other Topics-Biodiversity & Conservation",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 297,
           "s": 0
         },
         {
           "n": "Other Topics-Biophysics",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 94,
           "s": 0
         },
         {
           "n": "Other Topics-Biotechnology & Applied Microbiology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 606,
           "s": 0
         },
         {
           "n": "Other Topics-Business & Economics",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 262,
           "s": 0
         },
         {
           "n": "Other Topics-Cardiovascular System & Cardiology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 1120,
           "s": 0
         },
         {
           "n": "Other Topics-Cell Biology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 714,
           "s": 0
         },
         {
           "n": "Other Topics-Chemistry",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 0,
           "i": 1530,
           "s": 0
         },
         {
           "n": "Other Topics-Communication",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 16,
           "s": 0
         },
         {
           "n": "Other Topics-Computer Science",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 283,
           "s": 0
         },
         {
           "n": "Other Topics-Construction & Building Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 47,
           "s": 0
         },
         {
           "n": "Other Topics-Criminology & Penology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 13,
           "s": 0
         },
         {
           "n": "Other Topics-Crystallography",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 0,
           "i": 19,
           "s": 0
         },
         {
           "n": "Other Topics-Cultural Studies",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 15,
           "s": 0
         },
         {
           "n": "Other Topics-Demography",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 10,
           "s": 0
         },
         {
           "n": "Other Topics-Dentistry, Oral Surgery & Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 92,
           "s": 0
         },
         {
           "n": "Other Topics-Dermatology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 88,
           "s": 0
         },
         {
           "n": "Other Topics-Developmental Biology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 63,
           "s": 0
         },
         {
           "n": "Other Topics-Education & Educational Research",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 112,
           "s": 0
         },
         {
           "n": "Other Topics-Electrochemistry",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 0,
           "i": 38,
           "s": 0
         },
         {
           "n": "Other Topics-Emergency Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 7,
           "s": 0
         },
         {
           "n": "Other Topics-Endocrinology & Metabolism",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 1338,
           "s": 0
@@ -1944,56 +1944,56 @@
         },
         {
           "n": "Other Topics-Engineering",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 889,
           "s": 0
         },
         {
           "n": "Other Topics-Entomology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 71,
           "s": 0
         },
         {
           "n": "Other Topics-Environmental Sciences & Ecology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 1717,
           "s": 0
         },
         {
           "n": "Other Topics-Ethnic Studies",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 4,
           "s": 0
         },
         {
           "n": "Other Topics-Evolutionary Biology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 119,
           "s": 0
         },
         {
           "n": "Other Topics-Family Studies",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 18,
           "s": 0
         },
         {
           "n": "Other Topics-Fisheries",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 46,
           "s": 0
         },
         {
           "n": "Other Topics-Food Science & Technology",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 0,
           "i": 128,
           "s": 0
@@ -2007,56 +2007,56 @@
         },
         {
           "n": "Other Topics-Gastroenterology & Hepatology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 249,
           "s": 0
         },
         {
           "n": "Other Topics-General & Internal Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 1515,
           "s": 0
         },
         {
           "n": "Other Topics-Genetics & Heredity",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 5384,
           "s": 0
         },
         {
           "n": "Other Topics-Geochemistry & Geophysics",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 37,
           "s": 0
         },
         {
           "n": "Other Topics-Geography",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 27,
           "s": 0
         },
         {
           "n": "Other Topics-Geology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 127,
           "s": 0
         },
         {
           "n": "Other Topics-Geriatrics & Gerontology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 305,
           "s": 0
         },
         {
           "n": "Other Topics-Government & Law",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 16,
           "s": 0
@@ -2070,175 +2070,175 @@
         },
         {
           "n": "Other Topics-Hematology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 180,
           "s": 0
         },
         {
           "n": "Other Topics-History",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 6,
           "s": 0
         },
         {
           "n": "Other Topics-History & Philosophy of Science",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 11,
           "s": 0
         },
         {
           "n": "Other Topics-Imaging Science & Photographic Technology",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 1,
           "s": 0
         },
         {
           "n": "Other Topics-Immunology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 416,
           "s": 0
         },
         {
           "n": "Other Topics-Infectious Diseases",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 162,
           "s": 0
         },
         {
           "n": "Other Topics-Information Science & Library Science",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 18,
           "s": 0
         },
         {
           "n": "Other Topics-Instruments & Instrumentation",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 161,
           "s": 0
         },
         {
           "n": "Other Topics-Integrative & Complementary Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 9,
           "s": 0
         },
         {
           "n": "Other Topics-International Relations",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 1,
           "s": 0
         },
         {
           "n": "Other Topics-Legal Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 15,
           "s": 0
         },
         {
           "n": "Other Topics-Life Sciences & Biomedicine - Other Topics",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 0,
           "i": 15446,
           "s": 0
         },
         {
           "n": "Other Topics-Linguistics",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 22,
           "s": 0
         },
         {
           "n": "Other Topics-Literature",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 2,
           "s": 0
         },
         {
           "n": "Other Topics-Marine & Freshwater Biology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 78,
           "s": 0
         },
         {
           "n": "Other Topics-Materials Science",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 743,
           "s": 0
         },
         {
           "n": "Other Topics-Mathematical & Computational Biology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 35,
           "s": 0
         },
         {
           "n": "Other Topics-Mathematical Methods In Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 1,
           "s": 0
         },
         {
           "n": "Other Topics-Mathematics",
-          "c": "Other",
+          "c": "Mathematics & Computer Science",
           "o": 0,
           "i": 81,
           "s": 0
         },
         {
           "n": "Other Topics-Mechanics",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 25,
           "s": 0
         },
         {
           "n": "Other Topics-Medical Informatics",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 2,
           "s": 0
         },
         {
           "n": "Other Topics-Medical Laboratory Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 24,
           "s": 0
         },
         {
           "n": "Other Topics-Metallurgy & Metallurgical Engineering",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 33,
           "s": 0
         },
         {
           "n": "Other Topics-Meteorology & Atmospheric Sciences",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 574,
           "s": 0
         },
         {
           "n": "Other Topics-Microbiology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 313,
           "s": 0
@@ -2252,28 +2252,28 @@
         },
         {
           "n": "Other Topics-Mineralogy",
-          "c": "Other",
+          "c": "Chemistry",
           "o": 0,
           "i": 1,
           "s": 0
         },
         {
           "n": "Other Topics-Mining & Mineral Processing",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 2,
           "s": 0
         },
         {
           "n": "Other Topics-Music",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 10,
           "s": 0
         },
         {
           "n": "Other Topics-Mycology",
-          "c": "Other",
+          "c": "Biology & Biochemistry",
           "o": 0,
           "i": 24,
           "s": 0
@@ -2287,77 +2287,77 @@
         },
         {
           "n": "Other Topics-Nuclear Science & Technology",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 0,
           "i": 43,
           "s": 0
         },
         {
           "n": "Other Topics-Nursing",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 92,
           "s": 0
         },
         {
           "n": "Other Topics-Nutrition & Dietetics",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 480,
           "s": 0
         },
         {
           "n": "Other Topics-Obstetrics & Gynecology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 177,
           "s": 0
         },
         {
           "n": "Other Topics-Oceanography",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 19,
           "s": 0
         },
         {
           "n": "Other Topics-Oncology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 2657,
           "s": 0
         },
         {
           "n": "Other Topics-Operations Research & Management Science",
-          "c": "Other",
+          "c": "Engineering & Technology",
           "o": 0,
           "i": 3,
           "s": 0
         },
         {
           "n": "Other Topics-Ophthalmology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 83,
           "s": 0
         },
         {
           "n": "Other Topics-Optics",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 0,
           "i": 255,
           "s": 0
         },
         {
           "n": "Other Topics-Orthopedics",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 79,
           "s": 0
         },
         {
           "n": "Other Topics-Otorhinolaryngology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 38,
           "s": 0
@@ -2385,42 +2385,42 @@
         },
         {
           "n": "Other Topics-Pediatrics",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 167,
           "s": 0
         },
         {
           "n": "Other Topics-Pharmacology & Pharmacy",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 290,
           "s": 0
         },
         {
           "n": "Other Topics-Philosophy",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 0,
           "i": 8,
           "s": 0
         },
         {
           "n": "Other Topics-Physical Geography",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 0,
           "i": 90,
           "s": 0
         },
         {
           "n": "Other Topics-Physics",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 0,
           "i": 3884,
           "s": 0
         },
         {
           "n": "Other Topics-Physiology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 114,
           "s": 0
@@ -2441,14 +2441,14 @@
         },
         {
           "n": "Other Topics-Psychiatry",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 252,
           "s": 0
         },
         {
           "n": "Other Topics-Psychology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 453,
           "s": 0
@@ -2462,14 +2462,14 @@
         },
         {
           "n": "Other Topics-Public, Environmental & Occupational Health",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 868,
           "s": 0
         },
         {
           "n": "Other Topics-Radiology, Nuclear Medicine & Medical Imaging",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 96,
           "s": 0
@@ -2504,14 +2504,14 @@
         },
         {
           "n": "Other Topics-Research & Experimental Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 162,
           "s": 0
         },
         {
           "n": "Other Topics-Respiratory System",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 42,
           "s": 0
@@ -2532,7 +2532,7 @@
         },
         {
           "n": "Other Topics-Science & Technology - Other Topics",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 0,
           "i": 463450,
           "s": 0
@@ -2546,7 +2546,7 @@
         },
         {
           "n": "Other Topics-Social Sciences - Other Topics",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 2356,
           "s": 0
@@ -2560,7 +2560,7 @@
         },
         {
           "n": "Other Topics-Sociology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 23,
           "s": 0
@@ -2581,14 +2581,14 @@
         },
         {
           "n": "Other Topics-Substance Abuse",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 94,
           "s": 0
         },
         {
           "n": "Other Topics-Surgery",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 44,
           "s": 0
@@ -2623,14 +2623,14 @@
         },
         {
           "n": "Other Topics-Transportation",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 0,
           "i": 10,
           "s": 0
         },
         {
           "n": "Other Topics-Tropical Medicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 3,
           "s": 0
@@ -2644,7 +2644,7 @@
         },
         {
           "n": "Other Topics-Urology & Nephrology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 0,
           "i": 239,
           "s": 0
@@ -2686,21 +2686,21 @@
         },
         {
           "n": "Otorhinolaryngology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Otorhinolaryngology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 34,
           "i": 0,
           "s": 0
         },
         {
           "n": "Otorhinolaryngology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
@@ -2749,126 +2749,126 @@
         },
         {
           "n": "Pediatrics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 12,
           "i": 0,
           "s": 0
         },
         {
           "n": "Pediatrics-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 217,
           "i": 0,
           "s": 0
         },
         {
           "n": "Pediatrics-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Pharmacology & Pharmacy-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Pharmacology & Pharmacy-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 349,
           "i": 0,
           "s": 0
         },
         {
           "n": "Pharmacology & Pharmacy-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Philosophy-Arts & Humanities",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 7,
           "i": 0,
           "s": 0
         },
         {
           "n": "Philosophy-Science & Technology",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Philosophy-Social Sciences",
-          "c": "Other",
+          "c": "Arts & Humanities",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physical Geography-Arts & Humanities",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physical Geography-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 16,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physical Geography-Science & Technology",
-          "c": "Other",
+          "c": "Earth & Environmental",
           "o": 57,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physics-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 14,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physics-Science & Technology",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 2183,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physics-Social Sciences",
-          "c": "Other",
+          "c": "Physics & Astronomy",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physiology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 32,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physiology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 92,
           "i": 0,
           "s": 0
         },
         {
           "n": "Physiology-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 9,
           "i": 0,
           "s": 0
@@ -2903,49 +2903,49 @@
         },
         {
           "n": "Psychiatry-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 17,
           "i": 0,
           "s": 0
         },
         {
           "n": "Psychiatry-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 225,
           "i": 0,
           "s": 0
         },
         {
           "n": "Psychiatry-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Psychology-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 6,
           "i": 0,
           "s": 0
         },
         {
           "n": "Psychology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 33,
           "i": 0,
           "s": 0
         },
         {
           "n": "Psychology-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 311,
           "i": 0,
           "s": 0
         },
         {
           "n": "Psychology-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 79,
           "i": 0,
           "s": 0
@@ -2966,49 +2966,49 @@
         },
         {
           "n": "Public, Environmental & Occupational Health-Arts & Humanities",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Public, Environmental & Occupational Health-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 78,
           "i": 0,
           "s": 0
         },
         {
           "n": "Public, Environmental & Occupational Health-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 709,
           "i": 0,
           "s": 0
         },
         {
           "n": "Public, Environmental & Occupational Health-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 51,
           "i": 0,
           "s": 0
         },
         {
           "n": "Radiology, Nuclear Medicine & Medical Imaging-Arts & Humanities",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 1,
           "i": 0,
           "s": 0
         },
         {
           "n": "Radiology, Nuclear Medicine & Medical Imaging-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Radiology, Nuclear Medicine & Medical Imaging-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 108,
           "i": 0,
           "s": 0
@@ -3071,28 +3071,28 @@
         },
         {
           "n": "Research & Experimental Medicine-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 8,
           "i": 0,
           "s": 0
         },
         {
           "n": "Research & Experimental Medicine-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 246,
           "i": 0,
           "s": 0
         },
         {
           "n": "Respiratory System-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 2,
           "i": 0,
           "s": 0
         },
         {
           "n": "Respiratory System-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 57,
           "i": 0,
           "s": 0
@@ -3127,7 +3127,7 @@
         },
         {
           "n": "Science & Technology",
-          "c": "Other",
+          "c": "Multidisciplinary",
           "o": 500790,
           "i": 0,
           "s": 0
@@ -3148,7 +3148,7 @@
         },
         {
           "n": "Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 3101,
           "i": 0,
           "s": 0
@@ -3169,28 +3169,28 @@
         },
         {
           "n": "Sociology-Arts & Humanities",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Sociology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 3,
           "i": 0,
           "s": 0
         },
         {
           "n": "Sociology-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Sociology-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 17,
           "i": 0,
           "s": 0
@@ -3232,35 +3232,35 @@
         },
         {
           "n": "Substance Abuse-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 5,
           "i": 0,
           "s": 0
         },
         {
           "n": "Substance Abuse-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 75,
           "i": 0,
           "s": 0
         },
         {
           "n": "Substance Abuse-Social Sciences",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 17,
           "i": 0,
           "s": 0
         },
         {
           "n": "Surgery-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 4,
           "i": 0,
           "s": 0
         },
         {
           "n": "Surgery-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 35,
           "i": 0,
           "s": 0
@@ -3323,14 +3323,14 @@
         },
         {
           "n": "Transportation-Science & Technology",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 10,
           "i": 0,
           "s": 0
         },
         {
           "n": "Transportation-Social Sciences",
-          "c": "Other",
+          "c": "Social Sciences",
           "o": 1,
           "i": 0,
           "s": 0
@@ -3344,14 +3344,14 @@
         },
         {
           "n": "Urology & Nephrology-Life Sciences & Biomedicine",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 10,
           "i": 0,
           "s": 0
         },
         {
           "n": "Urology & Nephrology-Science & Technology",
-          "c": "Other",
+          "c": "Medicine & Health",
           "o": 247,
           "i": 0,
           "s": 0

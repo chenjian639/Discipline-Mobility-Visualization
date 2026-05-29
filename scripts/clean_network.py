@@ -28,6 +28,64 @@ import pandas as pd
 SEP_RE = re.compile(r'\s+[-–—]\s+|\s+→\s+|\s+>\s+')
 
 
+def normalize_name(name: str) -> str:
+    if name is None:
+        return ''
+    s = str(name).strip()
+    s = s.replace('—', '-').replace('–', '-')
+    # remove common wrapper prefixes/suffixes that are not true discipline names
+    s = re.sub(r'^(other topics[-\s]+)+', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'^(language pathology[-\s]+)+', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'[-\s]+other topics$', '', s, flags=re.IGNORECASE)
+    s = s.strip(' -')
+    return s
+
+
+def classify_category(name: str) -> str:
+    base = normalize_name(name)
+    primary = re.split(r'\s*-\s*', base, maxsplit=1)[0].strip()
+    key = re.sub(r'\s+', ' ', primary.lower()).strip()
+
+    if not key or key == 'other topics':
+        return 'Multidisciplinary'
+
+    if key.startswith('science & technology') or key.startswith('life sciences & biomedicine') or key == 'food science & technology':
+        return 'Multidisciplinary'
+
+    if re.search(r'\b(acoustics|astronomy|astrophysics|optics|physics|nuclear science & technology)\b', key):
+        return 'Physics & Astronomy'
+
+    if re.search(r'\b(biochemistry & molecular biology|chemistry|crystallography|electrochemistry|mineralogy)\b', key):
+        return 'Chemistry'
+
+    if re.search(r'\b(genetics & heredity|cell biology|developmental biology|microbiology|biotechnology & applied microbiology|biophysics|marine & freshwater biology|mycology|entomology|evolutionary biology|mathematical & computational biology)\b', key):
+        return 'Biology & Biochemistry'
+
+    if re.search(r'\b(anatomy & morphology|allergy|anesthesiology|audiology & speech|biomedical social sciences|cardiovascular system & cardiology|dentistry, oral surgery & medicine|dermatology|emergency medicine|endocrinology & metabolism|gastroenterology & hepatology|general & internal medicine|geriatrics & gerontology|hematology|immunology|infectious diseases|integrative & complementary medicine|language pathology|legal medicine|medical ethics|medical informatics|medical laboratory technology|medicine|nursing|nutrition & dietetics|obstetrics & gynecology|oncology|ophthalmology|orthopedics|otorhinolaryngology|pediatrics|pharmacology & pharmacy|physiology|psychiatry|public, environmental & occupational health|radiology, nuclear medicine & medical imaging|research & experimental medicine|respiratory system|speech language pathology|substance abuse|surgery|urology & nephrology)\b', key):
+        return 'Medicine & Health'
+
+    if re.search(r'\b(environmental sciences & ecology|biodiversity & conservation|geochemistry & geophysics|geography|geology|meteorology & atmospheric sciences|oceanography|marine & freshwater biology|ecology|fisheries)\b', key):
+        return 'Earth & Environmental'
+
+    if re.search(r'\b(anthropology|area studies|asian studies|business & economics|communication|criminology & penology|cultural studies|demography|education & educational research|ethnic studies|family studies|government & law|information science & library science|international relations|psychology|social sciences|sociology|transportation|mathematical methods in social sciences|mathematical methods in social sciences)\b', key):
+        return 'Social Sciences'
+
+    if re.search(r'\b(archaeology|architecture|art|arts & humanities|classics|dance|film, radio & television|history|history & philosophy of science|language pathology|linguistics|literature|music|philosophy|translation studies)\b', key):
+        return 'Arts & Humanities'
+
+    if re.search(r'\b(automation & control systems|computer science|construction & building technology|engineering|imaging science & photographic technology|instruments & instrumentation|materials science|mechanics|metallurgy & metallurgical engineering|mining & mineral processing|nuclear science & technology|operations research & management science)\b', key):
+        return 'Engineering & Technology'
+
+    if re.search(r'\b(mathematics|mathematical methods in social sciences)\b', key):
+        return 'Mathematics & Computer Science'
+
+    # More conservative fallbacks for fields that often behave like science/technology aggregates
+    if re.search(r'\b(agriculture|forestry|plant sciences|food science & technology)\b', key):
+        return 'Other'
+
+    return 'Other'
+
+
 def split_from_to(s: str):
     if pd.isna(s):
         return (None, None)
@@ -132,7 +190,7 @@ def clean(input_path: Path, output_path: Path, min_times: int = 1):
             self_sum = matrix[iidx][iidx]
             dlist.append({
                 'n': name,
-                'c': 'Other',
+                'c': classify_category(name),
                 'o': int(out_sum),
                 'i': int(in_sum),
                 's': int(self_sum)
