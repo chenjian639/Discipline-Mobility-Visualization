@@ -414,46 +414,45 @@ function renderFocusSankey(mode) {
   const disc = data.d, matrix = data.m, n = data.n;
   const container = document.getElementById('chartArea');
   container.innerHTML = '';
-  const width = Math.max(780, container.clientWidth || 900);
-  const height = 480;
-  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
+  // keep sankey size similar to other charts and avoid filling full page
+  const width = Math.min(1000, container.clientWidth ? container.clientWidth - 160 : 740);
+  const height = Math.max(360, Math.min(520, Math.round(width * 0.48)));
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height).style('display', 'block').style('margin', '0 auto');
   const catMap = Object.fromEntries(FULLDATA.cats);
   // show only topK links to reduce clutter and match other charts' concise style
   const topK = 10;
   let nodes = [], links = [];
-  if (mode === 'outStay') {
-    // find discipline with max self-flow (most "stay")
-    let focusIdx = 0, maxS = -Infinity;
-    for (let i = 0; i < n; i++) if ((disc[i].s || 0) > maxS) { maxS = disc[i].s; focusIdx = i; }
-    // collect destination flows and pick topK
+  if (mode === 'outA') {
+    // pick discipline with maximum total outflow
+    let outIdx = 0, maxO = -Infinity;
+    for (let i = 0; i < n; i++) if ((disc[i].o || 0) > maxO) { maxO = disc[i].o; outIdx = i; }
+    // collect destinations and pick topK by raw flow from outIdx
     const dests = [];
     for (let j = 0; j < n; j++) {
-      if (j === focusIdx) continue;
-      const v = (matrix[focusIdx] && matrix[focusIdx][j]) ? matrix[focusIdx][j] : 0;
+      if (j === outIdx) continue;
+      const v = (matrix[outIdx] && matrix[outIdx][j]) ? matrix[outIdx][j] : 0;
       if (v > 0) dests.push({ j, v });
     }
     dests.sort((a, b) => b.v - a.v);
     const top = dests.slice(0, topK);
-    // build nodes: main node first, then destinations
-    nodes.push({ name: disc[focusIdx].n, c: disc[focusIdx].c });
+    nodes.push({ name: disc[outIdx].n, c: disc[outIdx].c });
     top.forEach(d => nodes.push({ name: disc[d.j].n, c: disc[d.j].c }));
     links = top.map((d, idx) => ({ source: 0, target: idx + 1, value: d.v }));
   } else if (mode === 'inB') {
-    // find discipline with max in
-    let bIdx = 0, maxI = -Infinity;
-    for (let i = 0; i < n; i++) if ((disc[i].i || 0) > maxI) { maxI = disc[i].i; bIdx = i; }
-    // collect source flows and pick topK
+    // pick discipline with maximum total inflow
+    let inIdx = 0, maxI = -Infinity;
+    for (let i = 0; i < n; i++) if ((disc[i].i || 0) > maxI) { maxI = disc[i].i; inIdx = i; }
+    // collect sources and pick topK by raw flow to inIdx
     const srcs = [];
     for (let i = 0; i < n; i++) {
-      if (i === bIdx) continue;
-      const v = (matrix[i] && matrix[i][bIdx]) ? matrix[i][bIdx] : 0;
+      if (i === inIdx) continue;
+      const v = (matrix[i] && matrix[i][inIdx]) ? matrix[i][inIdx] : 0;
       if (v > 0) srcs.push({ i, v });
     }
     srcs.sort((a, b) => b.v - a.v);
     const top = srcs.slice(0, topK);
-    // build nodes: sources first, then main target node last (so sankeyRight aligns it)
     top.forEach(s => nodes.push({ name: disc[s.i].n, c: disc[s.i].c }));
-    nodes.push({ name: disc[bIdx].n, c: disc[bIdx].c });
+    nodes.push({ name: disc[inIdx].n, c: disc[inIdx].c });
     links = top.map((s, idx) => ({ source: idx, target: nodes.length - 1, value: s.v }));
   } else {
     svg.append('text').attr('x', 20).attr('y', 30).text('未知专题视图');
@@ -463,7 +462,7 @@ function renderFocusSankey(mode) {
   // Build sankey graph
   const graph = { nodes: nodes.map(d => ({ name: d.name, c: d.c })), links: links.map(l => ({ source: l.source, target: l.target, value: l.value })) };
   // align main node to left for outA and right for inB for consistent river orientation
-  const align = mode === 'outStay' ? d3.sankeyLeft : d3.sankeyRight;
+  const align = mode === 'outA' ? d3.sankeyLeft : d3.sankeyRight;
   const sankey = d3.sankey().nodeWidth(18).nodePadding(8).nodeAlign(align).extent([[1, 1], [width - 1, height - 1]]);
   sankey(graph);
 
@@ -496,8 +495,8 @@ function renderFocusSankey(mode) {
     .attr('stroke', 'rgba(0,0,0,0.15)')
     .attr('stroke-width', 0.6);
   node.append('text')
-    .attr('x', d => (mode === 'outStay' ? d.x1 - d.x0 + 6 : -6))
-    .attr('text-anchor', d => (mode === 'outStay' ? 'start' : 'end'))
+    .attr('x', d => (mode === 'outA' ? d.x1 - d.x0 + 6 : -6))
+    .attr('text-anchor', d => (mode === 'outA' ? 'start' : 'end'))
     .attr('y', d => (d.y1 - d.y0) / 2)
     .attr('dy', '0.32em')
     .attr('font-size', '11px')
