@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学科流动可视化</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <h1>学科流动网络可视化</h1>
+  <p>基于芬兰科学家 2008–2018 流动数据的学科迁移分析 &nbsp;|&nbsp; 团队成员 C</p>
+</div>
+
+<div class="controls">
+  <div class="control-group"><label>时间段</label><div class="btn-group" id="periodBtns"></div></div>
+  <div class="control-group"><label>图表</label><div class="btn-group" id="viewBtns">
+    <button class="view-btn active" data-view="chord">弦图</button>
+    <button class="view-btn" data-view="sankey">桑基图</button>
+    <button class="view-btn" data-view="netflow">净流动</button>
+    <button class="view-btn" data-view="heatmap">热力矩阵</button>
+  </div></div>
+  <div class="control-group">
+    <label>学科数</label>
+    <input type="range" class="topn-slider" id="topNSlider" min="8" max="50" value="15" step="1">
+    <span class="topn-value" id="topNLabel">15</span>
+  </div>
+  <div class="control-group">
+    <label>筛选</label>
+    <input class="search-box" id="searchInput" placeholder="搜索学科...">
+  </div>
+</div>
+
+<div class="main">
+  <div class="viz-container">
+    <div id="chartArea" class="chart-area"></div>
+    <div id="tooltip" class="tooltip"></div>
+    <div id="legend" class="legend"></div>
+    <div id="statsBar" class="stats-bar"></div>
+  </div>
+  <div id="insightPanel" class="insight-panel"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
