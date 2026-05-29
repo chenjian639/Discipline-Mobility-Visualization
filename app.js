@@ -254,8 +254,10 @@ function renderSankey(data, container) {
   // 构建学科级节点与链接（排除自环）
   const nodes = disc.map(d => ({ name: d.n, total: (d.o || 0) + (d.i || 0), category: d.c }));
   const links = [];
-  // 可设置一个最小阈值以减少极小噪声连接（0 表示不筛选）
-  const minLink = 0; // 如果想筛选，可改成如 5 或 10
+  // 可设置一个最小阈值以减少极小噪声连接（当前设为 10，低于 10 的连线将被过滤）
+  const minLink = 10; // 调整阈值以显示更多或更少连线
+  // 渲染提示
+  container.innerHTML = `<div class="empty-hint">正在生成桑基图……</div>`;
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       if (i === j) continue; // 忽略自环
@@ -265,7 +267,8 @@ function renderSankey(data, container) {
   }
 
   if (!nodes.length || !links.length) {
-    container.innerHTML = `<div class="empty-hint">当前筛选或 TopN 下没有足够的数据生成桑基图。</div>`;
+    container.innerHTML = `<div class="empty-hint">当前筛选或 TopN 下没有足够的数据生成桑基图（节点 ${nodes.length}，连线 ${links.length}）。</div>`;
+    console.log(`Sankey aborted: nodes=${nodes.length} links=${links.length}`);
     return;
   }
 
@@ -274,7 +277,11 @@ function renderSankey(data, container) {
   const sk = d3.sankey().nodeWidth(12).nodePadding(8).extent([[20, 20], [width - 200, height - 20]]);
   const { nodes: sNodes, links: sLinks } = sk({ nodes: nodes.map(d => Object.assign({}, d)), links: links.map(l => Object.assign({}, l)) });
 
+  // 清除提示并创建 SVG
+  container.innerHTML = '';
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
+
+  console.log(`Sankey render: nodes=${sNodes.length} links=${sLinks.length}`);
 
   // links
   svg.append('g').selectAll('path').data(sLinks).join('path')
