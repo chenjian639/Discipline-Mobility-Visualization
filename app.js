@@ -222,7 +222,22 @@ function renderChord(data, container) {
     .text(d => disc[d.index].n);
   const rib = svg.append('g').selectAll('g').data(chords).join('g').attr('class', 'chord-ribbon');
   rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.6)
-    .on('mouseenter', function(ev, d) { d3.select(this).attr('opacity', 1); showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[d.source.index].n} → ${disc[d.target.index].n}</div><div class="tt-row"><span>流动</span><span>${d.source.value.toLocaleString()}</span></div>`); })
+    .on('mouseenter', function(ev, d) {
+      d3.select(this).attr('opacity', 1);
+      // show both directions and net flow for clarity
+      const i = d.source.index, j = d.target.index;
+      const a = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0; // source -> target
+      const b = (matrix[j] && matrix[j][i]) ? matrix[j][i] : 0; // target -> source
+      const net = a - b;
+      const netSign = net > 0 ? '+' : '';
+      const html = `
+        <div class="tt-title">${disc[i].n} ⇄ ${disc[j].n}</div>
+        <div class="tt-row"><span>${disc[i].n} → ${disc[j].n}</span><span>${a.toLocaleString()}</span></div>
+        <div class="tt-row"><span>${disc[j].n} → ${disc[i].n}</span><span>${b.toLocaleString()}</span></div>
+        <div class="tt-row"><strong>净流量</strong><span>${netSign}${net.toLocaleString()}</span></div>
+      `;
+      showTT(ev.offsetX, ev.offsetY, html);
+    })
     .on('mouseleave', function() { d3.select(this).attr('opacity', 0.6); hideTT(); });
 }
 
