@@ -104,7 +104,6 @@ function render() {
 
   switch (currentView) {
     case 'chord': renderChord(data, container); break;
-    case 'sankey': renderSankey(data, container); break;
     case 'netflow': renderNetFlow(data, container); break;
     case 'heatmap': renderHeatmap(data, container); break;
   }
@@ -194,7 +193,6 @@ function updateInsight() {
   const categorySummary = `<div class="finding"><strong>大类迁移方向</strong><br>${topCat.length ? topCat.map(kv => `${kv[0]}：<em>${kv[1].toLocaleString()}</em>`) .join('<br>') : '当前 TopN 下跨大类迁移不足。'}</div>`;
   const insights = {
     chord: `<h3>结论（弦图）— ${label}</h3>${meta}${coreChannels}${netRole}${openness}`,
-    sankey: `<h3>结论（桑基图）— ${label}</h3>${meta}${categorySummary}${netRole}`,
     netflow: `<h3>结论（净流动）— ${label}</h3>${meta}${netRole}${openness}`,
     heatmap: `<h3>结论（热力矩阵）— ${label}</h3>${meta}${coreChannels}${breadth}${openness}`
   };
@@ -229,83 +227,6 @@ function renderChord(data, container) {
   rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.6)
     .on('mouseenter', function(ev, d) { d3.select(this).attr('opacity', 1); showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[d.source.index].n} �?${disc[d.target.index].n}</div><div class="tt-row"><span>流动</span><span>${d.source.value.toLocaleString()}</span></div>`); })
     .on('mouseleave', function() { d3.select(this).attr('opacity', 0.6); hideTT(); });
-}
-
-// ===== 2. DISCIPLINE-LEVEL SANKEY =====
-function renderSankey(data, container) {
-  const disc = data.d;
-  const matrix = data.m;
-  const n = data.n;
-  const catMap = Object.fromEntries(FULLDATA.cats);
-  const minLink = 10;
-  const width = Math.min(1100, container.clientWidth || 1000);
-  const height = Math.max(420, n * 28 + 120);
-
-  const nodes = disc.map(d => ({ name: d.n, category: d.c }));
-  const links = [];
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      if (i >= j) continue;
-      const value = matrix[i][j] || 0;
-      if (value >= minLink) links.push({ source: i, target: j, value });
-    }
-  }
-
-  if (!nodes.length || !links.length) {
-    container.innerHTML = `<div class="empty-hint">当前筛选或 TopN 下没有足够的数据生成桑基图。</div>`;
-    return;
-  }
-
-  container.innerHTML = '';
-  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
-  const sankey = d3.sankey().nodeWidth(12).nodePadding(8).extent([[20, 20], [width - 200, height - 20]]);
-  const graph = sankey({
-    nodes: nodes.map(d => ({ ...d })),
-    links: links.map(d => ({ ...d }))
-  });
-  const maxLink = d3.max(graph.links, d => d.value) || 1;
-
-  svg.append('g').selectAll('path').data(graph.links).join('path')
-    .attr('d', d3.sankeyLinkHorizontal())
-    .attr('fill', 'none')
-    .attr('stroke', d => catMap[d.source.category] || '#999')
-    .attr('stroke-opacity', d => Math.min(0.85, 0.15 + d.value / maxLink * 0.7))
-    .attr('stroke-width', d => Math.max(1, d.width))
-    .on('mouseenter', function(ev, d) {
-      d3.select(this).attr('stroke-opacity', 1);
-      showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${d.source.name} → ${d.target.name}</div><div class="tt-row"><span>流动</span><span>${d.value.toLocaleString()}</span></div>`);
-    })
-    .on('mouseleave', function(d) {
-      d3.select(this).attr('stroke-opacity', d => Math.min(0.85, 0.15 + d.value / maxLink * 0.7));
-      hideTT();
-    });
-
-  svg.append('g').selectAll('rect').data(graph.nodes).join('rect')
-    .attr('x', d => d.x0)
-    .attr('y', d => d.y0)
-    .attr('width', d => Math.max(1, d.x1 - d.x0))
-    .attr('height', d => Math.max(1, d.y1 - d.y0))
-    .attr('fill', d => catMap[d.category] || '#999')
-    .attr('stroke', '#fff')
-    .attr('stroke-width', 1)
-    .attr('rx', 2);
-
-  svg.append('g').selectAll('text').data(graph.nodes).join('text')
-    .attr('x', d => d.x0 < width / 2 ? d.x1 + 8 : d.x0 - 8)
-    .attr('y', d => (d.y0 + d.y1) / 2)
-    .attr('dy', '0.32em')
-    .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
-    .attr('font-size', '11px')
-    .attr('fill', '#222')
-    .text(d => d.name);
-
-  svg.append('text')
-    .attr('x', width / 2)
-    .attr('y', height - 6)
-    .attr('text-anchor', 'middle')
-    .attr('font-size', '10px')
-    .attr('fill', '#888')
-    .text('学科 → 学科（Sankey）');
 }
 
 // ===== 3. NET FLOW BALANCE (净流动平衡) =====
@@ -374,22 +295,24 @@ function renderHeatmap(data, container) {
 
   // Row labels (source disciplines, right-aligned)
   g.selectAll('.hlr').data(disc).join('text').attr('class', 'heatmap-label')
-    .attr('x', -30)   // 靠近热力�?    .attr('y', (d, i) => i * cellSize + cellSize / 2)
+    .attr('x', -30)
+    .attr('y', (d, i) => i * cellSize + cellSize / 2)
     .attr('dy', '0.35em')
     .attr('text-anchor', 'end')
-    .style('font-size', Math.min(11, cellSize * 0.4) + 'px')
-    .style('fill', '#333')
-    .text(d => d.n);
-
-  // Column labels - 水平放置，不旋转
-  g.selectAll('.hlc').data(disc).join('text').attr('class', 'heatmap-label')
-    .attr('x', (d, i) => i * cellSize + cellSize / 2)
-    .attr('y', -28)   // 紧贴热力图顶�?    .attr('dy', '0.35em')
-    .attr('text-anchor', 'start')
-    .attr('transform', (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -8)`)  // 轻量旋转
     .style('font-size', Math.min(10, cellSize * 0.35) + 'px')
     .style('fill', '#333')
-    .text(d => d.n);
+    .text(d => shortName(d.n, 18));
+
+  // Column labels
+  g.selectAll('.hlc').data(disc).join('text').attr('class', 'heatmap-label')
+    .attr('x', (d, i) => i * cellSize + cellSize / 2)
+    .attr('y', -10)
+    .attr('dy', '0.35em')
+    .attr('text-anchor', 'start')
+    .attr('transform', (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -10)`)
+    .style('font-size', Math.min(9, cellSize * 0.3) + 'px')
+    .style('fill', '#333')
+    .text(d => shortName(d.n, 16));
 
   // Category color indicators
   g.selectAll('.cbr').data(disc).join('rect')
@@ -432,7 +355,7 @@ function renderHeatmap(data, container) {
     .attr('text-anchor', 'middle')
     .attr('font-size', '11px')
     .attr('fill', '#888')
-    .text('�?目标学科');
+    .text('目标学科');
     
   svg.append('text').attr('class', 'axis-label')
     .attr('x', -(margin.top + hh / 2))
