@@ -230,13 +230,22 @@ function renderChord(data, container) {
     .attr('font-size', d => disc[d.index].o > 5000 ? '10px' : (n > 30 ? '7px' : '9px'))
     .attr('fill', d => disc[d.index].o > 5000 ? '#333' : '#999')
     .text(d => disc[d.index].n);
-  // draw raw (bidirectional) ribbons as background, semi-transparent and non-interactive
+  // draw raw (bidirectional) ribbons as subtle background: very light gray, low opacity, non-interactive
   const rawRib = svg.append('g').selectAll('g').data(rawChords).join('g').attr('class', 'chord-ribbon raw');
-  rawRib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.14).style('pointer-events', 'none');
+  rawRib.append('path')
+    .attr('d', d3.ribbon().radius(innerR))
+    .attr('fill', '#bdbdbd')
+    .attr('opacity', 0.06)
+    .style('pointer-events', 'none');
 
-  // draw net-flow ribbons on top (interactive)
+  // draw net-flow ribbons on top (interactive) with stronger contrast and thin darker stroke
   const rib = svg.append('g').selectAll('g').data(chords).join('g').attr('class', 'chord-ribbon');
-  rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.9)
+  rib.append('path')
+    .attr('d', d3.ribbon().radius(innerR))
+    .attr('fill', d => color(d.source))
+    .attr('opacity', 0.95)
+    .attr('stroke', d => d3.color(color(d.source)).darker(0.6))
+    .attr('stroke-width', 0.6)
     .on('mouseenter', function(ev, d) {
       d3.select(this).attr('opacity', 1);
       // show both directions and net flow for clarity
