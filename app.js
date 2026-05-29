@@ -421,21 +421,21 @@ function renderFocusSankey(mode) {
   // show only topK links to reduce clutter and match other charts' concise style
   const topK = 10;
   let nodes = [], links = [];
-  if (mode === 'outA') {
-    // find discipline with max out
-    let aIdx = 0, maxO = -Infinity;
-    for (let i = 0; i < n; i++) if ((disc[i].o || 0) > maxO) { maxO = disc[i].o; aIdx = i; }
+  if (mode === 'outStay') {
+    // find discipline with max self-flow (most "stay")
+    let focusIdx = 0, maxS = -Infinity;
+    for (let i = 0; i < n; i++) if ((disc[i].s || 0) > maxS) { maxS = disc[i].s; focusIdx = i; }
     // collect destination flows and pick topK
     const dests = [];
     for (let j = 0; j < n; j++) {
-      if (j === aIdx) continue;
-      const v = (matrix[aIdx] && matrix[aIdx][j]) ? matrix[aIdx][j] : 0;
+      if (j === focusIdx) continue;
+      const v = (matrix[focusIdx] && matrix[focusIdx][j]) ? matrix[focusIdx][j] : 0;
       if (v > 0) dests.push({ j, v });
     }
     dests.sort((a, b) => b.v - a.v);
     const top = dests.slice(0, topK);
     // build nodes: main node first, then destinations
-    nodes.push({ name: disc[aIdx].n, c: disc[aIdx].c });
+    nodes.push({ name: disc[focusIdx].n, c: disc[focusIdx].c });
     top.forEach(d => nodes.push({ name: disc[d.j].n, c: disc[d.j].c }));
     links = top.map((d, idx) => ({ source: 0, target: idx + 1, value: d.v }));
   } else if (mode === 'inB') {
@@ -463,7 +463,7 @@ function renderFocusSankey(mode) {
   // Build sankey graph
   const graph = { nodes: nodes.map(d => ({ name: d.name, c: d.c })), links: links.map(l => ({ source: l.source, target: l.target, value: l.value })) };
   // align main node to left for outA and right for inB for consistent river orientation
-  const align = mode === 'outA' ? d3.sankeyLeft : d3.sankeyRight;
+  const align = mode === 'outStay' ? d3.sankeyLeft : d3.sankeyRight;
   const sankey = d3.sankey().nodeWidth(18).nodePadding(8).nodeAlign(align).extent([[1, 1], [width - 1, height - 1]]);
   sankey(graph);
 
@@ -496,8 +496,8 @@ function renderFocusSankey(mode) {
     .attr('stroke', 'rgba(0,0,0,0.15)')
     .attr('stroke-width', 0.6);
   node.append('text')
-    .attr('x', d => (mode === 'outA' ? d.x1 - d.x0 + 6 : -6))
-    .attr('text-anchor', d => (mode === 'outA' ? 'start' : 'end'))
+    .attr('x', d => (mode === 'outStay' ? d.x1 - d.x0 + 6 : -6))
+    .attr('text-anchor', d => (mode === 'outStay' ? 'start' : 'end'))
     .attr('y', d => (d.y1 - d.y0) / 2)
     .attr('dy', '0.32em')
     .attr('font-size', '11px')
