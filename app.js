@@ -216,6 +216,8 @@ function renderChord(data, container) {
   }));
   // Use the net matrix for chord widths and directions
   const chords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(netMatrix.map(r => [...r]));
+  // Also compute raw chords for background (show original bidirectional flows, semi-transparent)
+  const rawChords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(matrix.map(r => [...r]));
   const g = svg.append('g').selectAll('g').data(chords.groups).join('g').attr('class', 'chord-group');
   g.append('path').attr('d', d3.arc().innerRadius(innerR).outerRadius(outerR)).attr('fill', color).attr('stroke', d => d3.color(color(d)).darker(0.3)).attr('stroke-width', 1)
     .on('mouseenter', function(ev, d) { d3.select(this).attr('stroke-width', 3); g.selectAll('path').attr('opacity', p => p.index === d.index ? 1 : 0.2); rib.selectAll('path').attr('opacity', r => r.source.index === d.index || r.target.index === d.index ? 0.85 : 0.04); })
@@ -228,8 +230,13 @@ function renderChord(data, container) {
     .attr('font-size', d => disc[d.index].o > 5000 ? '10px' : (n > 30 ? '7px' : '9px'))
     .attr('fill', d => disc[d.index].o > 5000 ? '#333' : '#999')
     .text(d => disc[d.index].n);
+  // draw raw (bidirectional) ribbons as background, semi-transparent and non-interactive
+  const rawRib = svg.append('g').selectAll('g').data(rawChords).join('g').attr('class', 'chord-ribbon raw');
+  rawRib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.14).style('pointer-events', 'none');
+
+  // draw net-flow ribbons on top (interactive)
   const rib = svg.append('g').selectAll('g').data(chords).join('g').attr('class', 'chord-ribbon');
-  rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.8)
+  rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.9)
     .on('mouseenter', function(ev, d) {
       d3.select(this).attr('opacity', 1);
       // show both directions and net flow for clarity
