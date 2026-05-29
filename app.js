@@ -245,58 +245,62 @@ function renderChord(data, container) {
     .on('mouseleave', function() { d3.select(this).attr('opacity', 0.6); hideTT(); });
 }
 
-// ===== 2. CATEGORY SANKEY (大类桑基图) =====
+// ===== 2. DISCIPLINE-LEVEL SANKEY (学科级桑基图，使用切片数据) =====
 function renderSankey(data, container) {
+  // 直接使用切片后的学科列表与矩阵，不做按大类聚合
   const disc = data.d, matrix = data.m, n = data.n;
   const catMap = Object.fromEntries(FULLDATA.cats);
-  const cats = FULLDATA.cats.map(c => c[0]);
-  const nCats = cats.length;
-  const catFlow = cats.map(() => Array(nCats).fill(0));
-  for (let i = 0; i < n; i++)
-    for (let j = 0; j < n; j++)
-      if (i !== j && matrix[i][j] > 0) { const ci = cats.indexOf(disc[i].c), cj = cats.indexOf(disc[j].c); if (ci >= 0 && cj >= 0) catFlow[ci][cj] += matrix[i][j]; }
-  const srcNodes = [], tgtNodes = [], srcIdx = {}, tgtIdx = {};
-  cats.forEach((c, i) => {
-    const out = catFlow[i].reduce((s, v) => s + v, 0);
-    if (out > 100) { srcIdx[i] = srcNodes.length; srcNodes.push({ name: c, total: out }); }
-    const inF = catFlow.reduce((s, r) => s + r[i], 0);
-    if (inF > 100) { tgtIdx[i] = tgtNodes.length; tgtNodes.push({ name: c, total: inF }); }
-  });
-  const allNodes = [...srcNodes, ...tgtNodes];
-  const nSrc = srcNodes.length;
-  const links = [];
-  const minFlow = d3.sum(catFlow.flat()) * 0.0001;
-  for (let i = 0; i < nCats; i++)
-    for (let j = 0; j < nCats; j++)
-      if (catFlow[i][j] > minFlow && srcIdx[i] !== undefined && tgtIdx[j] !== undefined)
-        links.push({ source: srcIdx[i], target: nSrc + tgtIdx[j], value: catFlow[i][j] });
 
-  if (!allNodes.length || !links.length) {
-    container.innerHTML = `<div class="empty-hint">当前筛选条件下跨大类流动不足，无法生成桑基图。</div>`;
+  // 构建学科级节点与链接（排除自环）
+  const nodes = disc.map(d => ({ name: d.n, total: (d.o || 0) + (d.i || 0), category: d.c }));
+  const links = [];
+  // 可设置一个最小阈值以减少极小噪声连接（0 表示不筛选）
+  const minLink = 0; // 如果想筛选，可改成如 5 或 10
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i === j) continue; // 忽略自环
+      const v = matrix[i][j] || 0;
+      if (v > minLink) links.push({ source: i, target: j, value: v });
+    }
+  }
+
+  if (!nodes.length || !links.length) {
+    container.innerHTML = `<div class="empty-hint">当前筛选或 TopN 下没有足够的数据生成桑基图。</div>`;
     return;
   }
 
-  const width = Math.min(900, container.clientWidth || 900);
-  const height = Math.max(460, nSrc * 44 + 60);
-  const sk = d3.sankey().nodeWidth(18).nodePadding(12).extent([[40, 50], [width - 130, height - 40]]);
-  const { nodes, links: sLinks } = sk({ nodes: allNodes, links });
+  const width = Math.min(1100, container.clientWidth || 1000);
+  const height = Math.max(420, n * 28 + 120);
+  const sk = d3.sankey().nodeWidth(12).nodePadding(8).extent([[20, 20], [width - 200, height - 20]]);
+  const { nodes: sNodes, links: sLinks } = sk({ nodes: nodes.map(d => Object.assign({}, d)), links: links.map(l => Object.assign({}, l)) });
+
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
+
+  // links
   svg.append('g').selectAll('path').data(sLinks).join('path')
-    .attr('d', d3.sankeyLinkHorizontal()).attr('fill', 'none')
-    .attr('stroke', d => catMap[d.source.name] || '#999')
-    .attr('stroke-opacity', d => Math.min(0.7, 0.08 + d.value / d3.max(sLinks, l => l.value) * 0.55))
-    .attr('stroke-width', d => Math.max(1.5, d.width))
+    .attr('d', d3.sankeyLinkHorizontal())
+    .attr('fill', 'none')
+    .attr('stroke', d => catMap[d.source.category] || '#999')
+    .attr('stroke-opacity', d => Math.min(0.85, 0.12 + d.value / d3.max(sLinks, l => l.value) * 0.7))
+    .attr('stroke-width', d => Math.max(1, d.width))
     .on('mouseenter', function(ev, d) { d3.select(this).attr('stroke-opacity', 1); showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${d.source.name} → ${d.target.name}</div><div class="tt-row"><span>流动</span><span>${d.value.toLocaleString()}</span></div>`); })
-    .on('mouseleave', function(ev, d) { d3.select(this).attr('stroke-opacity', d => Math.min(0.7, 0.08 + d.value / d3.max(sLinks, l => l.value) * 0.55)); hideTT(); });
-  svg.append('g').selectAll('rect').data(nodes).join('rect')
-    .attr('x', d => d.x0).attr('y', d => d.y0).attr('width', d => d.x1 - d.x0).attr('height', d => Math.max(0, d.y1 - d.y0))
-    .attr('fill', d => catMap[d.name] || '#999').attr('stroke', '#fff').attr('stroke-width', 1.5).attr('rx', 2);
-  svg.append('g').selectAll('text').data(nodes).join('text')
-    .attr('x', d => d.x0 < width / 2 ? d.x1 + 10 : d.x0 - 10).attr('y', d => (d.y0 + d.y1) / 2).attr('dy', '0.32em')
+    .on('mouseleave', function() { d3.select(this).attr('stroke-opacity', d => Math.min(0.85, 0.12 + d.value / d3.max(sLinks, l => l.value) * 0.7)); hideTT(); });
+
+  // nodes
+  svg.append('g').selectAll('rect').data(sNodes).join('rect')
+    .attr('x', d => d.x0).attr('y', d => d.y0).attr('width', d => Math.max(1, d.x1 - d.x0)).attr('height', d => Math.max(1, d.y1 - d.y0))
+    .attr('fill', d => catMap[d.category] || '#999').attr('stroke', '#fff').attr('stroke-width', 1).attr('rx', 2);
+
+  svg.append('g').selectAll('text').data(sNodes).join('text')
+    .attr('x', d => d.x0 < width / 2 ? d.x1 + 8 : d.x0 - 8)
+    .attr('y', d => (d.y0 + d.y1) / 2)
+    .attr('dy', '0.32em')
     .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
-    .attr('font-size', '13px').attr('fill', '#222').attr('font-weight', '500').text(d => d.name);
-  svg.append('text').attr('x', width / 2).attr('y', height - 4).attr('text-anchor', 'middle').attr('font-size', '10px').attr('fill', '#888')
-    .text('来源大类 ───────────→ 目标大类');
+    .attr('font-size', '11px').attr('fill', '#222')
+    .text(d => d.name);
+
+  svg.append('text').attr('x', width / 2).attr('y', height - 6).attr('text-anchor', 'middle').attr('font-size', '10px').attr('fill', '#888')
+    .text('学科 → 学科（学科级别 Sankey）');
 }
 
 // ===== 3. NET FLOW BALANCE (净流动平衡图) =====
