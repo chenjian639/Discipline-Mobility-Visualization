@@ -124,16 +124,22 @@ def clean(input_path: Path, output_path: Path, min_times: int = 1):
 
 def main():
     p = argparse.ArgumentParser(description='清理学科流动 Excel -> 生成 Discipline_Mobility_Network.xlsx')
-    p.add_argument('--input', '-i', default='Discipline_Mobility_Network_raw.xlsx', help='原始 Excel 文件路径')
-    p.add_argument('--output', '-o', default='../Discipline_Mobility_Network.xlsx', help='输出 Excel，相对 scripts 目录的默认路径')
+    p.add_argument('--input', '-i', default='../data/raw/Discipline_Mobility_Network.xlsx', help='原始 Excel 文件路径（默认 data/raw/ 下的文件）')
+    p.add_argument('--output', '-o', default='../data/processed/Discipline_Mobility_Network.xlsx', help='输出 Excel（默认写入 data/processed/ 中，不会覆盖原始文件）')
     p.add_argument('--min-times', type=int, default=1, help='过滤掉 Times 小于此值的行（默认 1）')
     args = p.parse_args()
 
     inp = Path(args.input)
     out = Path(args.output)
-    # 如果使用默认相对路径且脚本在 scripts/ 下，转换为项目根
+    # 解析相对路径（脚本所在目录为基准）
+    base = Path(__file__).resolve().parent
+    if not inp.is_absolute():
+        inp = (base / inp).resolve()
     if not out.is_absolute():
-        out = Path(__file__).resolve().parent.joinpath(out).resolve()
+        out = (base / out).resolve()
+
+    # 确保输出目录存在且不会指向原始文件路径下的同名文件
+    out.parent.mkdir(parents=True, exist_ok=True)
 
     clean(inp, out, min_times=args.min_times)
 
