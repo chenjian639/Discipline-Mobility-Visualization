@@ -214,10 +214,18 @@ function renderChord(data, container) {
     const b = matrix[j] && matrix[j][i] ? matrix[j][i] : 0;
     return Math.max(0, a - b);
   }));
-  // Use the net matrix for chord widths and directions
-  const chords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(netMatrix.map(r => [...r]));
+  // Optionally apply a log transform to flows for visual scaling (preserve raw values for tooltip)
+  const useLog = (document.getElementById('chordLogToggle') && document.getElementById('chordLogToggle').checked) || false;
+  const transform = mtx => useLog ? mtx.map(r => r.map(v => Math.log((v || 0) + 1))) : mtx;
+
+  // Use transformed matrices to compute chord geometry; tooltips will still show raw numbers
+  const displayNet = transform(netMatrix.map(r => [...r]));
+  const displayRaw = transform(matrix.map(r => [...r]));
+
+  // Use the net matrix (possibly log-transformed) for chord widths and directions
+  const chords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(displayNet);
   // Also compute raw chords for background (show original bidirectional flows, semi-transparent)
-  const rawChords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(matrix.map(r => [...r]));
+  const rawChords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(displayRaw);
   const g = svg.append('g').selectAll('g').data(chords.groups).join('g').attr('class', 'chord-group');
   g.append('path').attr('d', d3.arc().innerRadius(innerR).outerRadius(outerR)).attr('fill', color).attr('stroke', d => d3.color(color(d)).darker(0.3)).attr('stroke-width', 1)
     .on('mouseenter', function(ev, d) { d3.select(this).attr('stroke-width', 3); g.selectAll('path').attr('opacity', p => p.index === d.index ? 1 : 0.2); rib.selectAll('path').attr('opacity', r => r.source.index === d.index || r.target.index === d.index ? 0.85 : 0.04); })
