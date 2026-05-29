@@ -23,7 +23,9 @@ from pathlib import Path
 import pandas as pd
 
 
-SEP_RE = re.compile(r'[-–—→>|:/\\]')
+# Only split on delimiters with surrounding spaces, so hyphens inside names
+# such as "Arts & Humanities - Other Topics" stay intact.
+SEP_RE = re.compile(r'\s+[-–—]\s+|\s+→\s+|\s+>\s+')
 
 
 def split_from_to(s: str):
@@ -31,16 +33,12 @@ def split_from_to(s: str):
         return (None, None)
     t = str(s).strip()
     # 去掉句末的中文句号或多余注释（例如示例中可能有中文句号）
-    t = t.rstrip('。.。；; ')  
-    # 首先按常见分隔符分割，只分一次
+    t = t.rstrip('。.。；; ')
+    # 只按“左右有空格”的短横线/箭头分割，避免误切学科名里的连字符
     parts = SEP_RE.split(t, maxsplit=1)
     if len(parts) >= 2:
         a, b = parts[0].strip(), parts[1].strip()
         return (a or None, b or None)
-    # 若没有匹配到分隔符，尝试按第一个空格分割
-    if ' ' in t:
-        a, b = t.split(' ', 1)
-        return (a.strip() or None, b.strip() or None)
     # 最后退回：把整个字符串放到 From，To 设为 None
     return (t or None, None)
 
@@ -114,6 +112,50 @@ def clean(input_path: Path, output_path: Path, min_times: int = 1):
 
     # 保存（覆盖输出文件）
     out.to_excel(output_path, index=False, engine='openpyxl')
+    # 额外写出 JSON 供前端直接加载（结构化为 periods/full/d/m 和 cats）
+    try:
+        names = sorted(list(pd.unique(out[['From', 'To']].values.ravel('K'))))
+        name_idx = {n: i for i, n in enumerate(names)}
+        nlen = len(names)
+        matrix = [[0] * nlen for _ in range(nlen)]
+        for _, row in out.iterrows():
+            f = row['From']; t = row['To']; v = int(row['Times'])
+            if f in name_idx and t in name_idx:
+                matrix[name_idx[f]][name_idx[t]] += int(v)
+
+        # 计算 in/out/self
+        dlist = []
+        for name in names:
+            iidx = name_idx[name]
+            out_sum = sum(matrix[iidx])
+            in_sum = sum(row[iidx] for row in matrix)
+            self_sum = matrix[iidx][iidx]
+            dlist.append({
+                'n': name,
+                'c': 'Other',
+                'o': int(out_sum),
+                'i': int(in_sum),
+                's': int(self_sum)
+            })
+
+        fullobj = {
+            'periods': {
+                'full': {
+                    'l': 'processed',
+                    'd': dlist,
+                    'm': matrix
+                }
+            },
+            # 保留简单类别配色，前端会使用
+            'cats': [['Other', '#bdc3c7']]
+        }
+        json_out = output_path.with_suffix('.json')
+        import json
+        with open(json_out, 'w', encoding='utf-8') as f:
+            json.dump(fullobj, f, ensure_ascii=False, indent=2)
+        print(f'JSON 已写入: {json_out}')
+    except Exception as e:
+        print('生成 JSON 失败：', e)
 
     # 简要报告
     print(f'输出文件已写入: {output_path} (行数 {len(out)})')
