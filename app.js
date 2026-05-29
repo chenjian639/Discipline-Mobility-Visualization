@@ -6,7 +6,22 @@ let currentPeriod = 'full', currentView = 'chord', topN = 15;
 let searchQuery = '';
 
 // ===== Init =====
-(function() {
+(async function() {
+  // 优先尝试加载处理后的 JSON 数据（不覆盖原始文件）
+  try {
+    const resp = await fetch('data/processed/Discipline_Mobility_Network.json');
+    if (resp.ok) {
+      const j = await resp.json();
+      if (j && j.periods) {
+        FULLDATA = j; // 使用处理后的数据
+        console.log('Loaded processed data: data/processed/Discipline_Mobility_Network.json');
+      }
+    } else {
+      console.log('Processed JSON not found; using embedded data');
+    }
+  } catch (e) {
+    console.warn('Error loading processed JSON — using embedded data', e);
+  }
   const c = document.getElementById('periodBtns');
   Object.keys(FULLDATA.periods).forEach((k, i) => {
     const b = document.createElement('button');
