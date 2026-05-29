@@ -207,7 +207,15 @@ function renderChord(data, container) {
   const catMap = Object.fromEntries(FULLDATA.cats);
   const color = d => catMap[disc[d.index].c] || '#999';
   const svg = d3.select(container).append('svg').attr('width', size).attr('height', size).attr('viewBox', [-size / 2, -size / 2, size, size]);
-  const chords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(matrix.map(r => [...r]));
+  // Build a net-flow matrix where only positive net flows remain: net[i][j] = max(m[i][j] - m[j][i], 0)
+  const netMatrix = matrix.map((row, i) => row.map((v, j) => {
+    if (i === j) return v || 0; // preserve self flows
+    const a = matrix[i] && matrix[i][j] ? matrix[i][j] : 0;
+    const b = matrix[j] && matrix[j][i] ? matrix[j][i] : 0;
+    return Math.max(0, a - b);
+  }));
+  // Use the net matrix for chord widths and directions
+  const chords = d3.chord().padAngle(0.05).sortSubgroups(d3.descending)(netMatrix.map(r => [...r]));
   const g = svg.append('g').selectAll('g').data(chords.groups).join('g').attr('class', 'chord-group');
   g.append('path').attr('d', d3.arc().innerRadius(innerR).outerRadius(outerR)).attr('fill', color).attr('stroke', d => d3.color(color(d)).darker(0.3)).attr('stroke-width', 1)
     .on('mouseenter', function(ev, d) { d3.select(this).attr('stroke-width', 3); g.selectAll('path').attr('opacity', p => p.index === d.index ? 1 : 0.2); rib.selectAll('path').attr('opacity', r => r.source.index === d.index || r.target.index === d.index ? 0.85 : 0.04); })
@@ -221,13 +229,13 @@ function renderChord(data, container) {
     .attr('fill', d => disc[d.index].o > 5000 ? '#333' : '#999')
     .text(d => disc[d.index].n);
   const rib = svg.append('g').selectAll('g').data(chords).join('g').attr('class', 'chord-ribbon');
-  rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.6)
+  rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.8)
     .on('mouseenter', function(ev, d) {
       d3.select(this).attr('opacity', 1);
       // show both directions and net flow for clarity
       const i = d.source.index, j = d.target.index;
-      const a = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0; // source -> target
-      const b = (matrix[j] && matrix[j][i]) ? matrix[j][i] : 0; // target -> source
+      const a = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0; // source -> target (raw)
+      const b = (matrix[j] && matrix[j][i]) ? matrix[j][i] : 0; // target -> source (raw)
       const net = a - b;
       const netSign = net > 0 ? '+' : '';
       const html = `
