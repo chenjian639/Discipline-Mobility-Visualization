@@ -199,9 +199,6 @@ function updateInsight() {
   panel.innerHTML = insights[currentView] || '';
 }
 
-// ===== Short name helper =====
-function shortName(name, max) { return name.length > max ? name.slice(0, max - 1) + '…' : name; }
-
 // ===== 1. CHORD DIAGRAM =====
 function renderChord(data, container) {
   const disc = data.d, matrix = data.m, n = data.n;
@@ -235,13 +232,13 @@ function renderNetFlow(data, container) {
   const catMap = Object.fromEntries(FULLDATA.cats);
   const items = disc.map(d => ({ ...d, net: d.i - d.o, total: d.o + d.i }));
   items.sort((a, b) => b.net - a.net);
-  const width = Math.min(980, container.clientWidth || 980);
+  const width = Math.max(980, container.clientWidth || 980);
   const margin = { top: 80, right: 40, bottom: 24, left: 320 };
   const barH = Math.max(14, Math.min(30, (600 - margin.top - margin.bottom) / n));
   const height = n * barH + margin.top + margin.bottom + 50;
   const midX = width / 2 + 50;
   const maxAbs = d3.max(items, d => Math.abs(d.net)) || 1;
-  const xScale = d3.scaleSqrt().domain([0, maxAbs]).range([0, width / 2 - margin.left - 60]);
+  const xScale = d3.scaleSqrt().domain([0, maxAbs]).range([0, Math.max(0, width / 2 - margin.left - 60)]);
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
   g.append('line').attr('x1', midX - margin.left).attr('x2', midX - margin.left).attr('y1', -8).attr('y2', n * barH + 4).attr('stroke', '#ccc').attr('stroke-width', 1).attr('stroke-dasharray', '4,3');
@@ -273,10 +270,10 @@ function renderHeatmap(data, container) {
   
   // 简化：不使用复杂的旋转计算，直接设置固定边距
   const margin = {
-    top: 180,
+    top: Math.max(300, maxColLabel * 9),
     right: 30,
-    bottom: 60,
-    left: Math.max(60, maxRowLabel * 7)
+    bottom: 90,
+    left: Math.max(300, maxRowLabel * 9)
   };
   const width = hw + margin.left + margin.right;
   const height = hh + margin.top + margin.bottom;
@@ -299,20 +296,20 @@ function renderHeatmap(data, container) {
     .attr('y', (d, i) => i * cellSize + cellSize / 2)
     .attr('dy', '0.35em')
     .attr('text-anchor', 'end')
-    .style('font-size', Math.min(10, cellSize * 0.35) + 'px')
+    .style('font-size', Math.min(9, cellSize * 0.32) + 'px')
     .style('fill', '#333')
-    .text(d => shortName(d.n, 18));
+    .text(d => d.n);
 
   // Column labels
   g.selectAll('.hlc').data(disc).join('text').attr('class', 'heatmap-label')
     .attr('x', (d, i) => i * cellSize + cellSize / 2)
-    .attr('y', -10)
+    .attr('y', -14)
     .attr('dy', '0.35em')
     .attr('text-anchor', 'start')
-    .attr('transform', (d, i) => `rotate(-45, ${i * cellSize + cellSize / 2}, -10)`)
-    .style('font-size', Math.min(9, cellSize * 0.3) + 'px')
+    .attr('transform', (d, i) => `rotate(-60, ${i * cellSize + cellSize / 2}, -14)`)
+    .style('font-size', Math.min(8, cellSize * 0.28) + 'px')
     .style('fill', '#333')
-    .text(d => shortName(d.n, 16));
+    .text(d => d.n);
 
   // Category color indicators
   g.selectAll('.cbr').data(disc).join('rect')
