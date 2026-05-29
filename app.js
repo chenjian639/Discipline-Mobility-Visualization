@@ -252,7 +252,7 @@ function renderHeatmap(data, container) {
   
   // 简化：不使用复杂的旋转计算，直接设置固定边距
   const margin = {
-    top: Math.max(300, maxColLabel * 9),
+    top: Math.max(100, maxColLabel * 5),
     right: 30,
     bottom: 90,
     left: Math.max(300, maxRowLabel * 9)
