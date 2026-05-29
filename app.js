@@ -418,36 +418,43 @@ function renderFocusSankey(mode) {
   const height = 480;
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
   const catMap = Object.fromEntries(FULLDATA.cats);
-
+  // show only topK links to reduce clutter and match other charts' concise style
+  const topK = 10;
   let nodes = [], links = [];
   if (mode === 'outA') {
     // find discipline with max out
     let aIdx = 0, maxO = -Infinity;
     for (let i = 0; i < n; i++) if ((disc[i].o || 0) > maxO) { maxO = disc[i].o; aIdx = i; }
-    nodes.push({ name: disc[aIdx].n, c: disc[aIdx].c });
+    // collect destination flows and pick topK
+    const dests = [];
     for (let j = 0; j < n; j++) {
       if (j === aIdx) continue;
       const v = (matrix[aIdx] && matrix[aIdx][j]) ? matrix[aIdx][j] : 0;
-      if (v > 0) {
-        nodes.push({ name: disc[j].n, c: disc[j].c });
-        links.push({ source: 0, target: nodes.length - 1, value: v });
-      }
+      if (v > 0) dests.push({ j, v });
     }
+    dests.sort((a, b) => b.v - a.v);
+    const top = dests.slice(0, topK);
+    // build nodes: main node first, then destinations
+    nodes.push({ name: disc[aIdx].n, c: disc[aIdx].c });
+    top.forEach(d => nodes.push({ name: disc[d.j].n, c: disc[d.j].c }));
+    links = top.map((d, idx) => ({ source: 0, target: idx + 1, value: d.v }));
   } else if (mode === 'inB') {
     // find discipline with max in
     let bIdx = 0, maxI = -Infinity;
     for (let i = 0; i < n; i++) if ((disc[i].i || 0) > maxI) { maxI = disc[i].i; bIdx = i; }
-    // place target as last node for nicer layout
-    nodes.push({ name: disc[bIdx].n, c: disc[bIdx].c });
+    // collect source flows and pick topK
+    const srcs = [];
     for (let i = 0; i < n; i++) {
       if (i === bIdx) continue;
       const v = (matrix[i] && matrix[i][bIdx]) ? matrix[i][bIdx] : 0;
-      if (v > 0) {
-        nodes.push({ name: disc[i].n, c: disc[i].c });
-        // source is current node index, target is 0 (the B node)
-        links.push({ source: nodes.length - 1, target: 0, value: v });
-      }
+      if (v > 0) srcs.push({ i, v });
     }
+    srcs.sort((a, b) => b.v - a.v);
+    const top = srcs.slice(0, topK);
+    // build nodes: sources first, then main target node last (so sankeyRight aligns it)
+    top.forEach(s => nodes.push({ name: disc[s.i].n, c: disc[s.i].c }));
+    nodes.push({ name: disc[bIdx].n, c: disc[bIdx].c });
+    links = top.map((s, idx) => ({ source: idx, target: nodes.length - 1, value: s.v }));
   } else {
     svg.append('text').attr('x', 20).attr('y', 30).text('未知专题视图');
     return;
@@ -455,7 +462,9 @@ function renderFocusSankey(mode) {
 
   // Build sankey graph
   const graph = { nodes: nodes.map(d => ({ name: d.name, c: d.c })), links: links.map(l => ({ source: l.source, target: l.target, value: l.value })) };
-  const sankey = d3.sankey().nodeWidth(18).nodePadding(8).extent([[1, 1], [width - 1, height - 1]]);
+  // align main node to left for outA and right for inB for consistent river orientation
+  const align = mode === 'outA' ? d3.sankeyLeft : d3.sankeyRight;
+  const sankey = d3.sankey().nodeWidth(18).nodePadding(8).nodeAlign(align).extent([[1, 1], [width - 1, height - 1]]);
   sankey(graph);
 
   // draw links
@@ -463,7 +472,11 @@ function renderFocusSankey(mode) {
   linkG.selectAll('path').data(graph.links).join('path')
     .attr('d', d3.sankeyLinkHorizontal())
     .attr('fill', 'none')
-    .attr('stroke', '#999')
+    .attr('stroke', d => {
+      // color by source category when available
+      const c = d.source && d.source.c ? d.source.c : null;
+      return c && catMap[c] ? d3.color(catMap[c]).darker(0.5) : '#999';
+    })
     .attr('stroke-opacity', 0.6)
     .attr('stroke-width', d => Math.max(1, d.width))
     .on('mouseenter', function(ev, d) {
@@ -480,12 +493,14 @@ function renderFocusSankey(mode) {
     .attr('height', d => Math.max(6, d.y1 - d.y0))
     .attr('width', d => Math.max(6, d.x1 - d.x0))
     .attr('fill', d => catMap[d.c] || '#999')
-    .attr('stroke', '#333')
+    .attr('stroke', 'rgba(0,0,0,0.15)')
     .attr('stroke-width', 0.6);
   node.append('text')
-    .attr('x', d => d.x1 - d.x0 + 6)
+    .attr('x', d => (mode === 'outA' ? d.x1 - d.x0 + 6 : -6))
+    .attr('text-anchor', d => (mode === 'outA' ? 'start' : 'end'))
     .attr('y', d => (d.y1 - d.y0) / 2)
     .attr('dy', '0.32em')
-    .attr('font-size', '12px')
+    .attr('font-size', '11px')
+    .attr('fill', '#333')
     .text(d => d.name);
 }
