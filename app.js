@@ -132,7 +132,7 @@ function updateInsight() {
   if (!panel) return;
   const data = slicedData();
   if (!data.n) {
-    panel.innerHTML = `<h3>结论 �?${FULLDATA.periods[currentPeriod].l}</h3><div class="finding">当前筛选条件下没有匹配学科，无法生成统计结论�?/div>`;
+    panel.innerHTML = `<h3>结论 — ${FULLDATA.periods[currentPeriod].l}</h3><div class="finding">当前筛选条件下没有匹配学科，无法生成统计结论。</div>`;
     return;
   }
   const disc = data.d;
@@ -222,7 +222,7 @@ function renderChord(data, container) {
     .text(d => disc[d.index].n);
   const rib = svg.append('g').selectAll('g').data(chords).join('g').attr('class', 'chord-ribbon');
   rib.append('path').attr('d', d3.ribbon().radius(innerR)).attr('fill', d => color(d.source)).attr('opacity', 0.6)
-    .on('mouseenter', function(ev, d) { d3.select(this).attr('opacity', 1); showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[d.source.index].n} �?${disc[d.target.index].n}</div><div class="tt-row"><span>流动</span><span>${d.source.value.toLocaleString()}</span></div>`); })
+    .on('mouseenter', function(ev, d) { d3.select(this).attr('opacity', 1); showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[d.source.index].n} → ${disc[d.target.index].n}</div><div class="tt-row"><span>流动</span><span>${d.source.value.toLocaleString()}</span></div>`); })
     .on('mouseleave', function() { d3.select(this).attr('opacity', 0.6); hideTT(); });
 }
 
@@ -255,8 +255,8 @@ function renderNetFlow(data, container) {
     .attr('x', -30).attr('y', (d, i) => i * barH + barH / 2).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', '11px').attr('fill', '#333')
     .text(d => d.n);
   g.selectAll('.cd').data(items).join('circle').attr('cx', -18).attr('cy', (d, i) => i * barH + barH / 2).attr('r', 4).attr('fill', d => catMap[d.c] || '#999');
-  svg.append('text').attr('x', midX - margin.left - 12).attr('y', 40).attr('text-anchor', 'end').attr('font-size', '12px').attr('fill', '#e74c3c').attr('font-weight', '600').text('�?净流出 (送出人才)');
-  svg.append('text').attr('x', midX - margin.left + 12).attr('y', 40).attr('text-anchor', 'start').attr('font-size', '12px').attr('fill', '#3498db').attr('font-weight', '600').text('净流入 �?(吸纳人才)');
+  svg.append('text').attr('x', midX - margin.left - 12).attr('y', 40).attr('text-anchor', 'end').attr('font-size', '12px').attr('fill', '#e74c3c').attr('font-weight', '600').text('净流出（送出人才）');
+  svg.append('text').attr('x', midX - margin.left + 12).attr('y', 40).attr('text-anchor', 'start').attr('font-size', '12px').attr('fill', '#3498db').attr('font-weight', '600').text('净流入（吸纳人才）');
 }
 // ===== 4. HEATMAP MATRIX =====
 function renderHeatmap(data, container) {
@@ -338,7 +338,7 @@ function renderHeatmap(data, container) {
     .attr('stroke-width', 0.5)
     .on('mouseenter', function(ev, [i, j]) {
       d3.select(this).attr('stroke', '#e74c3c').attr('stroke-width', 2);
-      showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[i].n} �?${disc[j].n}</div><div class="tt-row"><span>流动�?/span><span>${matrix[i][j] ? matrix[i][j].toLocaleString() : '0'}</span></div>`);
+      showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[i].n} → ${disc[j].n}</div><div class="tt-row"><span>流动</span><span>${matrix[i][j] ? matrix[i][j].toLocaleString() : '0'}</span></div>`);
     })
     .on('mouseleave', function() { 
       d3.select(this).attr('stroke', '#fff').attr('stroke-width', 0.5); 
