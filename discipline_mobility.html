@@ -22,6 +22,13 @@
     <button class="view-btn" data-view="heatmap">热力矩阵</button>
   </div></div>
   <div class="control-group">
+    <label>专题视图</label>
+    <div class="btn-group" id="focusBtns">
+      <button class="focus-btn" data-focus="outA">A 的去向（流出最多）</button>
+      <button class="focus-btn" data-focus="inB">流入最多的 B（流入最多）</button>
+    </div>
+  </div>
+  <div class="control-group">
     <label>学科数</label>
     <input type="range" class="topn-slider" id="topNSlider" min="8" max="50" value="15" step="1">
     <span class="topn-value" id="topNLabel">15</span>
@@ -43,6 +50,7 @@
   <div id="insightPanel" class="insight-panel"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
 <script src="app.js?v=20260529"></script>
 </body>
 </html>

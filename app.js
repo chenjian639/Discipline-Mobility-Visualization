@@ -34,6 +34,13 @@ let searchQuery = '';
   document.querySelectorAll('.view-btn').forEach(b => {
     b.onclick = () => { document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); currentView = b.dataset.view; render(); };
   });
+  // focus buttons for Sankey/river charts
+  const focusGroup = document.getElementById('focusBtns');
+  if (focusGroup) {
+    focusGroup.querySelectorAll('.focus-btn').forEach(b => {
+      b.onclick = () => { focusGroup.querySelectorAll('.focus-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); renderFocusSankey(b.dataset.focus); };
+    });
+  }
   document.getElementById('searchInput').addEventListener('input', applySearch);
   const slider = document.getElementById('topNSlider');
   const label = document.getElementById('topNLabel');
@@ -399,4 +406,86 @@ function renderHeatmap(data, container) {
     .style('fill', '#64748b')
     .style('font-weight', '600')
     .text('学科间流动量（约）');
+}
+
+// ===== 5. FOCUS SANKEY / RIVER VIEWS =====
+function renderFocusSankey(mode) {
+  const data = slicedData();
+  const disc = data.d, matrix = data.m, n = data.n;
+  const container = document.getElementById('chartArea');
+  container.innerHTML = '';
+  const width = Math.max(780, container.clientWidth || 900);
+  const height = 480;
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height);
+  const catMap = Object.fromEntries(FULLDATA.cats);
+
+  let nodes = [], links = [];
+  if (mode === 'outA') {
+    // find discipline with max out
+    let aIdx = 0, maxO = -Infinity;
+    for (let i = 0; i < n; i++) if ((disc[i].o || 0) > maxO) { maxO = disc[i].o; aIdx = i; }
+    nodes.push({ name: disc[aIdx].n, c: disc[aIdx].c });
+    for (let j = 0; j < n; j++) {
+      if (j === aIdx) continue;
+      const v = (matrix[aIdx] && matrix[aIdx][j]) ? matrix[aIdx][j] : 0;
+      if (v > 0) {
+        nodes.push({ name: disc[j].n, c: disc[j].c });
+        links.push({ source: 0, target: nodes.length - 1, value: v });
+      }
+    }
+  } else if (mode === 'inB') {
+    // find discipline with max in
+    let bIdx = 0, maxI = -Infinity;
+    for (let i = 0; i < n; i++) if ((disc[i].i || 0) > maxI) { maxI = disc[i].i; bIdx = i; }
+    // place target as last node for nicer layout
+    nodes.push({ name: disc[bIdx].n, c: disc[bIdx].c });
+    for (let i = 0; i < n; i++) {
+      if (i === bIdx) continue;
+      const v = (matrix[i] && matrix[i][bIdx]) ? matrix[i][bIdx] : 0;
+      if (v > 0) {
+        nodes.push({ name: disc[i].n, c: disc[i].c });
+        // source is current node index, target is 0 (the B node)
+        links.push({ source: nodes.length - 1, target: 0, value: v });
+      }
+    }
+  } else {
+    svg.append('text').attr('x', 20).attr('y', 30).text('未知专题视图');
+    return;
+  }
+
+  // Build sankey graph
+  const graph = { nodes: nodes.map(d => ({ name: d.name, c: d.c })), links: links.map(l => ({ source: l.source, target: l.target, value: l.value })) };
+  const sankey = d3.sankey().nodeWidth(18).nodePadding(8).extent([[1, 1], [width - 1, height - 1]]);
+  sankey(graph);
+
+  // draw links
+  const linkG = svg.append('g').attr('class', 'sankey-links');
+  linkG.selectAll('path').data(graph.links).join('path')
+    .attr('d', d3.sankeyLinkHorizontal())
+    .attr('fill', 'none')
+    .attr('stroke', '#999')
+    .attr('stroke-opacity', 0.6)
+    .attr('stroke-width', d => Math.max(1, d.width))
+    .on('mouseenter', function(ev, d) {
+      const s = d.source.name, t = d.target.name, v = d.value || 0;
+      showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${s} → ${t}</div><div class="tt-row"><span>流量</span><span>${v.toLocaleString()}</span></div>`);
+      d3.select(this).attr('stroke-opacity', 1);
+    })
+    .on('mouseleave', function() { hideTT(); d3.select(this).attr('stroke-opacity', 0.6); });
+
+  // draw nodes
+  const nodeG = svg.append('g').attr('class', 'sankey-nodes');
+  const node = nodeG.selectAll('g').data(graph.nodes).join('g').attr('transform', d => `translate(${d.x0},${d.y0})`);
+  node.append('rect')
+    .attr('height', d => Math.max(6, d.y1 - d.y0))
+    .attr('width', d => Math.max(6, d.x1 - d.x0))
+    .attr('fill', d => catMap[d.c] || '#999')
+    .attr('stroke', '#333')
+    .attr('stroke-width', 0.6);
+  node.append('text')
+    .attr('x', d => d.x1 - d.x0 + 6)
+    .attr('y', d => (d.y1 - d.y0) / 2)
+    .attr('dy', '0.32em')
+    .attr('font-size', '12px')
+    .text(d => d.name);
 }
