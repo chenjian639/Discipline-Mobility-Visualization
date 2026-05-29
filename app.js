@@ -230,7 +230,7 @@ function renderChord(data, container) {
   g.append('path').attr('d', d3.arc().innerRadius(innerR).outerRadius(outerR)).attr('fill', color).attr('stroke', d => d3.color(color(d)).darker(0.3)).attr('stroke-width', 1)
     .on('mouseenter', function(ev, d) { d3.select(this).attr('stroke-width', 3); g.selectAll('path').attr('opacity', p => p.index === d.index ? 1 : 0.2); rib.selectAll('path').attr('opacity', r => r.source.index === d.index || r.target.index === d.index ? 0.85 : 0.04); })
     .on('mouseleave', function() { d3.select(this).attr('stroke-width', 1); g.selectAll('path').attr('opacity', 1); rib.selectAll('path').attr('opacity', 0.8); })
-    .on('mousemove', function(ev, d) { const di = disc[d.index]; const useLog = (document.getElementById('chordLogToggle') && document.getElementById('chordLogToggle').checked) || false; const oVal = useLog ? Math.log((di.o || 0) + 1) : di.o; const iVal = useLog ? Math.log((di.i || 0) + 1) : di.i; showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${di.n}</div><div class="tt-row"><span>流出</span><span>${(typeof oVal === 'number' ? oVal.toFixed(2) : oVal)}</span></div><div class="tt-row"><span>流入</span><span>${(typeof iVal === 'number' ? iVal.toFixed(2) : iVal)}</span></div><div class="tt-row"><span>类别</span><span>${di.c}</span></div>`); })
+    .on('mousemove', function(ev, d) { const di = disc[d.index]; showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${di.n}</div><div class="tt-row"><span>流出</span><span>${(di.o || 0).toLocaleString()}</span></div><div class="tt-row"><span>流入</span><span>${(di.i || 0).toLocaleString()}</span></div><div class="tt-row"><span>类别</span><span>${di.c}</span></div>`); })
     .on('mouseleave', hideTT);
   g.append('text').attr('class', 'chord-label').each(d => { d.angle = (d.startAngle + d.endAngle) / 2; }).attr('dy', '.32em')
     .attr('transform', d => `rotate(${d.angle * 180 / Math.PI - 90}) translate(${outerR + 10})${d.angle > Math.PI ? ' rotate(180)' : ''}`)
@@ -254,17 +254,17 @@ function renderChord(data, container) {
     .attr('opacity', 0.8)
     .on('mouseenter', function(ev, d) {
       d3.select(this).attr('opacity', 1);
-      // show transformed (possibly log) directions and net flow for clarity
+      // show original (raw) directions and net flow
       const i = d.source.index, j = d.target.index;
-      const a = (displayRaw[i] && displayRaw[i][j]) ? displayRaw[i][j] : 0; // source -> target (transformed)
-      const b = (displayRaw[j] && displayRaw[j][i]) ? displayRaw[j][i] : 0; // target -> source (transformed)
+      const a = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0; // source -> target (raw)
+      const b = (matrix[j] && matrix[j][i]) ? matrix[j][i] : 0; // target -> source (raw)
       const net = a - b;
       const netSign = net > 0 ? '+' : '';
       const html = `
         <div class="tt-title">${disc[i].n} ⇄ ${disc[j].n}</div>
-        <div class="tt-row"><span>${disc[i].n} → ${disc[j].n}</span><span>${(typeof a === 'number' ? a.toFixed(2) : a)}</span></div>
-        <div class="tt-row"><span>${disc[j].n} → ${disc[i].n}</span><span>${(typeof b === 'number' ? b.toFixed(2) : b)}</span></div>
-        <div class="tt-row"><strong>净流量</strong><span>${netSign}${(typeof net === 'number' ? net.toFixed(2) : net)}</span></div>
+        <div class="tt-row"><span>${disc[i].n} → ${disc[j].n}</span><span>${a.toLocaleString()}</span></div>
+        <div class="tt-row"><span>${disc[j].n} → ${disc[i].n}</span><span>${b.toLocaleString()}</span></div>
+        <div class="tt-row"><strong>净流量</strong><span>${netSign}${net.toLocaleString()}</span></div>
       `;
       showTT(ev.offsetX, ev.offsetY, html);
     })
