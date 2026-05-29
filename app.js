@@ -396,16 +396,23 @@ function renderHeatmap(data, container) {
     .attr('rx', 2);
   
   // 图例刻度标签（手动添加）
-  const legendLabels = [0, Math.floor(maxVal / 4), Math.floor(maxVal / 2), Math.floor(maxVal * 3 / 4), maxVal];
+  const legendLabels = [0, maxVal * 0.25, maxVal * 0.5, maxVal * 0.75, maxVal];
+  const formatLegendValue = (val) => {
+    if (!val) return '0';
+    const wan = val / 10000;
+    const rounded = Math.round(wan / 10) * 10;
+    return `约${rounded}万`;
+  };
   legendLabels.forEach((val, idx) => {
     const x = legX + (idx / (legendLabels.length - 1)) * legWidth;
     svg.append('text')
       .attr('x', x)
       .attr('y', legY + legHeight + 12)
       .attr('text-anchor', 'middle')
-      .style('font-size', '8px')
-      .style('fill', '#777')
-      .text(val.toLocaleString());
+      .style('font-size', '9px')
+      .style('fill', '#667085')
+      .style('font-weight', '500')
+      .text(formatLegendValue(val));
   });
   
   // 图例标题
@@ -413,7 +420,8 @@ function renderHeatmap(data, container) {
     .attr('x', legX + legWidth / 2)
     .attr('y', legY - 6)
     .attr('text-anchor', 'middle')
-    .style('font-size', '9px')
-    .style('fill', '#888')
-    .text('学科间流动量');
+    .style('font-size', '10px')
+    .style('fill', '#64748b')
+    .style('font-weight', '600')
+    .text('学科间流动量（约）');
 }
