@@ -20,58 +20,45 @@
 
 ## 学科大类聚合与角色分类（详细说明）
 
-下面给出本项目中“学科大类聚合”和“角色（role）划分”的具体计算方法、公式与默认阈值。要在 `scripts/analyze_mobility.py` 中复现或调整这些策略，请参考并修改相应参数。
 
-1) 学科间流动与按大类聚合
 
-- 原始网络：令 f_{i→j} 表示从学科 i 流向学科 j 的流量（如迁移计数或事件数）。
-- 按大类（category）聚合：若学科 i 属于类别 A，学科 j 属于类别 B，则类别级别的流量定义为：
+### 1. 孤立者 (Isolated)
 
-$$F_{A\\to B} = \\\sum_{i\\in A}\\sum_{j\\in B} f_{i\\to j}$$
+条件说明：`total_flow ≤ 20th percentile` —— 总活跃度排名最低的 20%
+**含义**：这些学科与其他学科的交流极少，研究活动高度内部化，边界封闭。
 
-此聚合用于热力矩阵与类别级桑基图。
+**示例**：一些小众的细分学科，如 `Mycology`（真菌学）、`Mineralogy`（矿物学）可能属于此类。
 
-2) 单个学科的基础量度
+---
 
-- 总流出：$O_d = \\\sum_j f_{d\\to j}$
-- 总流入：$I_d = \\\sum_i f_{i\\to d}$
-- 总流量：$T_d = O_d + I_d$
-- 净流量比（归一化）：
+### 2. 传播者 (Outflow-dominant)
 
-$$r_d = \\\frac{O_d - I_d}{T_d} \\\quad (\\text{若 }T_d>0)$$
+条件说明：`outflow > inflow × 2` —— 流出量是流入量的 2 倍以上
+**含义**：这些学科是知识的**主要输出者**，对其他学科有较强的辐射作用。
 
-取值范围 $r_d\\in(-1,1)$，正值表示净流出倾向，负值表示净流入倾向。
+**示例**：`Physics`、`Chemistry` 等基础学科可能属于此类，它们的方法和理论被广泛引用到其他领域。
 
-另外可计算度数（不加权）: 入度 $k^{in}_d$ 为有流入到 $d$ 的不同来源学科数量，出度 $k^{out}_d$ 类似。
+---
 
-3) 角色分类规则（默认顺序与阈值）
+### 3. 定居者 (Inflow-dominant)
 
-为确保角色互斥且易于调参，采用按优先级匹配的流程：先检测“孤立（Isolated）”，再检测“传播/定居”，最后将剩余候选按桥梁特征判定为“超越者（Bridge）”。默认推荐参数（可在脚本中修改）：
+条件说明：`inflow > outflow × 2` —— 流入量是流出量的 2 倍以上
+**含义**：这些学科是知识的**主要吸收者**，大量借鉴其他学科的研究成果。
 
-- 最小有效流量门槛：$T_{min}=30$（若 $T_d < T_{min}$，认为样本数据太少，归为 `Isolated`）。
-- 净流出/入显著阈值：$r_{th}=0.6$（若 $r_d\\ge r_{th}$ 则判为 `Outflow-dominant`；若 $r_d\\le -r_{th}$ 则判为 `Inflow-dominant`）。
-- 桥梁判定：计算学科的介数中心性（betweenness，简称 $B_d$）或使用度数与双向流量的组合：若 $T_d\\ge T_{min}$ 且 $|r_d|<r_{bridge}$（默认 $r_{bridge}=0.4$）且满足下列任一条件，则判为 `Bridge`：
+**示例**：一些应用型学科，如 `Oncology`、`Cardiovascular System` 可能属于此类，它们吸收基础研究的成果用于临床应用。
 
-	- $B_d$ 位于全体学科的前 $p_{B}$ 百分位（默认 $p_{B}=80\\%$）；或
-	- 同时满足 $k^{in}_d\\ge k_{deg}$ 且 $k^{out}_d\\ge k_{deg}$（默认 $k_{deg}=4$），即该学科既有多来源也有多去向。
+---
 
-- 孤立（Isolated）：若 $T_d < T_{min}$ 或 $(k^{in}_d + k^{out}_d) < k_{iso}$（默认 $k_{iso}=2$），则归类为 `Isolated`。
+### 4. 超越者 (Bridge)
 
-默认匹配逻辑（伪代码）：
+条件说明：`total_flow ≥ 70th percentile` —— 总活跃度排名前 30%；且 `outflow > 0 AND inflow > 0`（既有流出也有流入）
+**含义**：这些学科是知识流动的**枢纽**，既大量吸收外部知识，也大量输出自己的成果，连接不同学科领域。
 
-```text
-for each discipline d:
-	if T_d < T_min or (k_in+d + k_out_d) < k_iso:
-		role = 'Isolated'
-	else if r_d >= r_th:
-		role = 'Outflow-dominant'
-	else if r_d <= -r_th:
-		role = 'Inflow-dominant'
-	else if (B_d >= percentile(B, p_B)) or (k_in_d >= k_deg and k_out_d >= k_deg):
-		role = 'Bridge'
-	else:
-		role = 'Isolated'  # fallback for very small / ambiguous cases
-```
+**示例**：`Biochemistry & Molecular Biology`、`Neurosciences` 等跨学科领域可能属于此类。
+
+---
+
+以上为用于分类的具体规则；请确保 `scripts/analyze_mobility.py` 在计算并输出时遵循这些判定条件（避免将不可序列化的 `Infinity` 写入 JSON）。
 
 4) 关于阈值与可配置项
 
