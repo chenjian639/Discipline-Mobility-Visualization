@@ -18,63 +18,92 @@
 
 入口文件为 `index.html`。
 
-## 学科大类聚合与角色分类（详细说明）
+## 清洗与分类逻辑（按当前代码实现）
 
+以下说明与 `scripts/clean_network.py`、`scripts/analyze_mobility.py` 当前实现保持一致。
 
+### A. 清洗逻辑（`scripts/clean_network.py`）
 
-### 1. 孤立者 (Isolated)
+1. 输入与输出
+- 输入：`data/raw/Discipline_Mobility_Network.xlsx`（默认，可通过 `--input` 覆盖）。
+- 输出：
+	- `data/processed/Discipline_Mobility_Network.xlsx`（逐 sheet 清洗后结果）；
+	- `data/processed/Discipline_Mobility_Network.json`（前端使用的 periods + cats）。
 
-条件说明：`total_flow ≤ 20th percentile` —— 总活跃度排名最低的 20%
-**含义**：这些学科与其他学科的交流极少，研究活动高度内部化，边界封闭。
+2. From-To 拆分规则
+- 只把“前后都没有空格”的连字符 `-` 视为 From/To 分隔符。
+- 例如：`A-B` 会拆分；`A - B` 不会按该规则拆分。
+- 目的：尽量保留学科名内部或后缀中的 ` - Other Topics` 结构。
 
-**示例**：一些小众的细分学科，如 `Mycology`（真菌学）、`Mineralogy`（矿物学）可能属于此类。
+3. 数据清洗步骤
+- 自动识别列：优先找列名同时包含 `from` 和 `to` 的列作为 pair 列，另找 times/count/value/freq 作为数值列。
+- 将次数列转为数值，去掉无法转换的数据行。
+- 解析 pair 列得到 `From` 与 `To`；缺失任一端的行会被丢弃。
+- `Times` 转 int，并按 `--min-times`（默认 1）过滤低频记录。
+- 按 `(From, To)` 聚合求和。
 
----
+4. 构建前端网络结构
+- 节点集：`From ∪ To`。
+- 邻接矩阵：`matrix[i][j] += Times(From_i -> To_j)`。
+- 每个节点写入：
+	- `n`: 名称
+	- `c`: 大类（由 `classify_category` 规则匹配）
+	- `o`: 流出总和
+	- `i`: 流入总和
+	- `s`: 自环（`i == j`）
 
-### 2. 传播者 (Outflow-dominant)
+5. 时间分段键映射
+- sheet 名含 `2008-2018` -> `full`
+- 含 `2009-2013` -> `early`
+- 含 `2014-2018` -> `late`
+- 其它 sheet 名转小写并规范化为 key。
 
-条件说明：`outflow > inflow × 2` —— 流出量是流入量的 2 倍以上
-**含义**：这些学科是知识的**主要输出者**，对其他学科有较强的辐射作用。
+### B. 角色分类逻辑（`scripts/analyze_mobility.py`）
 
-**示例**：`Physics`、`Chemistry` 等基础学科可能属于此类，它们的方法和理论被广泛引用到其他领域。
+1. 基础量计算
+- `outflow[d] = Σ_j m[d][j]`（仅累计 `> 0` 的值）
+- `inflow[d] = Σ_i m[i][d]`（仅累计 `> 0` 的值）
+- `self[d] = m[d][d]`
+- `total_flow[d] = outflow[d] + inflow[d]`
 
----
+2. 分位点
+- `p20 = percentile(total_flow, 20)`
+- `p70 = percentile(total_flow, 70)`
 
-### 3. 定居者 (Inflow-dominant)
+3. 角色判定顺序（严格按代码 if/elif）
+- 若 `total_flow <= p20` -> `isolated`
+- 否则若 `outflow > inflow * 2` -> `output-dominant`
+- 否则若 `inflow > outflow * 2` -> `input-dominant`
+- 否则若 `total_flow >= p70` 且 `outflow > 0` 且 `inflow > 0` -> `bridge`
+- 否则 -> `bridge`（默认兜底）
 
-条件说明：`inflow > outflow × 2` —— 流入量是流出量的 2 倍以上
-**含义**：这些学科是知识的**主要吸收者**，大量借鉴其他学科的研究成果。
+这意味着：只要不满足前三个条件，最终都会归到 `bridge`。
 
-**示例**：一些应用型学科，如 `Oncology`、`Cardiovascular System` 可能属于此类，它们吸收基础研究的成果用于临床应用。
+4. 当前输出字段
+- 每个学科输出：`name`, `category`, `out`, `in`, `self`, `net`, `out_in_ratio`, `strength`, `role`。
+- 另外附加：`pagerank`（脚本内实现）与 `community`（networkx 可用时）。
 
----
+5. 已知注意点
+- 当 `inflow == 0` 且 `outflow > 0` 时，`out_in_ratio` 会写成 `Infinity`；这在严格 JSON 解析器中可能报错。
+- 社区发现依赖 `networkx`，未安装时会回退为 `-1`。
 
-### 4. 超越者 (Bridge)
+### C. 四类角色含义（解释层）
 
-条件说明：`total_flow ≥ 70th percentile` —— 总活跃度排名前 30%；且 `outflow > 0 AND inflow > 0`（既有流出也有流入）
-**含义**：这些学科是知识流动的**枢纽**，既大量吸收外部知识，也大量输出自己的成果，连接不同学科领域。
+1. 孤立者（Isolated）
+- 条件：`total_flow <= 20th percentile`
+- 含义：跨学科流动较弱，整体活跃度低。
 
-**示例**：`Biochemistry & Molecular Biology`、`Neurosciences` 等跨学科领域可能属于此类。
+2. 传播者（Outflow-dominant）
+- 条件：`outflow > inflow × 2`
+- 含义：知识净输出明显。
 
----
+3. 定居者（Inflow-dominant）
+- 条件：`inflow > outflow × 2`
+- 含义：知识净输入明显。
 
-以上为用于分类的具体规则；请确保 `scripts/analyze_mobility.py` 在计算并输出时遵循这些判定条件（避免将不可序列化的 `Infinity` 写入 JSON）。
-
-4) 关于阈值与可配置项
-
-- 上面列出的 $T_{min}$、$r_{th}$、$r_{bridge}$、$p_{B}$、$k_{deg}$、$k_{iso}$ 都应作为 `scripts/analyze_mobility.py` 的参数暴露，以便基于不同语料调整。默认值是根据经验与项目数据规模设定的起点，实际可通过敏感性分析调整。
-
-5) 输出与可视化对接
-
-- 脚本输出的 `Discipline_Mobility_Analysis.json` 应包含每个学科的 `id/name/category` 和以下字段：`O`、`I`、`T`、`r`、`k_in`、`k_out`、`B`（若计算）、`role`（字符串）。前端读取后即可据此为节点着色与生成角色桑基图。
-
-6) 建议的验证步骤
-
-- 在 `scripts/analyze_mobility.py` 中将阈值设为常量或命令行参数，运行并导出 `Discipline_Mobility_Analysis.json`；
-- 用小样本（人工构造的 10–20 条流动记录）验证分类结果是否符合直觉；
-- 若某类样本过多或过少，调整 $T_{min}$ 与 $r_{th}$ 并重新运行。
-
-如需我把这些公式和默认参数直接写回 `scripts/analyze_mobility.py`（并生成新解析后的 `Discipline_Mobility_Analysis.json`），我可以继续实现并运行脚本。 
+4. 超越者（Bridge）
+- 条件：满足高活跃桥接条件，或作为当前逻辑的默认兜底类别。
+- 含义：在当前实现中，除前三类之外均归入该类。
 
 ## 文件说明（主要文件与目录）
 
@@ -83,7 +112,7 @@
 - `app.js`：前端渲染与交互逻辑核心，包含视图调度（`render()`）、各视图渲染函数（`renderHeatmap()`、`renderNetFlow()`、`renderNetwork()`、`renderFocusSankey()` 等）以及与 `#tooltip`、`#legend` 的事件绑定与状态管理。
 - `styles.css`：页面与可视化容器的样式表，定义布局、tooltip、图例与统计栏的视觉规则。
 - `data/processed/Discipline_Mobility_Network.json`：处理后的网络数据（按学科或按大类聚合的节点/链接），可供前端直接加载或替换内嵌数据。
-- `data/processed/Discipline_Mobility_Analysis.json`：分析输出，包含每个学科的统计字段（`O`、`I`、`T`、`r`、`k_in`、`k_out`、`B`、`role` 等），前端据此进行着色与角色桑基渲染。
+- `data/processed/Discipline_Mobility_Analysis.json`：分析输出，当前包含字段 `name`、`category`、`out`、`in`、`self`、`net`、`out_in_ratio`、`strength`、`role`，并附加 `pagerank`、`community`（可选）。
 - `data/raw/`：原始未处理数据文件夹，保留用于审计与重现数据处理流程。
 - `outputs/`：脚本运行产物（例如 `classification.csv`、导出的图像或 HTML 报表等）。
 - `scripts/analyze_mobility.py`：计算学科流入/流出/度数/中心性并生成 `Discipline_Mobility_Analysis.json` 的主脚本，建议将前述阈值作为参数或常量置于此处以便配置。
