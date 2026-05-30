@@ -107,17 +107,13 @@
 
 ## 文件说明（主要文件与目录）
 
-- `discipline_mobility.html`：主交互页面，承载可视化容器 `#chartArea`、视图切换控件与内联的 `renderRoleSankey()`（由 `app.js` 调用）；适合直接在浏览器中打开用于交互查看。
-- `index.html`：项目入口页面（通常为轻量示例或重定向至 `discipline_mobility.html`）。
-- `app.js`：前端渲染与交互逻辑核心，包含视图调度（`render()`）、各视图渲染函数（`renderHeatmap()`、`renderNetFlow()`、`renderNetwork()`、`renderFocusSankey()` 等）以及与 `#tooltip`、`#legend` 的事件绑定与状态管理。
-- `styles.css`：页面与可视化容器的样式表，定义布局、tooltip、图例与统计栏的视觉规则。
-- `data/processed/Discipline_Mobility_Network.json`：处理后的网络数据（按学科或按大类聚合的节点/链接），可供前端直接加载或替换内嵌数据。
-- `data/processed/Discipline_Mobility_Analysis.json`：分析输出，当前包含字段 `name`、`category`、`out`、`in`、`self`、`net`、`out_in_ratio`、`strength`、`role`，并附加 `pagerank`、`community`（可选）。
-- `data/raw/`：原始未处理数据文件夹，保留用于审计与重现数据处理流程。
-- `outputs/`：脚本运行产物（例如 `classification.csv`、导出的图像或 HTML 报表等）。
-- `scripts/analyze_mobility.py`：计算学科流入/流出/度数/中心性并生成 `Discipline_Mobility_Analysis.json` 的主脚本，建议将前述阈值作为参数或常量置于此处以便配置。
-- `scripts/generate_figures.py`：用于批量生成或导出静态图表的脚本（用于报告或离线检查）。
-- `scripts/visualize_mobility.py`：辅助导出交互式 HTML 的脚本（如存在），可用于把分析结果打包成独立 HTML 报告。
-- `scripts/clean_network.py`：数据清洗脚本，负责标准化学科名、合并重复记录并生成初始网络表。
-
-如果你希望，我可以把这些说明拆分到 `docs/FILES.md`，并在 `README.md` 中保留简短索引；或者我可以把默认阈值写入 `scripts/analyze_mobility.py` 并运行生成新的 `Discipline_Mobility_Analysis.json`。 
+- `discipline_mobility.html`：主交互页面，承载可视化容器 `#chartArea`、视图切换控件与内联的 `renderRoleSankey()`（由 `app.js` 调用）。
+- `index.html`：项目入口页面。
+- `app.js`：前端渲染与交互逻辑核心，包含视图调度（`render()`）和主要视图渲染函数（`renderHeatmap()`、`renderNetFlow()`、`renderNetwork()`、`renderFocusSankey()` 等）。
+- `styles.css`：页面样式文件，定义布局、tooltip、图例与统计栏视觉规则。
+- `data/raw/`：原始未处理数据目录。
+- `data/processed/Discipline_Mobility_Network.json`：清洗后网络数据（periods + 节点/矩阵）。
+- `data/processed/Discipline_Mobility_Analysis.json`：角色分析输出，包含 `name`、`category`、`out`、`in`、`self`、`net`、`out_in_ratio`、`strength`、`role`，并附加 `pagerank`、`community`。
+- `outputs/`：分析脚本输出目录（如 `classification.csv`）。
+- `scripts/clean_network.py`：清洗原始 Excel，生成 processed Excel 与 Network JSON。
+- `scripts/analyze_mobility.py`：基于 Network JSON 计算角色分类，并输出 Analysis JSON 与 classification.csv。
