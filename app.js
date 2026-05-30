@@ -3,7 +3,20 @@ let FULLDATA = {"periods":{"full":{"l":"2008�?018 (全部)","d":[{"n":"Physics
 
 // ===== State =====
 let currentPeriod = 'full', currentView = 'netflow', topN = 15;
-let searchQuery = '';
+// coloring mode: 'category' (by major category) or 'role' (classification from analysis)
+let colorMode = 'category';
+// flow animation state
+let flowAnim = true, flowSpeed = 1, flowDensity = 3;
+// analysis map loaded from data/processed/Discipline_Mobility_Analysis.json
+let ANALYSIS_MAP = {};
+const roleColorMap = {
+  'output-dominant': '#e74c3c',
+  'input-dominant': '#3498db',
+  'bridge': '#f39c12',
+  'isolated': '#9aa0a6',
+  'balanced': '#2ecc71',
+  'unknown': '#999999'
+};
 
 // ===== Init =====
 (async function() {
@@ -22,18 +35,32 @@ let searchQuery = '';
   } catch (e) {
     console.warn('Error loading processed JSON — using embedded data', e);
   }
+  // 尝试加载分析结果（脚本生成的分类/中心性结果）
+  try {
+    const aresp = await fetch('data/processed/Discipline_Mobility_Analysis.json');
+    if (aresp.ok) {
+      const aj = await aresp.json();
+      if (aj && aj.analysis) {
+        aj.analysis.forEach(x => { ANALYSIS_MAP[x.name] = x; });
+        console.log('Loaded analysis data: data/processed/Discipline_Mobility_Analysis.json');
+      }
+    }
+  } catch (e) {
+    console.warn('No analysis JSON found or error parsing it', e);
+  }
   const c = document.getElementById('periodBtns');
   Object.keys(FULLDATA.periods).forEach((k, i) => {
     const b = document.createElement('button');
     b.className = 'btn' + (i ? '' : ' active');
     b.textContent = FULLDATA.periods[k].l;
     b.dataset.period = k;
-    b.onclick = () => { c.querySelectorAll('.btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); currentPeriod = k; updateSliderMax(); render(); };
+    b.onclick = () => { c.querySelectorAll('.btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); currentPeriod = k; render(); };
     c.appendChild(b);
   });
   document.querySelectorAll('.view-btn').forEach(b => {
     b.onclick = () => { document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); currentView = b.dataset.view; render(); };
   });
+  // color mode buttons removed from UI; default coloring remains (按大类)
   // focus buttons for Sankey/river charts
   const focusGroup = document.getElementById('focusBtns');
   if (focusGroup) {
@@ -41,40 +68,30 @@ let searchQuery = '';
       b.onclick = () => { focusGroup.querySelectorAll('.focus-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); renderFocusSankey(b.dataset.focus); };
     });
   }
-  document.getElementById('searchInput').addEventListener('input', applySearch);
-  const slider = document.getElementById('topNSlider');
-  const label = document.getElementById('topNLabel');
-  slider.addEventListener('input', () => { topN = +slider.value; label.textContent = topN; render(); });
-  updateSliderMax();
+  // search and topN controls removed
+  // flow animation controls
+  const flowToggle = document.getElementById('flowAnimToggle');
+  const flowSpeedInput = document.getElementById('flowSpeed');
+  const flowDensityInput = document.getElementById('flowDensity');
+  if (flowToggle) {
+    flowAnim = !!flowToggle.checked;
+    flowToggle.addEventListener('change', () => { flowAnim = !!flowToggle.checked; if (!flowAnim && window._flowTimer) { try{ window._flowTimer.stop(); }catch(e){} } render(); });
+  }
+  if (flowSpeedInput) {
+    flowSpeedInput.value = flowSpeed;
+    flowSpeedInput.addEventListener('input', () => { flowSpeed = +flowSpeedInput.value; });
+  }
+  if (flowDensityInput) {
+    flowDensityInput.value = flowDensity;
+    flowDensityInput.addEventListener('input', () => { flowDensity = +flowDensityInput.value; render(); });
+  }
   render();
 })();
-
-function updateSliderMax() {
-  const raw = FULLDATA.periods[currentPeriod];
-  const filteredMax = getFilteredIndices(raw).length;
-  const slider = document.getElementById('topNSlider');
-  // Allow small sets when filtering; keep original default otherwise.
-  slider.min = searchQuery.trim() ? 1 : 8;
-  const max = searchQuery.trim() ? Math.max(1, filteredMax) : raw.d.length;
-  slider.max = max;
-  if (topN < +slider.min) topN = +slider.min;
-  if (topN > max) topN = max;
-  slider.value = topN;
-  document.getElementById('topNLabel').textContent = topN;
-}
-
-function normalizeText(s) {
-  return (s || '').toString().trim().toLowerCase();
-}
+// topN slider and search removed
 
 function getFilteredIndices(raw) {
-  const q = normalizeText(searchQuery);
-  if (!q) return raw.d.map((_, i) => i);
-  const tokens = q.split(/\s+/).filter(Boolean);
-  return raw.d
-    .map((d, i) => ({ i, hay: normalizeText(`${d.n} ${d.c || ''}`) }))
-    .filter(x => tokens.every(t => x.hay.includes(t)))
-    .map(x => x.i);
+  // filtering disabled — return all indices in original order
+  return raw.d.map((_, i) => i);
 }
 
 // ===== Slice data =====
@@ -85,6 +102,17 @@ function slicedData() {
   const idx = filtered.slice(0, n);
   const d = idx.map(i => raw.d[i]);
   const m = idx.map(i => idx.map(j => (raw.m[i] && raw.m[i][j]) ? raw.m[i][j] : 0));
+  // merge analysis info (role, pagerank, community) when available
+  d.forEach(dd => {
+    const a = ANALYSIS_MAP[dd.n];
+    if (a) {
+      dd.role = a.role || 'unknown';
+      dd.pagerank = a.pagerank || 0;
+      dd.community = a.community || -1;
+    } else {
+      dd.role = 'unknown';
+    }
+  });
   return { l: raw.l, d, m, n, _filteredTotal: filtered.length, _rawTotal: raw.d.length };
 }
 
@@ -93,9 +121,34 @@ function render() {
   const data = slicedData();
   const container = document.getElementById('chartArea');
   container.innerHTML = '';
-  // Hide legend to avoid a sidebar-like column
+  // Build legend according to current colorMode
   const leg = document.getElementById('legend');
-  if (leg) { leg.style.display = 'none'; leg.innerHTML = ''; }
+  if (leg) {
+    leg.style.display = 'block';
+    leg.innerHTML = '';
+    if (colorMode === 'role') {
+      const wrap = document.createElement('div');
+      wrap.className = 'legend-roles';
+      Object.keys(roleColorMap).forEach(k => {
+        const it = document.createElement('div'); it.className = 'legend-item';
+        const sw = document.createElement('span'); sw.className = 'swatch'; sw.style.background = roleColorMap[k];
+        const lbl = document.createElement('span'); lbl.className = 'lbl'; lbl.textContent = k.replace(/-/g, ' ');
+        it.appendChild(sw); it.appendChild(lbl); wrap.appendChild(it);
+      });
+      leg.appendChild(wrap);
+    } else {
+      // category legend from FULLDATA.cats
+      const catMap = Object.fromEntries(FULLDATA.cats || []);
+      const wrap = document.createElement('div'); wrap.className = 'legend-cats';
+      Object.keys(catMap).forEach(k => {
+        const it = document.createElement('div'); it.className = 'legend-item';
+        const sw = document.createElement('span'); sw.className = 'swatch'; sw.style.background = catMap[k];
+        const lbl = document.createElement('span'); lbl.className = 'lbl'; lbl.textContent = k;
+        it.appendChild(sw); it.appendChild(lbl); wrap.appendChild(it);
+      });
+      leg.appendChild(wrap);
+    }
+  }
   const total = data.d.reduce((s, d) => s + d.o, 0);
   const totalFlow = data.m.flat().reduce((a, b) => a + (b || 0), 0);
   document.getElementById('statsBar').innerHTML = `
@@ -105,16 +158,20 @@ function render() {
 
   if (!data.n) {
     container.innerHTML = `<div class="empty-hint">未找到匹配的学科，请调整筛选关键词</div>`;
-    updateInsight();
     return;
   }
 
   switch (currentView) {
     case 'chord': renderChord(data, container); break;
     case 'netflow': renderNetFlow(data, container); break;
+    case 'network': renderNetwork(data, container); break;
     case 'heatmap': renderHeatmap(data, container); break;
+    case 'role_sankey':
+      // render role-category sankey into the same chart container
+      if (typeof renderRoleSankey === 'function') renderRoleSankey();
+      break;
   }
-  updateInsight();
+  // insight panel removed
 }
 
 // ===== Tooltip =====
@@ -122,101 +179,47 @@ const tt = document.getElementById('tooltip');
 function showTT(x, y, h) { tt.style.left = Math.min(x + 10, window.innerWidth - 310) + 'px'; tt.style.top = (y - 10) + 'px'; tt.innerHTML = h; tt.classList.add('show'); }
 function hideTT() { tt.classList.remove('show'); }
 
-// ===== Search =====
-let _searchRaf = 0;
-function applySearch() {
-  searchQuery = document.getElementById('searchInput').value;
-  updateSliderMax();
-  if (_searchRaf) cancelAnimationFrame(_searchRaf);
-  _searchRaf = requestAnimationFrame(() => { _searchRaf = 0; render(); });
+// Helper: pick color for a discipline object (may have .n, .c, .role)
+function colorForNodeObj(d) {
+  if (!d) return '#999';
+  const role = d.role || (ANALYSIS_MAP[d.n] && ANALYSIS_MAP[d.n].role);
+  if (colorMode === 'role') return roleColorMap[role] || roleColorMap.unknown;
+  const catMap = Object.fromEntries(FULLDATA.cats || []);
+  return catMap[d.c] || '#999';
 }
 
-// ===== Insight Panel =====
-// Insight is always shown below the chart; no toggle.
+// Search and filter controls removed
 
-function updateInsight() {
-  const panel = document.getElementById('insightPanel');
-  if (!panel) return;
-  const data = slicedData();
-  if (!data.n) {
-    panel.innerHTML = `<h3>结论 — ${FULLDATA.periods[currentPeriod].l}</h3><div class="finding">当前筛选条件下没有匹配学科，无法生成统计结论。</div>`;
-    return;
-  }
-  const disc = data.d;
-  const totalOut = disc.reduce((s, d) => s + d.o, 0);
-  const label = FULLDATA.periods[currentPeriod].l;
-
-  const totalOffDiag = (() => {
-    let s = 0;
-    for (let i = 0; i < data.n; i++) for (let j = 0; j < data.n; j++) if (i !== j) s += data.m[i][j] || 0;
-    return s;
-  })();
-
-  // Top flow pairs
-  const pairs = [];
-  for (let i = 0; i < data.n; i++)
-    for (let j = 0; j < data.n; j++)
-      if (i !== j && data.m[i][j] > 0) pairs.push({ from: disc[i].n, to: disc[j].n, v: data.m[i][j] });
-  pairs.sort((a, b) => b.v - a.v);
-  const top3 = pairs.slice(0, 3);
-
-  // Net flow
-  const nets = disc.map(d => ({ n: d.n, net: d.i - d.o, out: d.o, inn: d.i })).sort((a, b) => b.net - a.net);
-
-  // Stay ratio: diagonal self-flow / (self + out-to-others)
-  const stayRatio = disc.map(d => ({ n: d.n, ratio: d.s / (d.s + d.o), self: d.s, out: d.o })).sort((a, b) => a.ratio - b.ratio);
-
-  // Asymmetry: biggest one-directional flows
-  const asym = [];
-  for (let i = 0; i < data.n; i++)
-    for (let j = i + 1; j < data.n; j++) {
-      const ab = data.m[i][j], ba = data.m[j][i];
-      if (ab + ba > 500) asym.push({ a: disc[i].n, b: disc[j].n, ab, ba, diff: Math.abs(ab - ba) / (ab + ba + 1) });
-    }
-  asym.sort((a, b) => b.diff - a.diff);
-
-  // Cross-category mobility
-  const catFlows = {};
-  for (let i = 0; i < data.n; i++)
-    for (let j = 0; j < data.n; j++)
-      if (i !== j && data.m[i][j] > 0 && disc[i].c !== disc[j].c) {
-        const key = disc[i].c + ' → ' + disc[j].c;
-        catFlows[key] = (catFlows[key] || 0) + data.m[i][j];
-      }
-  const topCat = Object.entries(catFlows).sort((a, b) => b[1] - a[1]).slice(0, 3);
-
-  // Discipline with most diverse connections
-  const diver = disc.map((d, i) => {
-    let count = 0;
-    for (let j = 0; j < data.n; j++) if (i !== j && (data.m[i][j] > 0 || data.m[j][i] > 0)) count++;
-    return { n: d.n, c: count };
-  }).sort((a, b) => b.c - a.c);
-
-  const meta = `<div class="finding"><strong>说明</strong><br>本结论基于当前时间段（${label}）与当前 Top${data.n} 学科计算。</div>`;
-  const coreChannels = `<div class="finding"><strong>核心通道</strong><br><ol style="margin:6px 0 0 18px">${top3.map(p => `<li>${p.from} → ${p.to}：<em>${p.v.toLocaleString()}</em></li>`).join('')}</ol></div>`;
-  const netRole = `<div class="finding"><strong>净流动格局</strong><br><div style="margin-top:6px">净吸纳：${nets.slice(0, 3).map(d => `${d.n} <em>+${d.net.toLocaleString()}</em>`).join('；')}</div><div style="margin-top:4px">净输出：${nets.slice(-3).reverse().map(d => `${d.n} <em>${d.net.toLocaleString()}</em>`).join('；')}</div></div>`;
-  const openness = `<div class="finding"><strong>跨学科依赖性</strong><br><div style="margin-top:6px">自流占比最低：${stayRatio.slice(0, 3).map(d => `${d.n} <em>${(d.ratio * 100).toFixed(1)}%</em>`).join('<br>')}</div></div>`;
-  const breadth = `<div class="finding"><strong>连接广度</strong><br>交叉连通最多：${diver.slice(0, 3).map(d => `${d.n}（连通 <em>${d.c}</em> 个学科）`).join('；')}</div>`;
-  const categorySummary = `<div class="finding"><strong>大类迁移方向</strong><br>${topCat.length ? topCat.map(kv => `${kv[0]}：<em>${kv[1].toLocaleString()}</em>`) .join('<br>') : '当前 TopN 下跨大类迁移不足。'}</div>`;
-  const insights = {
-    chord: `<h3>结论（弦图）— ${label}</h3>${meta}${coreChannels}${netRole}${openness}`,
-    netflow: `<h3>结论（净流动）— ${label}</h3>${meta}${netRole}${openness}`,
-    heatmap: `<h3>结论（热力矩阵）— ${label}</h3>${meta}${coreChannels}${breadth}${openness}`
-  };
-  panel.innerHTML = insights[currentView] || '';
-}
+// insight panel removed
 
 // Chord diagram view removed — renderChord was intentionally omitted.
 
 // ===== 3. NET FLOW BALANCE (净流动平衡) =====
 function renderNetFlow(data, container) {
-  const disc = data.d, n = data.n;
-  const catMap = Object.fromEntries(FULLDATA.cats);
-  const items = disc.map(d => ({ ...d, net: d.i - d.o, total: d.o + d.i }));
+  // Use full data for current period and aggregate by 学科大类 (category).
+  const raw = FULLDATA.periods[currentPeriod];
+  const discAll = raw.d || [];
+  const categories = Array.from(new Set(discAll.map(d => d.c || 'Other')));
+  const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
+  const k = categories.length;
+
+  // sum o/i/s per category
+  const catStats = categories.map(() => ({ o: 0, i: 0, s: 0 }));
+  for (let i = 0; i < discAll.length; i++) {
+    const c = discAll[i].c || 'Other';
+    const idx = catIndex[c];
+    catStats[idx].o += discAll[i].o || 0;
+    catStats[idx].i += discAll[i].i || 0;
+    catStats[idx].s += discAll[i].s || 0;
+  }
+
+  const items = categories.map((c, idx) => ({ n: c, c: c, o: catStats[idx].o, i: catStats[idx].i, s: catStats[idx].s, net: (catStats[idx].i || 0) - (catStats[idx].o || 0) }));
   items.sort((a, b) => b.net - a.net);
+
+  const n = items.length;
   const width = Math.max(980, container.clientWidth || 980);
   const margin = { top: 80, right: 40, bottom: 24, left: 320 };
-  const barH = Math.max(14, Math.min(30, (600 - margin.top - margin.bottom) / n));
+  const barH = Math.max(18, Math.min(40, (600 - margin.top - margin.bottom) / n));
   const height = n * barH + margin.top + margin.bottom + 50;
   const midX = width / 2 + 50;
   const maxAbs = d3.max(items, d => Math.abs(d.net)) || 1;
@@ -230,22 +233,42 @@ function renderNetFlow(data, container) {
     if (d.net > 0) g.append('rect').attr('x', midX - margin.left).attr('y', y + 1).attr('width', barW).attr('height', barH - 2).attr('fill', '#3498db').attr('opacity', 0.75).attr('rx', 2);
     g.append('rect').attr('x', midX - margin.left - 6).attr('y', y + 1).attr('width', 6).attr('height', barH - 2).attr('fill', d.net < 0 ? '#c0392b' : d.net > 0 ? '#2980b9' : '#ccc').attr('rx', 2);
     const txtX = d.net >= 0 ? midX - margin.left + barW + 4 : midX - margin.left - barW - 4;
-    g.append('text').attr('x', txtX).attr('y', y + barH / 2).attr('dy', '0.32em').attr('text-anchor', d.net >= 0 ? 'start' : 'end').attr('font-size', '10px').attr('fill', '#555')
+    g.append('text').attr('x', txtX).attr('y', y + barH / 2).attr('dy', '0.32em').attr('text-anchor', d.net >= 0 ? 'start' : 'end').attr('font-size', '11px').attr('fill', '#555')
       .text(d.net ? (d.net > 0 ? '+' : '') + d.net.toLocaleString() : '0');
   });
   g.selectAll('.lbl').data(items).join('text')
-    .attr('x', -30).attr('y', (d, i) => i * barH + barH / 2).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', '11px').attr('fill', '#333')
+    .attr('x', -30).attr('y', (d, i) => i * barH + barH / 2).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', '12px').attr('fill', '#333')
     .text(d => d.n);
-  g.selectAll('.cd').data(items).join('circle').attr('cx', -18).attr('cy', (d, i) => i * barH + barH / 2).attr('r', 4).attr('fill', d => catMap[d.c] || '#999');
+  g.selectAll('.cd').data(items).join('circle').attr('cx', -18).attr('cy', (d, i) => i * barH + barH / 2).attr('r', 5).attr('fill', d => colorForNodeObj(d));
   svg.append('text').attr('x', midX - margin.left - 12).attr('y', 40).attr('text-anchor', 'end').attr('font-size', '12px').attr('fill', '#e74c3c').attr('font-weight', '600').text('净流出（送出人才）');
   svg.append('text').attr('x', midX - margin.left + 12).attr('y', 40).attr('text-anchor', 'start').attr('font-size', '12px').attr('fill', '#3498db').attr('font-weight', '600').text('净流入（吸纳人才）');
 }
 // ===== 4. HEATMAP MATRIX =====
 function renderHeatmap(data, container) {
+  // Aggregate by 学科大类 (category) and render category × category heatmap
+  container.innerHTML = '';
   const disc = data.d, matrix = data.m, n = data.n;
-  // Responsive cell size: large for few, compact for many
-  const cellSize = n <= 15 ? 28 : n <= 20 ? 22 : Math.max(9, Math.min(18, 740 / n));
-  const hw = cellSize * n, hh = cellSize * n;
+  // build category list in original encounter order
+  const categories = Array.from(new Set(disc.map(d => d.c || 'Other')));
+  const k = categories.length;
+  const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
+
+  // aggregate matrix into category × category
+  const catMatrix = Array.from({ length: k }, () => Array.from({ length: k }, () => 0));
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const vi = matrix[i] && matrix[i][j] ? matrix[i][j] : 0;
+    if (!vi) continue;
+    const ci = catIndex[disc[i].c || 'Other'];
+    const cj = catIndex[disc[j].c || 'Other'];
+    catMatrix[ci][cj] += vi;
+  }
+
+  // use categories as labels (objects with .n and .c so colorForNodeObj works)
+  const catDisc = categories.map(c => ({ n: c, c: c }));
+  const nCat = k;
+  // Responsive cell size based on category count
+  const cellSize = nCat <= 8 ? 48 : nCat <= 12 ? 36 : Math.max(12, Math.min(32, 700 / nCat));
+  const hw = cellSize * nCat, hh = cellSize * nCat;
   // Margin computed from actual label lengths to avoid overlap
   const maxRowLabel = d3.max(disc, d => d.n.length) || 10;
   const maxColLabel = d3.max(disc, d => d.n.length) || 10;
@@ -260,9 +283,9 @@ function renderHeatmap(data, container) {
   const width = hw + margin.left + margin.right;
   const height = hh + margin.top + margin.bottom;
 
-  const catMap = Object.fromEntries(FULLDATA.cats);
+  // use colorForNodeObj for category/role swatches
   // Log(x+1) color scale �?smooth non-linear
-  const maxVal = d3.max(matrix.flat()) || 1;
+  const maxVal = d3.max(catMatrix.flat()) || 1;
   const logMax = Math.log(maxVal + 1);
   const colorScale = v => {
     const t = Math.log(v + 1) / logMax;
@@ -273,7 +296,7 @@ function renderHeatmap(data, container) {
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
   // Row labels (source disciplines, right-aligned)
-  g.selectAll('.hlr').data(disc).join('text').attr('class', 'heatmap-label')
+  g.selectAll('.hlr').data(catDisc).join('text').attr('class', 'heatmap-label')
     .attr('x', -30)
     .attr('y', (d, i) => i * cellSize + cellSize / 2)
     .attr('dy', '0.35em')
@@ -283,7 +306,7 @@ function renderHeatmap(data, container) {
     .text(d => d.n);
 
   // Column labels
-  g.selectAll('.hlc').data(disc).join('text').attr('class', 'heatmap-label')
+  g.selectAll('.hlc').data(catDisc).join('text').attr('class', 'heatmap-label')
     .attr('x', (d, i) => i * cellSize + cellSize / 2)
     .attr('y', -14)
     .attr('dy', '0.35em')
@@ -294,33 +317,33 @@ function renderHeatmap(data, container) {
     .text(d => d.n);
 
   // Category color indicators
-  g.selectAll('.cbr').data(disc).join('rect')
+  g.selectAll('.cbr').data(catDisc).join('rect')
     .attr('x', -12)
     .attr('y', (d, i) => i * cellSize + 2)
     .attr('width', 4)
     .attr('height', cellSize - 4)
-    .attr('fill', d => catMap[d.c] || '#999')
+    .attr('fill', d => colorForNodeObj(d))
     .attr('rx', 1);
-  g.selectAll('.cbc').data(disc).join('rect')
+  g.selectAll('.cbc').data(catDisc).join('rect')
     .attr('x', (d, i) => i * cellSize + 2)
     .attr('y', -12)
     .attr('width', cellSize - 4)
     .attr('height', 4)
-    .attr('fill', d => catMap[d.c] || '#999')
+    .attr('fill', d => colorForNodeObj(d))
     .attr('ry', 1);
 
-  // Cells
-  g.selectAll('.cell').data(d3.cross(d3.range(n), d3.range(n))).join('rect').attr('class', 'heatmap-cell')
+  // Cells (category aggregated)
+  g.selectAll('.cell').data(d3.cross(d3.range(nCat), d3.range(nCat))).join('rect').attr('class', 'heatmap-cell')
     .attr('x', ([, j]) => j * cellSize)
     .attr('y', ([i]) => i * cellSize)
     .attr('width', cellSize)
     .attr('height', cellSize)
-    .attr('fill', ([i, j]) => colorScale(matrix[i][j]))
+    .attr('fill', ([i, j]) => colorScale(catMatrix[i][j]))
     .attr('stroke', '#fff')
     .attr('stroke-width', 0.5)
     .on('mouseenter', function(ev, [i, j]) {
       d3.select(this).attr('stroke', '#e74c3c').attr('stroke-width', 2);
-      showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${disc[i].n} → ${disc[j].n}</div><div class="tt-row"><span>流动</span><span>${matrix[i][j] ? matrix[i][j].toLocaleString() : '0'}</span></div>`);
+      showTT(ev.offsetX, ev.offsetY, `<div class="tt-title">${catDisc[i].n} → ${catDisc[j].n}</div><div class="tt-row"><span>流动</span><span>${catMatrix[i][j] ? catMatrix[i][j].toLocaleString() : '0'}</span></div>`);
     })
     .on('mouseleave', function() { 
       d3.select(this).attr('stroke', '#fff').attr('stroke-width', 0.5); 
@@ -409,59 +432,217 @@ function renderHeatmap(data, container) {
 }
 
 // ===== 5. FOCUS SANKEY / RIVER VIEWS =====
+// ===== 4.5 NETWORK (力导向图) =====
+function renderNetwork(data, container) {
+  const disc = data.d, matrix = data.m, n = data.n;
+  container.innerHTML = '';
+  const width = Math.min(1200, Math.max(720, container.clientWidth || 900));
+  const height = Math.max(520, Math.round(width * 0.58));
+  const svg = d3.select(container).append('svg').attr('width', width).attr('height', height).style('display', 'block').style('margin', '0 auto');
+  const g = svg.append('g').attr('class', 'network-layer');
+
+  // nodes
+  const nodes = disc.map((d, i) => ({ id: i, n: d.n, name: d.n, c: d.c, category: d.c, role: d.role || 'unknown', size: (d.o || 0) + (d.i || 0) + (d.s || 0) }));
+
+  // collect all directed edges (exclude self-loops)
+  const allEdges = [];
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    if (i === j) continue;
+    const v = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0;
+    if (v > 0) allEdges.push({ source: i, target: j, value: v });
+  }
+
+  // keep top edges to avoid clutter (heuristic)
+  allEdges.sort((a, b) => b.value - a.value);
+  const maxEdges = Math.max(30, Math.min(500, n * 6));
+  const links = allEdges.slice(0, maxEdges);
+
+  const nodeSizeScale = d3.scaleSqrt().domain([0, d3.max(nodes, d => d.size) || 1]).range([4, 20]);
+  const linkWidthScale = d3.scaleSqrt().domain([0, d3.max(links, d => d.value) || 1]).range([0.6, 6]);
+
+  // simulation
+  const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(d => 80).strength(0.6))
+    .force('charge', d3.forceManyBody().strength(-180))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collide', d3.forceCollide().radius(d => nodeSizeScale(d.size) + 6).iterations(1));
+
+  // zoom
+  svg.call(d3.zoom().on('zoom', (event) => { g.attr('transform', event.transform); }));
+
+  // links
+  const linkG = g.append('g').attr('class', 'network-links');
+  const link = linkG.selectAll('path').data(links).join('path')
+    .attr('fill', 'none')
+    .attr('stroke', '#999')
+    .attr('stroke-opacity', 0.35)
+    .attr('stroke-width', d => Math.max(0.6, linkWidthScale(d.value)))
+    .attr('marker-end', '');
+
+  // nodes
+  const nodeG = g.append('g').attr('class', 'network-nodes');
+  const node = nodeG.selectAll('g').data(nodes).join('g').attr('class', 'node');
+
+  node.append('circle')
+    .attr('r', d => nodeSizeScale(d.size))
+    .attr('fill', d => colorForNodeObj(d))
+    .attr('stroke', 'rgba(0,0,0,0.12)')
+    .attr('stroke-width', 0.8)
+    .on('mouseenter', function(event, d) {
+      d3.select(this).attr('stroke-width', 1.6);
+      // compute summary: total out/in/self from source disc
+      const raw = FULLDATA.periods[currentPeriod];
+      const info = raw.d[d.id] || {};
+      const html = `<div class="tt-title">${d.name}</div><div class="tt-row"><span>流出</span><span>${(info.o||0).toLocaleString()}</span></div><div class="tt-row"><span>流入</span><span>${(info.i||0).toLocaleString()}</span></div><div class="tt-row"><span>自流</span><span>${(info.s||0).toLocaleString()}</span></div>`;
+      showTT(event.offsetX, event.offsetY, html);
+    })
+    .on('mouseleave', function() { d3.select(this).attr('stroke-width', 0.8); hideTT(); });
+
+  node.append('title').text(d => d.name);
+
+  // labels (small)
+  node.append('text')
+    .attr('x', d => nodeSizeScale(d.size) + 6)
+    .attr('y', 3)
+    .attr('font-size', 11)
+    .attr('fill', '#222')
+    .text(d => d.name)
+    .style('pointer-events', 'none');
+
+  // dragging
+  function drag(sim) {
+    function dragstarted(event, d) {
+      if (!event.active) sim.alphaTarget(0.3).restart();
+      d.fx = d.x; d.fy = d.y;
+    }
+    function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+    function dragended(event, d) {
+      if (!event.active) sim.alphaTarget(0);
+      d.fx = null; d.fy = null;
+    }
+    return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
+  }
+  node.call(drag(simulation));
+
+  // link path generator for curved links
+  function linkArc(d) {
+    const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dr = Math.sqrt(dx * dx + dy * dy);
+    return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
+  }
+
+  simulation.on('tick', () => {
+    link.attr('d', linkArc);
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+  // stop any previous flow timer to avoid duplicates
+  if (window._flowTimer) {
+    try { window._flowTimer.stop(); } catch (e) {}
+    window._flowTimer = null;
+  }
+
+  // particle flow animation along link paths
+  try {
+    if (links.length > 0) {
+      const maxLinkVal = d3.max(links, d => d.value) || 1;
+      const linkNodes = link.nodes();
+      const particles = [];
+      links.forEach((lk, idx) => {
+        const pathNode = linkNodes[idx];
+        if (!pathNode || typeof pathNode.getTotalLength !== 'function') return;
+        const ratio = lk.value / maxLinkVal;
+        const count = Math.max(1, Math.ceil(flowDensity * ratio * 3));
+        for (let k = 0; k < count; k++) {
+          const c = g.append('circle').attr('class', 'flow-dot').attr('r', Math.max(1.2, Math.min(3, nodeSizeScale(nodes[lk.source]?.size || 1) * 0.16))).attr('pointer-events', 'none');
+          particles.push({ pathNode, t: Math.random(), speed: (0.2 + 0.8 * ratio) * flowSpeed, circle: c });
+        }
+      });
+
+      let last = null;
+      window._flowTimer = d3.timer((elapsed) => {
+        if (!flowAnim) return;
+        if (last === null) { last = elapsed; return; }
+        const dt = (elapsed - last) / 1000; last = elapsed;
+        particles.forEach(p => {
+          try {
+            const L = p.pathNode.getTotalLength();
+            if (!L) return;
+            p.t = (p.t + p.speed * dt) % 1;
+            const pt = p.pathNode.getPointAtLength(p.t * L);
+            p.circle.attr('cx', pt.x).attr('cy', pt.y);
+          } catch (e) { /* ignore transient errors */ }
+        });
+      });
+    }
+  } catch (e) { console.warn('flow animation setup failed', e); }
+
+  // simple legend: role or category
+  const leg = document.getElementById('legend'); if (leg) leg.style.display = 'block';
+}
+
 function renderFocusSankey(mode) {
   const data = slicedData();
   const disc = data.d, matrix = data.m, n = data.n;
   const container = document.getElementById('chartArea');
   container.innerHTML = '';
-  // keep sankey size similar to other charts and avoid filling full page
+  // sankey size
   const width = Math.min(1000, container.clientWidth ? container.clientWidth - 160 : 740);
   const height = Math.max(360, Math.min(520, Math.round(width * 0.48)));
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height).style('display', 'block').style('margin', '0 auto');
-  const catMap = Object.fromEntries(FULLDATA.cats);
-  // show only topK links to reduce clutter and match other charts' concise style
+  // aggregate by category
+  const categories = Array.from(new Set(disc.map(d => d.c || 'Other')));
+  const k = categories.length;
+  const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
+  const catMatrix = Array.from({ length: k }, () => Array.from({ length: k }, () => 0));
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const v = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0;
+    if (!v) continue;
+    const ci = catIndex[disc[i].c || 'Other'];
+    const cj = catIndex[disc[j].c || 'Other'];
+    catMatrix[ci][cj] += v;
+  }
+
+  // compute in/out per category
+  const catOut = catMatrix.map(row => row.reduce((a, b) => a + b, 0));
+  const catIn = catMatrix.map((_, j) => catMatrix.reduce((s, row) => s + (row[j] || 0), 0));
+
   const topK = 10;
   let nodes = [], links = [];
+  const catNames = categories;
   if (mode === 'outA') {
-    // pick discipline with maximum total outflow
-    let outIdx = 0, maxO = -Infinity;
-    for (let i = 0; i < n; i++) if ((disc[i].o || 0) > maxO) { maxO = disc[i].o; outIdx = i; }
-    // collect destinations and pick topK by raw flow from outIdx
+    // pick category with maximum outflow
+    let outIdx = catOut.reduce((iMax, val, idx, arr) => val > arr[iMax] ? idx : iMax, 0);
+    // collect destinations (exclude self)
     const dests = [];
-    for (let j = 0; j < n; j++) {
+    for (let j = 0; j < k; j++) {
       if (j === outIdx) continue;
-      const v = (matrix[outIdx] && matrix[outIdx][j]) ? matrix[outIdx][j] : 0;
+      const v = catMatrix[outIdx][j] || 0;
       if (v > 0) dests.push({ j, v });
     }
     dests.sort((a, b) => b.v - a.v);
     const top = dests.slice(0, topK);
-    nodes.push({ name: disc[outIdx].n, c: disc[outIdx].c });
-    top.forEach(d => nodes.push({ name: disc[d.j].n, c: disc[d.j].c }));
+    nodes.push({ name: catNames[outIdx], c: catNames[outIdx] });
+    top.forEach(d => nodes.push({ name: catNames[d.j], c: catNames[d.j] }));
     links = top.map((d, idx) => ({ source: 0, target: idx + 1, value: d.v }));
   } else if (mode === 'inB') {
-    // pick discipline with maximum total inflow
-    let inIdx = 0, maxI = -Infinity;
-    for (let i = 0; i < n; i++) if ((disc[i].i || 0) > maxI) { maxI = disc[i].i; inIdx = i; }
-    // collect sources and pick topK by raw flow to inIdx
+    // pick category with maximum inflow
+    let inIdx = catIn.reduce((iMax, val, idx, arr) => val > arr[iMax] ? idx : iMax, 0);
     const srcs = [];
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < k; i++) {
       if (i === inIdx) continue;
-      const v = (matrix[i] && matrix[i][inIdx]) ? matrix[i][inIdx] : 0;
+      const v = catMatrix[i][inIdx] || 0;
       if (v > 0) srcs.push({ i, v });
     }
     srcs.sort((a, b) => b.v - a.v);
     const top = srcs.slice(0, topK);
-    top.forEach(s => nodes.push({ name: disc[s.i].n, c: disc[s.i].c }));
-    nodes.push({ name: disc[inIdx].n, c: disc[inIdx].c });
+    top.forEach(s => nodes.push({ name: catNames[s.i], c: catNames[s.i] }));
+    nodes.push({ name: catNames[inIdx], c: catNames[inIdx] });
     links = top.map((s, idx) => ({ source: idx, target: nodes.length - 1, value: s.v }));
   } else {
     svg.append('text').attr('x', 20).attr('y', 30).text('未知专题视图');
     return;
   }
 
-  // Build sankey graph
   const graph = { nodes: nodes.map(d => ({ name: d.name, c: d.c })), links: links.map(l => ({ source: l.source, target: l.target, value: l.value })) };
-  // align main node to left for outA and right for inB for consistent river orientation
   const align = mode === 'outA' ? d3.sankeyLeft : d3.sankeyRight;
   const sankey = d3.sankey().nodeWidth(18).nodePadding(8).nodeAlign(align).extent([[1, 1], [width - 1, height - 1]]);
   sankey(graph);
@@ -472,9 +653,8 @@ function renderFocusSankey(mode) {
     .attr('d', d3.sankeyLinkHorizontal())
     .attr('fill', 'none')
     .attr('stroke', d => {
-      // color by source category when available
-      const c = d.source && d.source.c ? d.source.c : null;
-      return c && catMap[c] ? d3.color(catMap[c]).darker(0.5) : '#999';
+      // color by source (category or role)
+      try { return d3.color(colorForNodeObj(d.source)).darker(0.5); } catch (e) { return '#999'; }
     })
     .attr('stroke-opacity', 0.6)
     .attr('stroke-width', d => Math.max(1, d.width))
@@ -491,7 +671,7 @@ function renderFocusSankey(mode) {
   node.append('rect')
     .attr('height', d => Math.max(6, d.y1 - d.y0))
     .attr('width', d => Math.max(6, d.x1 - d.x0))
-    .attr('fill', d => catMap[d.c] || '#999')
+    .attr('fill', d => colorForNodeObj(d))
     .attr('stroke', 'rgba(0,0,0,0.15)')
     .attr('stroke-width', 0.6);
   node.append('text')

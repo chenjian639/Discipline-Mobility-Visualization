@@ -20,6 +20,8 @@
     
     <button class="view-btn" data-view="netflow">净流动</button>
     <button class="view-btn" data-view="heatmap">热力矩阵</button>
+    <button class="view-btn" data-view="network">学科网络</button>
+    <button class="view-btn" data-view="role_sankey">角色桑基图</button>
   </div></div>
   <div class="control-group">
     <label>专题视图</label>
@@ -28,14 +30,15 @@
       <button class="view-btn focus-btn" data-focus="inB">流入最多学科的来源</button>
     </div>
   </div>
+  
+  
   <div class="control-group">
-    <label>学科数</label>
-    <input type="range" class="topn-slider" id="topNSlider" min="8" max="50" value="15" step="1">
-    <span class="topn-value" id="topNLabel">15</span>
-  </div>
-  <div class="control-group">
-    <label>筛选</label>
-    <input class="search-box" id="searchInput" placeholder="搜索学科...">
+    <label>飞线动画</label>
+    <input type="checkbox" id="flowAnimToggle" title="启用/禁用飞线动画" checked>
+    <label style="font-size:11px;margin-left:8px">速度</label>
+    <input type="range" id="flowSpeed" min="0.2" max="3" step="0.1" value="1" style="width:90px">
+    <label style="font-size:11px;margin-left:8px">密度</label>
+    <input type="range" id="flowDensity" min="1" max="8" step="1" value="3" style="width:90px">
   </div>
   
 </div>
@@ -47,10 +50,59 @@
     <div id="legend" class="legend"></div>
     <div id="statsBar" class="stats-bar"></div>
   </div>
-  <div id="insightPanel" class="insight-panel"></div>
+    
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+<script>
+// Role-category Sankey: render on demand when role view is activated
+let _roleSankeyRendered = false;
+function renderRoleSankey() {
+  if (_roleSankeyRendered) return; // render only once
+  _roleSankeyRendered = true;
+  const nodes = [{"name": "传播者 (Outflow-dominant)", "color": "#e74c3c"}, {"name": "孤立者 (Isolated)", "color": "#95a5a6"}, {"name": "定居者 (Inflow-dominant)", "color": "#3498db"}, {"name": "超越者 (Bridge)", "color": "#2ecc71"}, {"name": "Medicine & Health", "color": "#3498db"}, {"name": "Arts & Humanities", "color": "#e91e63"}, {"name": "Biology & Biochemistry", "color": "#2ecc71"}, {"name": "Chemistry", "color": "#9b59b6"}, {"name": "Earth & Environmental", "color": "#1abc9c"}, {"name": "Engineering & Technology", "color": "#f39c12"}, {"name": "Mathematics & Computer Science", "color": "#1a5276"}, {"name": "Multidisciplinary", "color": "#95a5a6"}, {"name": "Other", "color": "#bdc3c7"}, {"name": "Physics & Astronomy", "color": "#e74c3c"}, {"name": "Social Sciences", "color": "#e67e22"}];
+  const links = [{"source": 0, "target": 4, "value": 1}, {"source": 1, "target": 5, "value": 1}, {"source": 1, "target": 6, "value": 3}, {"source": 1, "target": 7, "value": 1}, {"source": 1, "target": 8, "value": 4}, {"source": 1, "target": 9, "value": 2}, {"source": 1, "target": 10, "value": 1}, {"source": 1, "target": 4, "value": 20}, {"source": 1, "target": 11, "value": 1}, {"source": 1, "target": 12, "value": 1}, {"source": 1, "target": 13, "value": 2}, {"source": 1, "target": 14, "value": 6}, {"source": 2, "target": 5, "value": 1}, {"source": 2, "target": 6, "value": 1}, {"source": 2, "target": 7, "value": 1}, {"source": 2, "target": 9, "value": 1}, {"source": 2, "target": 4, "value": 7}, {"source": 2, "target": 11, "value": 1}, {"source": 2, "target": 12, "value": 2}, {"source": 2, "target": 13, "value": 1}, {"source": 2, "target": 14, "value": 2}, {"source": 3, "target": 5, "value": 12}, {"source": 3, "target": 6, "value": 11}, {"source": 3, "target": 7, "value": 5}, {"source": 3, "target": 8, "value": 10}, {"source": 3, "target": 9, "value": 11}, {"source": 3, "target": 10, "value": 1}, {"source": 3, "target": 4, "value": 39}, {"source": 3, "target": 11, "value": 2}, {"source": 3, "target": 12, "value": 34}, {"source": 3, "target": 13, "value": 5}, {"source": 3, "target": 14, "value": 19}];
+
+  const container = d3.select('#chartArea');
+  const width = container.node().clientWidth || 960;
+  const height = Math.max(380, container.node().clientHeight || 700);
+  container.selectAll('*').remove();
+  const svg = container.append('svg').attr('width', width).attr('height', height)
+    .append('g').attr('transform','translate(20,0)');
+
+  const maxX = Math.floor(width * 0.65); // limit sankey to left 65% to avoid overlapping legend
+  const sankey = d3.sankey().nodeWidth(20).nodePadding(12).extent([[1,5],[maxX,height-10]]);
+  const { nodes: snodes, links: slinks } = sankey({ nodes: nodes.map(d=>Object.assign({},d)), links: links.map(d=>Object.assign({},d)) });
+
+  // Links
+  svg.append('g').selectAll('path').data(slinks).join('path')
+    .attr('d', d3.sankeyLinkHorizontal())
+    .attr('fill','none').attr('stroke', d => d.source.color || '#aaa')
+    .attr('stroke-opacity',0.4).attr('stroke-width', d => Math.max(1, d.width))
+    .on('mouseover', function(ev,d){ d3.select(this).attr('stroke-opacity',0.8); showTT(ev.pageX, ev.pageY, `${d.source.name} → ${d.target.name}: ${d.value}`); })
+    .on('mousemove', function(ev,d){ showTT(ev.pageX, ev.pageY, `${d.source.name} → ${d.target.name}: ${d.value}`); })
+    .on('mouseout', function(ev,d){ d3.select(this).attr('stroke-opacity',0.4); hideTT(); });
+
+  // Nodes
+  svg.append('g').selectAll('rect').data(snodes).join('rect')
+    .attr('x', d => d.x0).attr('y', d => d.y0)
+    .attr('height', d => d.y1 - d.y0).attr('width', d => d.x1 - d.x0)
+    .attr('fill', d => d.color).attr('stroke','#000').attr('stroke-width',0.5)
+    .on('mouseover', function(ev,d){ d3.select(this).attr('stroke-width',1); showTT(ev.pageX, ev.pageY, `<div class=\"tt-title\">${d.name}</div><div>${d.value} 学科</div>`); })
+    .on('mousemove', function(ev,d){ showTT(ev.pageX, ev.pageY, `<div class=\"tt-title\">${d.name}</div><div>${d.value} 学科</div>`); })
+    .on('mouseout', function(ev,d){ d3.select(this).attr('stroke-width',0.5); hideTT(); })
+    .append('title').text(d => `${d.name}\n${d.value} disciplines`);
+
+  // Labels
+  svg.append('g').selectAll('text').data(snodes).join('text')
+    .attr('x', d => d.x0 < maxX/2 ? d.x1+6 : d.x0-6)
+    .attr('y', d => (d.y0 + d.y1)/2).attr('dy','0.35em')
+    .attr('text-anchor', d => d.x0 < width/2 ? 'start' : 'end')
+    .attr('font-size','12px').attr('fill','#333').text(d => d.name);
+}
+
+// Note: view switching handled by app.js render() — renderRoleSankey will be called when needed
+</script>
 <script src="app.js?v=20260529"></script>
 </body>
 </html>
