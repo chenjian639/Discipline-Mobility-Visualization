@@ -90,7 +90,7 @@ Automation & Control Systems,Engineering & Technology,2090.0,2124.0,1438.0,34.0,
 Mycology,Biology & Biochemistry,2084.0,2117.0,1696.0,33.0,0.9844,4171.0,bridge
 Nuclear Science & Technology,Physics & Astronomy,2034.0,2035.0,1380.0,1.0,0.9995,4046.0,bridge
 Electrochemistry,Chemistry,1965.0,1959.0,1208.0,-6.0,1.0031,3912.0,bridge
-Audiology & Speech,Medicine & Health,3915.0,0.0,0.0,-3915.0,inf,3915.0,output-dominant
+Audiology & Speech,Medicine & Health,3915.0,0.0,0.0,-3915.0,,3915.0,output-dominant
 Anthropology,Social Sciences,1821.0,1820.0,1513.0,-1.0,1.0005,3560.0,bridge
 Legal Medicine,Medicine & Health,1794.0,1809.0,1525.0,15.0,0.9917,3581.0,bridge
 Language Pathology-Audiology & Speech-Language Pathology,Medicine & Health,0.0,3471.0,0.0,3471.0,0.0000,3471.0,input-dominant

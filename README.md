@@ -52,6 +52,8 @@
 	- `i`: 流入总和
 	- `s`: 自环（`i == j`）
 
+ 其中 `classify_category` 里 `Mathematics & Computer Science` 的判断已经提前，`mathematics` 和 `computer science` 会优先进入该大类，而不是被工程类先截走。
+
 5. 时间分段键映射
 - sheet 名含 `2008-2018` -> `full`
 - 含 `2009-2013` -> `early`
@@ -84,7 +86,7 @@
 - 另外附加：`pagerank`（脚本内实现）与 `community`（networkx 可用时）。
 
 5. 已知注意点
-- 当 `inflow == 0` 且 `outflow > 0` 时，`out_in_ratio` 会写成 `Infinity`；这在严格 JSON 解析器中可能报错。
+- 当 `inflow == 0` 且 `outflow > 0` 时，`out_in_ratio` 会写成空值（JSON 中为 `null`，CSV 中留空）。
 - 社区发现依赖 `networkx`，未安装时会回退为 `-1`。
 
 ### C. 四类角色含义（解释层）

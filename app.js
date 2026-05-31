@@ -434,21 +434,49 @@ function renderHeatmap(data, container) {
 // ===== 5. FOCUS SANKEY / RIVER VIEWS =====
 // ===== 4.5 NETWORK (力导向图) =====
 function renderNetwork(data, container) {
-  const disc = data.d, matrix = data.m, n = data.n;
+  const disc = data.d || [], matrix = data.m || [], n = data.n || 0;
   container.innerHTML = '';
   const width = Math.min(1200, Math.max(720, container.clientWidth || 900));
   const height = Math.max(520, Math.round(width * 0.58));
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height).style('display', 'block').style('margin', '0 auto');
   const g = svg.append('g').attr('class', 'network-layer');
 
-  // nodes
-  const nodes = disc.map((d, i) => ({ id: i, n: d.n, name: d.n, c: d.c, category: d.c, role: d.role || 'unknown', size: (d.o || 0) + (d.i || 0) + (d.s || 0) }));
+  // aggregate to discipline categories
+  const categories = Array.from(new Set(disc.map(d => d.c || 'Other')));
+  const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
+  const k = categories.length;
+  const catMatrix = Array.from({ length: k }, () => Array.from({ length: k }, () => 0));
+  const catStats = categories.map(() => ({ o: 0, i: 0, s: 0 }));
+
+  for (let i = 0; i < n; i++) {
+    const ci = catIndex[disc[i].c || 'Other'];
+    catStats[ci].o += disc[i].o || 0;
+    catStats[ci].i += disc[i].i || 0;
+    catStats[ci].s += disc[i].s || 0;
+    for (let j = 0; j < n; j++) {
+      const v = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0;
+      if (!v) continue;
+      const cj = catIndex[disc[j].c || 'Other'];
+      catMatrix[ci][cj] += v;
+    }
+  }
+
+  // nodes now represent categories
+  const nodes = categories.map((c, i) => ({
+    id: i,
+    n: c,
+    name: c,
+    c,
+    category: c,
+    role: 'unknown',
+    size: catStats[i].o + catStats[i].i + catStats[i].s
+  }));
 
   // collect all directed edges (exclude self-loops)
   const allEdges = [];
-  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+  for (let i = 0; i < k; i++) for (let j = 0; j < k; j++) {
     if (i === j) continue;
-    const v = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0;
+    const v = catMatrix[i][j];
     if (v > 0) allEdges.push({ source: i, target: j, value: v });
   }
 
@@ -490,9 +518,7 @@ function renderNetwork(data, container) {
     .attr('stroke-width', 0.8)
     .on('mouseenter', function(event, d) {
       d3.select(this).attr('stroke-width', 1.6);
-      // compute summary: total out/in/self from source disc
-      const raw = FULLDATA.periods[currentPeriod];
-      const info = raw.d[d.id] || {};
+      const info = catStats[d.id] || { o: 0, i: 0, s: 0 };
       const html = `<div class="tt-title">${d.name}</div><div class="tt-row"><span>流出</span><span>${(info.o||0).toLocaleString()}</span></div><div class="tt-row"><span>流入</span><span>${(info.i||0).toLocaleString()}</span></div><div class="tt-row"><span>自流</span><span>${(info.s||0).toLocaleString()}</span></div>`;
       showTT(event.offsetX, event.offsetY, html);
     })
@@ -587,6 +613,8 @@ function renderFocusSankey(mode) {
   // sankey size
   const width = Math.min(1000, container.clientWidth ? container.clientWidth - 160 : 740);
   const height = Math.max(360, Math.min(520, Math.round(width * 0.48)));
+  const legendReserve = 280; // keep right side clear for fixed legend panel
+  const sankeyRight = Math.max(220, width - legendReserve);
   const svg = d3.select(container).append('svg').attr('width', width).attr('height', height).style('display', 'block').style('margin', '0 auto');
   // aggregate by category
   const categories = Array.from(new Set(disc.map(d => d.c || 'Other')));
@@ -644,7 +672,7 @@ function renderFocusSankey(mode) {
 
   const graph = { nodes: nodes.map(d => ({ name: d.name, c: d.c })), links: links.map(l => ({ source: l.source, target: l.target, value: l.value })) };
   const align = mode === 'outA' ? d3.sankeyLeft : d3.sankeyRight;
-  const sankey = d3.sankey().nodeWidth(18).nodePadding(8).nodeAlign(align).extent([[1, 1], [width - 1, height - 1]]);
+  const sankey = d3.sankey().nodeWidth(18).nodePadding(8).nodeAlign(align).extent([[1, 1], [sankeyRight, height - 1]]);
   sankey(graph);
 
   // draw links
@@ -675,8 +703,8 @@ function renderFocusSankey(mode) {
     .attr('stroke', 'rgba(0,0,0,0.15)')
     .attr('stroke-width', 0.6);
   node.append('text')
-    .attr('x', d => (mode === 'outA' ? d.x1 - d.x0 + 6 : -6))
-    .attr('text-anchor', d => (mode === 'outA' ? 'start' : 'end'))
+    .attr('x', d => (mode === 'outA' && d.x1 > sankeyRight - 40) ? -6 : (mode === 'outA' ? d.x1 - d.x0 + 6 : -6))
+    .attr('text-anchor', d => (mode === 'outA' && d.x1 > sankeyRight - 40) ? 'end' : (mode === 'outA' ? 'start' : 'end'))
     .attr('y', d => (d.y1 - d.y0) / 2)
     .attr('dy', '0.32em')
     .attr('font-size', '11px')

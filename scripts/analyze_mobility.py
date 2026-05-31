@@ -80,7 +80,7 @@ def compute_metrics(names: List[str], matrix: List[List[float]], period_obj: Dic
         self_v = self_flow[i]
         net_v = in_v - out_v
         total_v = total_flow[i]
-        out_in_ratio = out_v / in_v if in_v > 0 else math.inf if out_v > 0 else 0.0
+        out_in_ratio = out_v / in_v if in_v > 0 else None
 
         # Classification logic
         if total_v <= p20:
@@ -102,7 +102,7 @@ def compute_metrics(names: List[str], matrix: List[List[float]], period_obj: Dic
                 "in": round(in_v, 2),
                 "self": round(self_v, 2),
                 "net": round(net_v, 2),
-                "out_in_ratio": round(out_in_ratio, 4) if out_in_ratio != math.inf else float("inf"),
+                "out_in_ratio": round(out_in_ratio, 4) if out_in_ratio is not None else None,
                 "strength": round(total_v, 2),
                 "role": role,
             }
@@ -194,7 +194,7 @@ def write_outputs(rows: List[Dict], out_json: Path, out_csv: Path) -> None:
     lines = [header]
     for r in rows:
         out_in = r["out_in_ratio"]
-        out_in_str = f"{out_in:.4f}" if out_in != float("inf") else "inf"
+        out_in_str = f"{out_in:.4f}" if isinstance(out_in, (int, float)) else ""
         line = f"{r['name']},{r['category']},{r['out']},{r['in']},{r['self']},{r['net']},{out_in_str},{r['strength']},{r['role']}\n"
         lines.append(line)
     out_csv.write_text("".join(lines), encoding="utf-8")

@@ -1191,7 +1191,7 @@
       "in": 0.0,
       "self": 0.0,
       "net": -3915.0,
-      "out_in_ratio": Infinity,
+      "out_in_ratio": null,
       "strength": 3915.0,
       "role": "output-dominant",
       "pagerank": 0.000969,

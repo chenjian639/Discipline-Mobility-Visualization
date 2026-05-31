@@ -53,29 +53,35 @@ def normalize_name(name: str) -> str:
 
 
 def classify_category(name: str) -> str:
+    """分类学科到大类，优先级从高到低"""
     base = normalize_name(name)
     primary = re.split(r"\s*-\s*", base, maxsplit=1)[0].strip()
     key = re.sub(r"\s+", " ", primary.lower()).strip()
 
+    # 1. 多学科
     if not key or key == "other topics":
         return "Multidisciplinary"
-
     if key.startswith("science & technology") or key.startswith("life sciences & biomedicine"):
         return "Multidisciplinary"
 
-    if re.search(r"\b(acoustics|astronomy|astrophysics|optics|physics|nuclear science & technology)\b", key):
+    # 2. 物理学与天文学
+    if re.search(r"\b(acoustics|astronomy|astrophysics|optics|physics|nuclear science & technology|thermodynamics)\b", key):
         return "Physics & Astronomy"
 
-    if re.search(r"\b(biochemistry & molecular biology|chemistry|crystallography|electrochemistry|mineralogy)\b", key):
+    # 3. 化学
+    if re.search(r"\b(biochemistry & molecular biology|chemistry|crystallography|electrochemistry|mineralogy|spectroscopy|polymer science)\b", key):
         return "Chemistry"
 
+    # 4. 生物学与生物化学
     if re.search(
         r"\b(genetics & heredity|cell biology|developmental biology|microbiology|biotechnology & applied microbiology|"
-        r"biophysics|marine & freshwater biology|mycology|entomology|evolutionary biology|mathematical & computational biology)\b",
+        r"biophysics|marine & freshwater biology|mycology|entomology|evolutionary biology|mathematical & computational biology|"
+        r"plant sciences|zoology|reproductive biology)\b",
         key,
     ):
         return "Biology & Biochemistry"
 
+    # 5. 医学与健康
     if re.search(
         r"\b(anatomy & morphology|allergy|anesthesiology|audiology & speech|biomedical social sciences|"
         r"cardiovascular system & cardiology|dentistry, oral surgery & medicine|dermatology|emergency medicine|"
@@ -85,45 +91,53 @@ def classify_category(name: str) -> str:
         r"obstetrics & gynecology|oncology|ophthalmology|orthopedics|otorhinolaryngology|pediatrics|pharmacology & pharmacy|"
         r"physiology|psychiatry|public, environmental & occupational health|radiology, nuclear medicine & medical imaging|"
         r"research & experimental medicine|respiratory system|speech language pathology|substance abuse|surgery|"
-        r"urology & nephrology)\b",
+        r"urology & nephrology|neurology|neurosciences|pathology|virology|parasitology|toxicology|sport sciences|"
+        r"rehabilitation)\b",
         key,
     ):
         return "Medicine & Health"
 
+    # 6. 地球与环境科学
     if re.search(
         r"\b(environmental sciences & ecology|biodiversity & conservation|geochemistry & geophysics|geography|geology|"
-        r"meteorology & atmospheric sciences|oceanography|ecology|fisheries|forestry)\b",
+        r"meteorology & atmospheric sciences|oceanography|ecology|fisheries|forestry|remote sensing|water resources)\b",
         key,
     ):
         return "Earth & Environmental"
 
+    # 7. 社会科学
     if re.search(
         r"\b(anthropology|area studies|asian studies|business & economics|communication|criminology & penology|"
         r"cultural studies|demography|education & educational research|ethnic studies|family studies|government & law|"
         r"information science & library science|international relations|psychology|social sciences|sociology|transportation|"
-        r"mathematical methods in social sciences)\b",
+        r"mathematical methods in social sciences|public administration|social work|urban studies|women's studies)\b",
         key,
     ):
         return "Social Sciences"
 
+    # 8. 数学与计算机科学
+    if re.search(r"\b(mathematics|computer science)\b", key):
+        return "Mathematics & Computer Science"
+
+    # 9. 艺术与人文学科
     if re.search(
         r"\b(archaeology|architecture|art|arts & humanities|classics|dance|film, radio & television|history|"
-        r"history & philosophy of science|linguistics|literature|music|philosophy)\b",
+        r"history & philosophy of science|linguistics|literature|music|philosophy|religion|theater)\b",
         key,
     ):
         return "Arts & Humanities"
 
+    # 10. 工程与技术
     if re.search(
         r"\b(automation & control systems|computer science|construction & building technology|engineering|"
         r"imaging science & photographic technology|instruments & instrumentation|materials science|mechanics|"
-        r"metallurgy & metallurgical engineering|mining & mineral processing|operations research & management science)\b",
+        r"metallurgy & metallurgical engineering|mining & mineral processing|operations research & management science|"
+        r"energy & fuels|food science & technology|robotics|telecommunications)\b",
         key,
     ):
         return "Engineering & Technology"
 
-    if re.search(r"\b(mathematics)\b", key):
-        return "Mathematics & Computer Science"
-
+    # 11. 其他（默认）
     return "Other"
 
 
@@ -145,9 +159,9 @@ def detect_columns(df: pd.DataFrame) -> Tuple[str, str]:
         low = str(c).lower()
         if "from" in low and "to" in low:
             return c, find_times_column(df, exclude=[c])
-    if len(cols) >= 2:
+    if len(cols) == 2:
         return cols[0], cols[1]
-    raise RuntimeError("Unable to detect From-To and Times columns")
+    raise RuntimeError(f"Unable to detect From-To and Times columns from headers: {cols}")
 
 
 def find_times_column(df: pd.DataFrame, exclude: List[str] | None = None) -> str:
