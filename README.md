@@ -44,34 +44,47 @@ $$
 ### A. 清洗逻辑（`scripts/clean_network.py`）
 
 1. 输入与输出
-- 输入：`data/raw/Discipline_Mobility_Network.xlsx`（默认，可通过 `--input` 覆盖）。
-- 输出：
-	- `data/processed/Discipline_Mobility_Network.xlsx`（逐 sheet 清洗后结果）；
-	- `data/processed/Discipline_Mobility_Network.json`（前端使用的 periods + cats）。
+输入：data/raw/Discipline_Mobility_Matrix.xlsx（原始矩阵格式）
 
-2. From-To 拆分规则
-- 只把“前后都没有空格”的连字符 `-` 视为 From/To 分隔符。
-- 例如：`A-B` 会拆分；`A - B` 不会按该规则拆分。
-- 目的：尽量保留学科名内部或后缀中的 ` - Other Topics` 结构。
+输出：
 
-3. 数据清洗步骤
-- 自动识别列：优先找列名同时包含 `from` 和 `to` 的列作为 pair 列，另找 times/count/value/freq 作为数值列。
-- 将次数列转为数值，去掉无法转换的数据行。
-- 解析 pair 列得到 `From` 与 `To`；缺失任一端的行会被丢弃。
-- `Times` 转 int，并按 `--min-times`（默认 1）过滤低频记录。
-- 按 `(From, To)` 聚合求和。
+data/processed/Discipline_Mobility_Network.xlsx（按 sheet 清洗后）
 
-4. 构建前端网络结构
-- 节点集：`From ∪ To`。
-- 邻接矩阵：`matrix[i][j] += Times(From_i -> To_j)`。
-- 每个节点写入：
-	- `n`: 名称
-	- `c`: 大类（由 `classify_category` 规则匹配）
-	- `o`: 流出总和
-	- `i`: 流入总和
-	- `s`: 自环（`i == j`）
+data/processed/Discipline_Mobility_Network.json（前端使用的主数据）
 
- 其中 `classify_category` 里 `Mathematics & Computer Science` 的判断已经提前，`mathematics` 和 `computer science` 会优先进入该大类，而不是被工程类先截走。
+2. 矩阵解析与对齐
+每个 sheet 预期是一个 方阵：
+
+行标签：来源学科（From）
+
+列标签：目标学科（To）
+
+单元格：累计流动次数
+
+自动检测行标签列和列标签，对齐行列名后构建完整的 n × n 矩阵，缺失值补 0。
+
+3. 学科分类逻辑（classify_category）
+    精准匹配，分成11大类
+    
+4. 节点指标计算
+
+o（流出总量）：Σⱼ matrix[i][j]
+
+i（流入总量）：Σᵢ matrix[i][j]
+
+s（自留量）：matrix[i][i]
+
+每个节点写入：
+
+n: 学科名称
+
+c: 大类（由 classify_category 规则匹配）
+
+o: 流出总和
+
+i: 流入总和
+
+s: 自环（i == j）
 
 5. 时间分段键映射
 - sheet 名含 `2008-2018` -> `full`
