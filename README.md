@@ -127,9 +127,7 @@ s: 自环（i == j）
 - 否则若 `outflow > inflow * 2` -> `output-dominant`
 - 否则若 `inflow > outflow * 2` -> `input-dominant`
 - 否则若 `total_flow >= p70` 且 `outflow > 0` 且 `inflow > 0` -> `bridge`
-- 否则 -> `bridge`（默认兜底）
-
-这意味着：只要不满足前三个条件，最终都会归到 `bridge`。
+- 否则 -> `balanced`（中等活跃 + 出入相对平衡）
 
 4. 当前输出字段
 - 每个学科输出：`name`, `category`, `out`, `in`, `self`, `net`, `out_in_ratio`, `strength`, `role`。
@@ -139,7 +137,7 @@ s: 自环（i == j）
 - 当 `inflow == 0` 且 `outflow > 0` 时，`out_in_ratio` 会写成空值（JSON 中为 `null`，CSV 中留空）。
 - 社区发现依赖 `networkx`，未安装时会回退为 `-1`。
 
-### C. 四类角色含义（解释层）
+### C. 五类角色含义（解释层）
 
 1. 孤立者（Isolated）
 - 条件：`total_flow <= 20th percentile`
@@ -154,8 +152,12 @@ s: 自环（i == j）
 - 含义：知识净输入明显。
 
 4. 超越者（Bridge）
-- 条件：满足高活跃桥接条件，或作为当前逻辑的默认兜底类别。
-- 含义：在当前实现中，除前三类之外均归入该类。
+- 条件：`total_flow >= 70th percentile` 且双向流动均 > 0。
+- 含义：高活跃度的知识枢纽，出入均强。
+
+5. 均衡者（Balanced）
+- 条件：不满足以上任一条件的中等活跃学科。
+- 含义：流动总量在 p20–p70 之间，且出入相对平衡（比值在 0.5–2 之间）。
 
 ## 文件结构说明
 

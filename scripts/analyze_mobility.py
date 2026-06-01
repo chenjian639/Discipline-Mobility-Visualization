@@ -43,11 +43,11 @@ def compute_metrics(names: List[str], matrix: List[List[float]], period_obj: Dic
     Compute metrics and classify disciplines into four roles.
 
     Classification rules:
+    - 孤立者 (Isolated): total_flow <= 20th percentile
     - 传播者 (Outflow-dominant): outflow > inflow * 2
     - 定居者 (Inflow-dominant): inflow > outflow * 2
     - 超越者 (Bridge): total_flow >= 70th percentile AND outflow > 0 AND inflow > 0
-    - 孤立者 (Isolated): total_flow <= 20th percentile
-    - 其他情况: 归为超越者
+    - 均衡者 (Balanced): 不满足以上任一条件的中等活跃学科
     """
     n = len(names)
 
@@ -92,7 +92,7 @@ def compute_metrics(names: List[str], matrix: List[List[float]], period_obj: Dic
         elif total_v >= p70 and out_v > 0 and in_v > 0:
             role = "bridge"
         else:
-            role = "bridge"  # default to bridge for active but unbalanced disciplines
+            role = "balanced"
 
         rows.append(
             {
@@ -212,6 +212,7 @@ def write_outputs(rows: List[Dict], out_json: Path, out_csv: Path) -> None:
             "input-dominant": "定居者 (Inflow-dominant)",
             "bridge": "超越者 (Bridge)",
             "isolated": "孤立者 (Isolated)",
+            "balanced": "均衡者 (Balanced)",
         }.get(role, role)
         pct = count / len(rows) * 100
         print(f"  {role_name}: {count} ({pct:.1f}%)")

@@ -10,7 +10,7 @@
       "net": -46.0,
       "out_in_ratio": 1.0117,
       "strength": 7335.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00721,
       "community": 0
     },
@@ -49,7 +49,7 @@
       "net": 24.0,
       "out_in_ratio": 0.9822,
       "strength": 2440.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005268,
       "community": 0
     },
@@ -62,7 +62,7 @@
       "net": 2.0,
       "out_in_ratio": 0.9999,
       "strength": 25836.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007915,
       "community": 0
     },
@@ -75,7 +75,7 @@
       "net": -1.0,
       "out_in_ratio": 1.0005,
       "strength": 3344.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007119,
       "community": 0
     },
@@ -88,7 +88,7 @@
       "net": 14.0,
       "out_in_ratio": 0.9679,
       "strength": 773.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004316,
       "community": 0
     },
@@ -179,7 +179,7 @@
       "net": 24.0,
       "out_in_ratio": 0.9939,
       "strength": 7414.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00616,
       "community": 0
     },
@@ -192,7 +192,7 @@
       "net": 34.0,
       "out_in_ratio": 0.984,
       "strength": 3553.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00654,
       "community": 0
     },
@@ -205,7 +205,7 @@
       "net": 33.0,
       "out_in_ratio": 0.9976,
       "strength": 25002.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00884,
       "community": 0
     },
@@ -231,7 +231,7 @@
       "net": -13.0,
       "out_in_ratio": 1.0013,
       "strength": 17622.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007773,
       "community": 0
     },
@@ -257,7 +257,7 @@
       "net": 8.0,
       "out_in_ratio": 0.999,
       "strength": 15063.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.008953,
       "community": 0
     },
@@ -348,7 +348,7 @@
       "net": 4.0,
       "out_in_ratio": 0.997,
       "strength": 2405.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007294,
       "community": 0
     },
@@ -374,7 +374,7 @@
       "net": 51.0,
       "out_in_ratio": 0.9854,
       "strength": 6364.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.008295,
       "community": 0
     },
@@ -387,7 +387,7 @@
       "net": 27.0,
       "out_in_ratio": 0.9828,
       "strength": 2840.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005916,
       "community": 0
     },
@@ -400,7 +400,7 @@
       "net": -35.0,
       "out_in_ratio": 1.0543,
       "strength": 1134.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.003646,
       "community": 0
     },
@@ -465,7 +465,7 @@
       "net": 41.0,
       "out_in_ratio": 0.9958,
       "strength": 19106.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007032,
       "community": 0
     },
@@ -478,7 +478,7 @@
       "net": -51.0,
       "out_in_ratio": 1.0134,
       "strength": 7346.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006445,
       "community": 0
     },
@@ -491,7 +491,7 @@
       "net": 107.0,
       "out_in_ratio": 0.9907,
       "strength": 21544.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.010567,
       "community": 0
     },
@@ -504,7 +504,7 @@
       "net": -6.0,
       "out_in_ratio": 1.0031,
       "strength": 3641.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004198,
       "community": 0
     },
@@ -517,7 +517,7 @@
       "net": -50.0,
       "out_in_ratio": 1.0111,
       "strength": 8648.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005212,
       "community": 0
     },
@@ -543,7 +543,7 @@
       "net": 90.0,
       "out_in_ratio": 0.9807,
       "strength": 8103.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007699,
       "community": 0
     },
@@ -569,7 +569,7 @@
       "net": -179.0,
       "out_in_ratio": 1.0861,
       "strength": 3911.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005529,
       "community": 0
     },
@@ -608,7 +608,7 @@
       "net": -40.0,
       "out_in_ratio": 1.0164,
       "strength": 4516.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005082,
       "community": 0
     },
@@ -621,7 +621,7 @@
       "net": 9.0,
       "out_in_ratio": 0.994,
       "strength": 2770.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004772,
       "community": 0
     },
@@ -647,7 +647,7 @@
       "net": -8.0,
       "out_in_ratio": 1.002,
       "strength": 7563.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007131,
       "community": 0
     },
@@ -660,7 +660,7 @@
       "net": -115.0,
       "out_in_ratio": 1.0125,
       "strength": 17656.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.008283,
       "community": 0
     },
@@ -725,7 +725,7 @@
       "net": -73.0,
       "out_in_ratio": 1.0142,
       "strength": 9709.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006625,
       "community": 0
     },
@@ -738,7 +738,7 @@
       "net": 22.0,
       "out_in_ratio": 0.9759,
       "strength": 1710.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006086,
       "community": 0
     },
@@ -751,7 +751,7 @@
       "net": -27.0,
       "out_in_ratio": 1.0031,
       "strength": 16508.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00782,
       "community": 0
     },
@@ -777,7 +777,7 @@
       "net": -3.0,
       "out_in_ratio": 1.0028,
       "strength": 1992.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005919,
       "community": 0
     },
@@ -790,7 +790,7 @@
       "net": -34.0,
       "out_in_ratio": 1.0026,
       "strength": 25501.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.008568,
       "community": 0
     },
@@ -881,7 +881,7 @@
       "net": 22.0,
       "out_in_ratio": 0.9847,
       "strength": 2768.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005467,
       "community": 0
     },
@@ -920,7 +920,7 @@
       "net": -12.0,
       "out_in_ratio": 1.0318,
       "strength": 754.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.003382,
       "community": 0
     },
@@ -933,7 +933,7 @@
       "net": 15.0,
       "out_in_ratio": 0.9917,
       "strength": 3483.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006077,
       "community": 0
     },
@@ -959,7 +959,7 @@
       "net": -21.0,
       "out_in_ratio": 1.019,
       "strength": 2125.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005492,
       "community": 0
     },
@@ -985,7 +985,7 @@
       "net": -40.0,
       "out_in_ratio": 1.0112,
       "strength": 6985.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006699,
       "community": 0
     },
@@ -1011,7 +1011,7 @@
       "net": -52.0,
       "out_in_ratio": 1.0351,
       "strength": 2872.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006328,
       "community": 0
     },
@@ -1037,7 +1037,7 @@
       "net": 8.0,
       "out_in_ratio": 0.9989,
       "strength": 14516.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.009215,
       "community": 0
     },
@@ -1050,7 +1050,7 @@
       "net": -18.0,
       "out_in_ratio": 1.0178,
       "strength": 1925.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005072,
       "community": 0
     },
@@ -1076,7 +1076,7 @@
       "net": 7.0,
       "out_in_ratio": 0.9869,
       "strength": 1035.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.003599,
       "community": 0
     },
@@ -1089,7 +1089,7 @@
       "net": 43.0,
       "out_in_ratio": 0.9919,
       "strength": 10361.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005688,
       "community": 0
     },
@@ -1102,7 +1102,7 @@
       "net": -5.0,
       "out_in_ratio": 1.0031,
       "strength": 3118.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005796,
       "community": 0
     },
@@ -1141,7 +1141,7 @@
       "net": 14.0,
       "out_in_ratio": 0.9797,
       "strength": 1329.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.003815,
       "community": 0
     },
@@ -1193,7 +1193,7 @@
       "net": 33.0,
       "out_in_ratio": 0.9844,
       "strength": 4064.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004077,
       "community": 0
     },
@@ -1219,7 +1219,7 @@
       "net": 2.0,
       "out_in_ratio": 0.999,
       "strength": 3737.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006206,
       "community": 0
     },
@@ -1232,7 +1232,7 @@
       "net": 1.0,
       "out_in_ratio": 0.9999,
       "strength": 23208.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007915,
       "community": 0
     },
@@ -1271,7 +1271,7 @@
       "net": -24.0,
       "out_in_ratio": 1.0265,
       "strength": 1790.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004204,
       "community": 0
     },
@@ -1297,7 +1297,7 @@
       "net": -8.0,
       "out_in_ratio": 1.0202,
       "strength": 793.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00378,
       "community": 0
     },
@@ -1310,7 +1310,7 @@
       "net": 18.0,
       "out_in_ratio": 0.9976,
       "strength": 14973.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007579,
       "community": 0
     },
@@ -1323,7 +1323,7 @@
       "net": -75.0,
       "out_in_ratio": 1.0067,
       "strength": 21419.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00813,
       "community": 0
     },
@@ -1349,7 +1349,7 @@
       "net": 14.0,
       "out_in_ratio": 0.9989,
       "strength": 24968.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006966,
       "community": 0
     },
@@ -1375,7 +1375,7 @@
       "net": -21.0,
       "out_in_ratio": 1.0095,
       "strength": 4331.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005133,
       "community": 0
     },
@@ -1440,7 +1440,7 @@
       "net": -27.0,
       "out_in_ratio": 1.0049,
       "strength": 10799.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006356,
       "community": 0
     },
@@ -1466,7 +1466,7 @@
       "net": 7.0,
       "out_in_ratio": 0.9994,
       "strength": 23584.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007479,
       "community": 0
     },
@@ -1479,7 +1479,7 @@
       "net": 61.0,
       "out_in_ratio": 0.9948,
       "strength": 23173.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00829,
       "community": 0
     },
@@ -1492,7 +1492,7 @@
       "net": -20.0,
       "out_in_ratio": 1.0067,
       "strength": 5907.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005026,
       "community": 0
     },
@@ -1531,7 +1531,7 @@
       "net": 11.0,
       "out_in_ratio": 0.9833,
       "strength": 1247.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004133,
       "community": 0
     },
@@ -1570,7 +1570,7 @@
       "net": -15.0,
       "out_in_ratio": 1.0028,
       "strength": 10582.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00588,
       "community": 0
     },
@@ -1596,7 +1596,7 @@
       "net": 14.0,
       "out_in_ratio": 0.9955,
       "strength": 6191.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004916,
       "community": 0
     },
@@ -1609,7 +1609,7 @@
       "net": -2.0,
       "out_in_ratio": 1.002,
       "strength": 2005.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004399,
       "community": 0
     },
@@ -1635,7 +1635,7 @@
       "net": -12.0,
       "out_in_ratio": 1.0012,
       "strength": 19299.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006464,
       "community": 0
     },
@@ -1700,7 +1700,7 @@
       "net": 46.0,
       "out_in_ratio": 0.9854,
       "strength": 6174.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.008485,
       "community": 0
     },
@@ -1713,7 +1713,7 @@
       "net": -6.0,
       "out_in_ratio": 1.013,
       "strength": 924.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004423,
       "community": 0
     },
@@ -1726,7 +1726,7 @@
       "net": 4.0,
       "out_in_ratio": 0.9952,
       "strength": 1641.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006388,
       "community": 0
     },
@@ -1739,7 +1739,7 @@
       "net": 22.0,
       "out_in_ratio": 0.9635,
       "strength": 1181.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.003098,
       "community": 0
     },
@@ -1765,7 +1765,7 @@
       "net": 34.0,
       "out_in_ratio": 0.9966,
       "strength": 20232.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007305,
       "community": 0
     },
@@ -1791,7 +1791,7 @@
       "net": -15.0,
       "out_in_ratio": 1.0198,
       "strength": 1532.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.003245,
       "community": 0
     },
@@ -1817,7 +1817,7 @@
       "net": 9.0,
       "out_in_ratio": 0.9971,
       "strength": 6234.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006292,
       "community": 0
     },
@@ -1830,7 +1830,7 @@
       "net": -18.0,
       "out_in_ratio": 1.0056,
       "strength": 6441.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.006772,
       "community": 0
     },
@@ -1843,7 +1843,7 @@
       "net": -76.0,
       "out_in_ratio": 1.0339,
       "strength": 4442.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004282,
       "community": 0
     },
@@ -1856,7 +1856,7 @@
       "net": 28.0,
       "out_in_ratio": 0.9325,
       "strength": 801.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004311,
       "community": 0
     },
@@ -1908,7 +1908,7 @@
       "net": 3.0,
       "out_in_ratio": 0.9994,
       "strength": 10740.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.00711,
       "community": 0
     },
@@ -1921,7 +1921,7 @@
       "net": 23.0,
       "out_in_ratio": 0.9978,
       "strength": 21041.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.007203,
       "community": 0
     },
@@ -1934,7 +1934,7 @@
       "net": 16.0,
       "out_in_ratio": 0.9857,
       "strength": 2220.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.004507,
       "community": 0
     },
@@ -1960,7 +1960,7 @@
       "net": 9.0,
       "out_in_ratio": 0.998,
       "strength": 8955.0,
-      "role": "bridge",
+      "role": "balanced",
       "pagerank": 0.005638,
       "community": 0
     }

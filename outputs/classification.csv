@@ -1,152 +1,152 @@
 name,category,out,in,self,net,out_in_ratio,strength,role
-Acoustics,Physics & Astronomy,3992.0,3946.0,3343.0,-46.0,1.0117,7335.0,bridge
+Acoustics,Physics & Astronomy,3992.0,3946.0,3343.0,-46.0,1.0117,7335.0,balanced
 Agriculture,Earth & Environmental,19097.0,18988.0,14550.0,-109.0,1.0057,33649.0,bridge
 Allergy,Medicine & Health,23992.0,23999.0,22306.0,7.0,0.9997,46307.0,bridge
-Anatomy & Morphology,Medicine & Health,1324.0,1348.0,1113.0,24.0,0.9822,2440.0,bridge
-Anesthesiology,Medicine & Health,13464.0,13466.0,12357.0,2.0,0.9999,25836.0,bridge
-Anthropology,Social Sciences,1821.0,1820.0,1513.0,-1.0,1.0005,3344.0,bridge
-Archaeology,Arts & Humanities,422.0,436.0,322.0,14.0,0.9679,773.0,bridge
+Anatomy & Morphology,Medicine & Health,1324.0,1348.0,1113.0,24.0,0.9822,2440.0,balanced
+Anesthesiology,Medicine & Health,13464.0,13466.0,12357.0,2.0,0.9999,25836.0,balanced
+Anthropology,Social Sciences,1821.0,1820.0,1513.0,-1.0,1.0005,3344.0,balanced
+Archaeology,Arts & Humanities,422.0,436.0,322.0,14.0,0.9679,773.0,balanced
 Architecture,Arts & Humanities,88.0,82.0,64.0,-6.0,1.0732,152.0,isolated
 Area Studies,Social Sciences,353.0,351.0,283.0,-2.0,1.0057,636.0,isolated
 Art,Arts & Humanities,327.0,325.0,260.0,-2.0,1.0062,588.0,isolated
 Arts & Humanities - Other Topics,Arts & Humanities,390.0,400.0,294.0,10.0,0.9750,691.0,isolated
 Asian Studies,Social Sciences,8.0,7.0,5.0,-1.0,1.1429,14.0,isolated
 Astronomy & Astrophysics,Physics & Astronomy,2184066.0,2184936.0,1871428.0,870.0,0.9996,4055558.0,bridge
-Audiology & Speech-Language Pathology,Medicine & Health,3915.0,3939.0,3471.0,24.0,0.9939,7414.0,bridge
-Automation & Control Systems,Engineering & Technology,2090.0,2124.0,1438.0,34.0,0.9840,3553.0,bridge
-Behavioral Sciences,Social Sciences,13479.0,13512.0,11478.0,33.0,0.9976,25002.0,bridge
+Audiology & Speech-Language Pathology,Medicine & Health,3915.0,3939.0,3471.0,24.0,0.9939,7414.0,balanced
+Automation & Control Systems,Engineering & Technology,2090.0,2124.0,1438.0,34.0,0.9840,3553.0,balanced
+Behavioral Sciences,Social Sciences,13479.0,13512.0,11478.0,33.0,0.9976,25002.0,balanced
 Biochemistry & Molecular Biology,Chemistry,193437.0,192528.0,172709.0,-909.0,1.0047,366630.0,bridge
-Biodiversity & Conservation,Earth & Environmental,9983.0,9970.0,7388.0,-13.0,1.0013,17622.0,bridge
+Biodiversity & Conservation,Earth & Environmental,9983.0,9970.0,7388.0,-13.0,1.0013,17622.0,balanced
 Biomedical Social Sciences,Medicine & Health,8.0,10.0,5.0,2.0,0.8000,13.0,isolated
-Biophysics,Biology & Biochemistry,8086.0,8094.0,6747.0,8.0,0.9990,15063.0,bridge
+Biophysics,Biology & Biochemistry,8086.0,8094.0,6747.0,8.0,0.9990,15063.0,balanced
 Biotechnology & Applied Microbiology,Biology & Biochemistry,29246.0,29073.0,24381.0,-173.0,1.0060,54588.0,bridge
 Business & Economics,Social Sciences,19252.0,19300.0,16622.0,48.0,0.9975,36066.0,bridge
 Cardiovascular System & Cardiology,Medicine & Health,122679.0,122607.0,113519.0,-72.0,1.0006,236938.0,bridge
 Cell Biology,Biology & Biochemistry,43628.0,43674.0,39300.0,46.0,0.9989,84038.0,bridge
 Chemistry,Chemistry,72131.0,72019.0,58775.0,-112.0,1.0016,133389.0,bridge
 Classics,Arts & Humanities,2.0,2.0,2.0,0.0,1.0000,4.0,isolated
-Communication,Social Sciences,1348.0,1352.0,983.0,4.0,0.9970,2405.0,bridge
+Communication,Social Sciences,1348.0,1352.0,983.0,4.0,0.9970,2405.0,balanced
 Computer Science,Mathematics & Computer Science,23376.0,23355.0,18637.0,-21.0,1.0009,43067.0,bridge
-Construction & Building Technology,Engineering & Technology,3450.0,3501.0,2726.0,51.0,0.9854,6364.0,bridge
-Criminology & Penology,Social Sciences,1542.0,1569.0,1273.0,27.0,0.9828,2840.0,bridge
-Crystallography,Chemistry,679.0,644.0,268.0,-35.0,1.0543,1134.0,bridge
+Construction & Building Technology,Engineering & Technology,3450.0,3501.0,2726.0,51.0,0.9854,6364.0,balanced
+Criminology & Penology,Social Sciences,1542.0,1569.0,1273.0,27.0,0.9828,2840.0,balanced
+Crystallography,Chemistry,679.0,644.0,268.0,-35.0,1.0543,1134.0,balanced
 Cultural Studies,Social Sciences,224.0,238.0,151.0,14.0,0.9412,413.0,isolated
 Dance,Arts & Humanities,7.0,7.0,5.0,0.0,1.0000,12.0,isolated
 Demography,Social Sciences,372.0,371.0,245.0,-1.0,1.0027,650.0,isolated
 Dentistry, Oral Surgery & Medicine,Medicine & Health,37818.0,37863.0,36197.0,45.0,0.9988,74309.0,bridge
-Dermatology,Medicine & Health,9824.0,9865.0,9122.0,41.0,0.9958,19106.0,bridge
-Developmental Biology,Biology & Biochemistry,3851.0,3800.0,3322.0,-51.0,1.0134,7346.0,bridge
-Education & Educational Research,Social Sciences,11406.0,11513.0,9733.0,107.0,0.9907,21544.0,bridge
-Electrochemistry,Chemistry,1965.0,1959.0,1208.0,-6.0,1.0031,3641.0,bridge
-Emergency Medicine,Medicine & Health,4535.0,4485.0,4047.0,-50.0,1.0111,8648.0,bridge
+Dermatology,Medicine & Health,9824.0,9865.0,9122.0,41.0,0.9958,19106.0,balanced
+Developmental Biology,Biology & Biochemistry,3851.0,3800.0,3322.0,-51.0,1.0134,7346.0,balanced
+Education & Educational Research,Social Sciences,11406.0,11513.0,9733.0,107.0,0.9907,21544.0,balanced
+Electrochemistry,Chemistry,1965.0,1959.0,1208.0,-6.0,1.0031,3641.0,balanced
+Emergency Medicine,Medicine & Health,4535.0,4485.0,4047.0,-50.0,1.0111,8648.0,balanced
 Endocrinology & Metabolism,Medicine & Health,165587.0,165171.0,154736.0,-416.0,1.0025,322376.0,bridge
-Energy & Fuels,Engineering & Technology,4572.0,4662.0,2952.0,90.0,0.9807,8103.0,bridge
+Energy & Fuels,Engineering & Technology,4572.0,4662.0,2952.0,90.0,0.9807,8103.0,balanced
 Engineering,Engineering & Technology,59687.0,59198.0,46472.0,-489.0,1.0083,111384.0,bridge
-Entomology,Biology & Biochemistry,2259.0,2080.0,1470.0,-179.0,1.0861,3911.0,bridge
+Entomology,Biology & Biochemistry,2259.0,2080.0,1470.0,-179.0,1.0861,3911.0,balanced
 Environmental Sciences & Ecology,Earth & Environmental,73258.0,73479.0,59583.0,221.0,0.9970,138189.0,bridge
 Ethnic Studies,Social Sciences,78.0,88.0,46.0,10.0,0.8864,139.0,isolated
-Evolutionary Biology,Biology & Biochemistry,2485.0,2445.0,1648.0,-40.0,1.0164,4516.0,bridge
-Family Studies,Social Sciences,1494.0,1503.0,1216.0,9.0,0.9940,2770.0,bridge
+Evolutionary Biology,Biology & Biochemistry,2485.0,2445.0,1648.0,-40.0,1.0164,4516.0,balanced
+Family Studies,Social Sciences,1494.0,1503.0,1216.0,9.0,0.9940,2770.0,balanced
 Film, Radio & Television,Arts & Humanities,30.0,31.0,21.0,1.0,0.9677,58.0,isolated
-Fisheries,Earth & Environmental,3927.0,3919.0,3227.0,-8.0,1.0020,7563.0,bridge
-Food Science & Technology,Engineering & Technology,9305.0,9190.0,7376.0,-115.0,1.0125,17656.0,bridge
+Fisheries,Earth & Environmental,3927.0,3919.0,3227.0,-8.0,1.0020,7563.0,balanced
+Food Science & Technology,Engineering & Technology,9305.0,9190.0,7376.0,-115.0,1.0125,17656.0,balanced
 Forestry,Earth & Environmental,14827.0,14713.0,11616.0,-114.0,1.0077,28311.0,bridge
 Gastroenterology & Hepatology,Medicine & Health,37140.0,37340.0,34126.0,200.0,0.9946,72081.0,bridge
 General & Internal Medicine,Medicine & Health,171748.0,171386.0,159112.0,-362.0,1.0021,334520.0,bridge
 Genetics & Heredity,Biology & Biochemistry,641416.0,640408.0,620053.0,-1008.0,1.0016,1268878.0,bridge
-Geochemistry & Geophysics,Earth & Environmental,5227.0,5154.0,3903.0,-73.0,1.0142,9709.0,bridge
-Geography,Earth & Environmental,891.0,913.0,630.0,22.0,0.9759,1710.0,bridge
-Geology,Earth & Environmental,8801.0,8774.0,6433.0,-27.0,1.0031,16508.0,bridge
+Geochemistry & Geophysics,Earth & Environmental,5227.0,5154.0,3903.0,-73.0,1.0142,9709.0,balanced
+Geography,Earth & Environmental,891.0,913.0,630.0,22.0,0.9759,1710.0,balanced
+Geology,Earth & Environmental,8801.0,8774.0,6433.0,-27.0,1.0031,16508.0,balanced
 Geriatrics & Gerontology,Medicine & Health,41084.0,41261.0,37686.0,177.0,0.9957,79975.0,bridge
-Government & Law,Social Sciences,1061.0,1058.0,841.0,-3.0,1.0028,1992.0,bridge
-Health Care Sciences & Services,Medicine & Health,13319.0,13285.0,11471.0,-34.0,1.0026,25501.0,bridge
+Government & Law,Social Sciences,1061.0,1058.0,841.0,-3.0,1.0028,1992.0,balanced
+Health Care Sciences & Services,Medicine & Health,13319.0,13285.0,11471.0,-34.0,1.0026,25501.0,balanced
 Hematology,Medicine & Health,20128.0,19880.0,17589.0,-248.0,1.0125,38762.0,bridge
 History,Arts & Humanities,263.0,258.0,205.0,-5.0,1.0194,501.0,isolated
 History & Philosophy of Science,Arts & Humanities,182.0,194.0,119.0,12.0,0.9381,338.0,isolated
 Imaging Science & Photographic Technology,Engineering & Technology,320.0,313.0,225.0,-7.0,1.0224,588.0,isolated
 Immunology,Medicine & Health,39050.0,38747.0,34422.0,-303.0,1.0078,75421.0,bridge
 Infectious Diseases,Medicine & Health,15844.0,16055.0,13985.0,211.0,0.9869,30891.0,bridge
-Information Science & Library Science,Social Sciences,1419.0,1441.0,1078.0,22.0,0.9847,2768.0,bridge
+Information Science & Library Science,Social Sciences,1419.0,1441.0,1078.0,22.0,0.9847,2768.0,balanced
 Instruments & Instrumentation,Engineering & Technology,240423.0,239717.0,194791.0,-706.0,1.0029,450772.0,bridge
 Integrative & Complementary Medicine,Medicine & Health,183.0,160.0,116.0,-23.0,1.1438,319.0,isolated
-International Relations,Social Sciences,389.0,377.0,307.0,-12.0,1.0318,754.0,bridge
-Legal Medicine,Medicine & Health,1794.0,1809.0,1525.0,15.0,0.9917,3483.0,bridge
+International Relations,Social Sciences,389.0,377.0,307.0,-12.0,1.0318,754.0,balanced
+Legal Medicine,Medicine & Health,1794.0,1809.0,1525.0,15.0,0.9917,3483.0,balanced
 Life Sciences & Biomedicine - Other Topics,Multidisciplinary,17822.0,17881.0,15115.0,59.0,0.9967,34722.0,bridge
-Linguistics,Arts & Humanities,1127.0,1106.0,843.0,-21.0,1.0190,2125.0,bridge
+Linguistics,Arts & Humanities,1127.0,1106.0,843.0,-21.0,1.0190,2125.0,balanced
 Literature,Arts & Humanities,116.0,114.0,100.0,-2.0,1.0175,227.0,isolated
-Marine & Freshwater Biology,Biology & Biochemistry,3616.0,3576.0,2635.0,-40.0,1.0112,6985.0,bridge
+Marine & Freshwater Biology,Biology & Biochemistry,3616.0,3576.0,2635.0,-40.0,1.0112,6985.0,balanced
 Materials Science,Engineering & Technology,31384.0,31289.0,23359.0,-95.0,1.0030,59216.0,bridge
-Mathematical & Computational Biology,Biology & Biochemistry,1532.0,1480.0,1142.0,-52.0,1.0351,2872.0,bridge
+Mathematical & Computational Biology,Biology & Biochemistry,1532.0,1480.0,1142.0,-52.0,1.0351,2872.0,balanced
 Mathematical Methods In Social Sciences,Social Sciences,62.0,61.0,37.0,-1.0,1.0164,118.0,isolated
-Mathematics,Mathematics & Computer Science,7473.0,7481.0,6218.0,8.0,0.9989,14516.0,bridge
-Mechanics,Engineering & Technology,1032.0,1014.0,614.0,-18.0,1.0178,1925.0,bridge
+Mathematics,Mathematics & Computer Science,7473.0,7481.0,6218.0,8.0,0.9989,14516.0,balanced
+Mechanics,Engineering & Technology,1032.0,1014.0,614.0,-18.0,1.0178,1925.0,balanced
 Medical Ethics,Medicine & Health,115.0,115.0,113.0,0.0,1.0000,229.0,isolated
-Medical Informatics,Medicine & Health,529.0,536.0,448.0,7.0,0.9869,1035.0,bridge
-Medical Laboratory Technology,Medicine & Health,5257.0,5300.0,4699.0,43.0,0.9919,10361.0,bridge
-Metallurgy & Metallurgical Engineering,Engineering & Technology,1608.0,1603.0,1088.0,-5.0,1.0031,3118.0,bridge
+Medical Informatics,Medicine & Health,529.0,536.0,448.0,7.0,0.9869,1035.0,balanced
+Medical Laboratory Technology,Medicine & Health,5257.0,5300.0,4699.0,43.0,0.9919,10361.0,balanced
+Metallurgy & Metallurgical Engineering,Engineering & Technology,1608.0,1603.0,1088.0,-5.0,1.0031,3118.0,balanced
 Meteorology & Atmospheric Sciences,Earth & Environmental,36884.0,37136.0,33224.0,252.0,0.9932,72876.0,bridge
 Microbiology,Biology & Biochemistry,13673.0,13616.0,11208.0,-57.0,1.0042,26551.0,bridge
-Microscopy,Biology & Biochemistry,675.0,689.0,594.0,14.0,0.9797,1329.0,bridge
+Microscopy,Biology & Biochemistry,675.0,689.0,594.0,14.0,0.9797,1329.0,balanced
 Mineralogy,Chemistry,148.0,135.0,93.0,-13.0,1.0963,278.0,isolated
 Mining & Mineral Processing,Engineering & Technology,34.0,35.0,19.0,1.0,0.9714,66.0,isolated
 Music,Arts & Humanities,214.0,212.0,142.0,-2.0,1.0094,388.0,isolated
-Mycology,Biology & Biochemistry,2084.0,2117.0,1696.0,33.0,0.9844,4064.0,bridge
+Mycology,Biology & Biochemistry,2084.0,2117.0,1696.0,33.0,0.9844,4064.0,balanced
 Neurosciences & Neurology,Medicine & Health,177309.0,177556.0,164462.0,247.0,0.9986,349159.0,bridge
-Nuclear Science & Technology,Physics & Astronomy,2034.0,2036.0,1380.0,2.0,0.9990,3737.0,bridge
-Nursing,Medicine & Health,11860.0,11861.0,10627.0,1.0,0.9999,23208.0,bridge
+Nuclear Science & Technology,Physics & Astronomy,2034.0,2036.0,1380.0,2.0,0.9990,3737.0,balanced
+Nursing,Medicine & Health,11860.0,11861.0,10627.0,1.0,0.9999,23208.0,balanced
 Nutrition & Dietetics,Medicine & Health,34449.0,34397.0,30418.0,-52.0,1.0015,67021.0,bridge
 Obstetrics & Gynecology,Medicine & Health,23559.0,23582.0,21462.0,23.0,0.9990,46180.0,bridge
-Oceanography,Earth & Environmental,928.0,904.0,642.0,-24.0,1.0265,1790.0,bridge
+Oceanography,Earth & Environmental,928.0,904.0,642.0,-24.0,1.0265,1790.0,balanced
 Oncology,Medicine & Health,215337.0,215628.0,197988.0,291.0,0.9987,425384.0,bridge
-Operations Research & Management Science,Engineering & Technology,405.0,397.0,231.0,-8.0,1.0202,793.0,bridge
-Ophthalmology,Medicine & Health,7596.0,7614.0,6921.0,18.0,0.9976,14973.0,bridge
-Optics,Physics & Astronomy,11260.0,11185.0,8481.0,-75.0,1.0067,21419.0,bridge
+Operations Research & Management Science,Engineering & Technology,405.0,397.0,231.0,-8.0,1.0202,793.0,balanced
+Ophthalmology,Medicine & Health,7596.0,7614.0,6921.0,18.0,0.9976,14973.0,balanced
+Optics,Physics & Astronomy,11260.0,11185.0,8481.0,-75.0,1.0067,21419.0,balanced
 Orthopedics,Medicine & Health,21006.0,21008.0,19479.0,2.0,0.9999,41491.0,bridge
-Otorhinolaryngology,Medicine & Health,12600.0,12614.0,11690.0,14.0,0.9989,24968.0,bridge
+Otorhinolaryngology,Medicine & Health,12600.0,12614.0,11690.0,14.0,0.9989,24968.0,balanced
 Paleontology,Earth & Environmental,212.0,218.0,146.0,6.0,0.9725,400.0,isolated
-Parasitology,Medicine & Health,2231.0,2210.0,1864.0,-21.0,1.0095,4331.0,bridge
+Parasitology,Medicine & Health,2231.0,2210.0,1864.0,-21.0,1.0095,4331.0,balanced
 Pathology,Medicine & Health,15468.0,15458.0,14211.0,-10.0,1.0006,30674.0,bridge
 Pediatrics,Medicine & Health,39132.0,39161.0,35946.0,29.0,0.9993,77490.0,bridge
 Pharmacology & Pharmacy,Medicine & Health,30015.0,29988.0,26044.0,-27.0,1.0009,59090.0,bridge
 Philosophy,Arts & Humanities,233.0,222.0,155.0,-11.0,1.0495,426.0,isolated
-Physical Geography,Earth & Environmental,5565.0,5538.0,4261.0,-27.0,1.0049,10799.0,bridge
+Physical Geography,Earth & Environmental,5565.0,5538.0,4261.0,-27.0,1.0049,10799.0,balanced
 Physics,Physics & Astronomy,3160917.0,3160524.0,2827045.0,-393.0,1.0001,6317312.0,bridge
-Physiology,Medicine & Health,11981.0,11988.0,10523.0,7.0,0.9994,23584.0,bridge
-Plant Sciences,Biology & Biochemistry,11736.0,11797.0,8783.0,61.0,0.9948,23173.0,bridge
-Polymer Science,Chemistry,3001.0,2981.0,1980.0,-20.0,1.0067,5907.0,bridge
+Physiology,Medicine & Health,11981.0,11988.0,10523.0,7.0,0.9994,23584.0,balanced
+Plant Sciences,Biology & Biochemistry,11736.0,11797.0,8783.0,61.0,0.9948,23173.0,balanced
+Polymer Science,Chemistry,3001.0,2981.0,1980.0,-20.0,1.0067,5907.0,balanced
 Psychiatry,Medicine & Health,51290.0,51478.0,48159.0,188.0,0.9963,101607.0,bridge
 Psychology,Social Sciences,42679.0,42707.0,37637.0,28.0,0.9993,84212.0,bridge
-Public Administration,Social Sciences,649.0,660.0,428.0,11.0,0.9833,1247.0,bridge
+Public Administration,Social Sciences,649.0,660.0,428.0,11.0,0.9833,1247.0,balanced
 Public, Environmental & Occupational Health,Medicine & Health,95441.0,96096.0,85423.0,655.0,0.9932,190056.0,bridge
 Radiology, Nuclear Medicine & Medical Imaging,Medicine & Health,20432.0,20397.0,18583.0,-35.0,1.0017,40643.0,bridge
-Rehabilitation,Medicine & Health,5340.0,5325.0,4788.0,-15.0,1.0028,10582.0,bridge
+Rehabilitation,Medicine & Health,5340.0,5325.0,4788.0,-15.0,1.0028,10582.0,balanced
 Religion,Arts & Humanities,297.0,300.0,240.0,3.0,0.9900,586.0,isolated
-Remote Sensing,Earth & Environmental,3107.0,3121.0,2293.0,14.0,0.9955,6191.0,bridge
-Reproductive Biology,Biology & Biochemistry,1019.0,1017.0,787.0,-2.0,1.0020,2005.0,bridge
+Remote Sensing,Earth & Environmental,3107.0,3121.0,2293.0,14.0,0.9955,6191.0,balanced
+Reproductive Biology,Biology & Biochemistry,1019.0,1017.0,787.0,-2.0,1.0020,2005.0,balanced
 Research & Experimental Medicine,Medicine & Health,19660.0,19686.0,17453.0,26.0,0.9987,39076.0,bridge
-Respiratory System,Medicine & Health,9693.0,9681.0,8795.0,-12.0,1.0012,19299.0,bridge
+Respiratory System,Medicine & Health,9693.0,9681.0,8795.0,-12.0,1.0012,19299.0,balanced
 Rheumatology,Medicine & Health,17870.0,17844.0,16805.0,-26.0,1.0015,35580.0,bridge
 Robotics,Engineering & Technology,119.0,127.0,75.0,8.0,0.9370,245.0,isolated
 Science & Technology - Other Topics,Multidisciplinary,500790.0,502753.0,463106.0,1963.0,0.9961,1002587.0,bridge
 Social Issues,Social Sciences,193.0,201.0,133.0,8.0,0.9602,386.0,isolated
-Social Sciences - Other Topics,Social Sciences,3101.0,3147.0,2321.0,46.0,0.9854,6174.0,bridge
-Social Work,Social Sciences,469.0,463.0,349.0,-6.0,1.0130,924.0,bridge
-Sociology,Social Sciences,822.0,826.0,586.0,4.0,0.9952,1641.0,bridge
-Spectroscopy,Chemistry,581.0,603.0,344.0,22.0,0.9635,1181.0,bridge
+Social Sciences - Other Topics,Social Sciences,3101.0,3147.0,2321.0,46.0,0.9854,6174.0,balanced
+Social Work,Social Sciences,469.0,463.0,349.0,-6.0,1.0130,924.0,balanced
+Sociology,Social Sciences,822.0,826.0,586.0,4.0,0.9952,1641.0,balanced
+Spectroscopy,Chemistry,581.0,603.0,344.0,22.0,0.9635,1181.0,balanced
 Sport Sciences,Medicine & Health,14313.0,14448.0,13013.0,135.0,0.9907,28740.0,bridge
-Substance Abuse,Medicine & Health,10107.0,10141.0,9030.0,34.0,0.9966,20232.0,bridge
+Substance Abuse,Medicine & Health,10107.0,10141.0,9030.0,34.0,0.9966,20232.0,balanced
 Surgery,Medicine & Health,15939.0,16007.0,14268.0,68.0,0.9958,31883.0,bridge
-Telecommunications,Engineering & Technology,774.0,759.0,382.0,-15.0,1.0198,1532.0,bridge
+Telecommunications,Engineering & Technology,774.0,759.0,382.0,-15.0,1.0198,1532.0,balanced
 Theater,Arts & Humanities,134.0,134.0,134.0,0.0,1.0000,268.0,isolated
-Thermodynamics,Physics & Astronomy,3117.0,3126.0,2085.0,9.0,0.9971,6234.0,bridge
-Toxicology,Medicine & Health,3230.0,3212.0,2590.0,-18.0,1.0056,6441.0,bridge
-Transplantation,Medicine & Health,2321.0,2245.0,1867.0,-76.0,1.0339,4442.0,bridge
-Transportation,Social Sciences,387.0,415.0,268.0,28.0,0.9325,801.0,bridge
+Thermodynamics,Physics & Astronomy,3117.0,3126.0,2085.0,9.0,0.9971,6234.0,balanced
+Toxicology,Medicine & Health,3230.0,3212.0,2590.0,-18.0,1.0056,6441.0,balanced
+Transplantation,Medicine & Health,2321.0,2245.0,1867.0,-76.0,1.0339,4442.0,balanced
+Transportation,Social Sciences,387.0,415.0,268.0,28.0,0.9325,801.0,balanced
 Tropical Medicine,Medicine & Health,16.0,24.0,16.0,8.0,0.6667,40.0,isolated
 Urban Studies,Social Sciences,73.0,85.0,40.0,12.0,0.8588,158.0,isolated
 Urology & Nephrology,Medicine & Health,14544.0,14659.0,12592.0,115.0,0.9922,29198.0,bridge
-Veterinary Sciences,Medicine & Health,5374.0,5377.0,4713.0,3.0,0.9994,10740.0,bridge
-Virology,Medicine & Health,10510.0,10533.0,9183.0,23.0,0.9978,21041.0,bridge
-Water Resources,Earth & Environmental,1102.0,1118.0,787.0,16.0,0.9857,2220.0,bridge
+Veterinary Sciences,Medicine & Health,5374.0,5377.0,4713.0,3.0,0.9994,10740.0,balanced
+Virology,Medicine & Health,10510.0,10533.0,9183.0,23.0,0.9978,21041.0,balanced
+Water Resources,Earth & Environmental,1102.0,1118.0,787.0,16.0,0.9857,2220.0,balanced
 Women's Studies,Social Sciences,59.0,65.0,36.0,6.0,0.9077,124.0,isolated
-Zoology,Biology & Biochemistry,4473.0,4482.0,3429.0,9.0,0.9980,8955.0,bridge
+Zoology,Biology & Biochemistry,4473.0,4482.0,3429.0,9.0,0.9980,8955.0,balanced
