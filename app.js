@@ -118,7 +118,19 @@ function slicedData() {
 
 // ===== Render =====
 function render() {
-  const data = slicedData();
+  // Use full (un-sliced) data for the selected period and merge analysis info
+  const raw = FULLDATA.periods[currentPeriod];
+  const data = { l: raw.l, d: (raw.d || []).map(dd => Object.assign({}, dd)), m: raw.m, n: (raw.d || []).length };
+  data.d.forEach(dd => {
+    const a = ANALYSIS_MAP[dd.n];
+    if (a) {
+      dd.role = a.role || 'unknown';
+      dd.pagerank = a.pagerank || 0;
+      dd.community = a.community || -1;
+    } else {
+      dd.role = 'unknown';
+    }
+  });
   const container = document.getElementById('chartArea');
   container.innerHTML = '';
   // Build legend according to current colorMode
@@ -150,7 +162,13 @@ function render() {
     }
   }
   const total = data.d.reduce((s, d) => s + d.o, 0);
-  const totalFlow = data.m.flat().reduce((a, b) => a + (b || 0), 0);
+  // totalFlow excluding discipline self-citations (diagonal entries)
+  let totalFlow = 0;
+  for (let i = 0; i < data.n; i++) for (let j = 0; j < data.n; j++) {
+    if (i === j) continue;
+    const v = (data.m[i] && data.m[i][j]) ? data.m[i][j] : 0;
+    totalFlow += v;
+  }
   document.getElementById('statsBar').innerHTML = `
     <div class="stat-item"><div class="stat-value">${data.n}</div><div class="stat-label">学科数</div></div>
     <div class="stat-item"><div class="stat-value">${(total/1000).toFixed(0)}k</div><div class="stat-label">总流出次数</div></div>
@@ -164,8 +182,9 @@ function render() {
   switch (currentView) {
     case 'chord': renderChord(data, container); break;
     case 'netflow': renderNetFlow(data, container); break;
-    case 'network': renderNetwork(data, container); break;
+    case 'network': renderNetwork(FULLDATA.periods[currentPeriod], container); break;
     case 'heatmap': renderHeatmap(data, container); break;
+    case 'openness': renderOpenness(data, container); break;
     case 'role_sankey':
       // render role-category sankey into the same chart container
       if (typeof renderRoleSankey === 'function') renderRoleSankey();
@@ -199,18 +218,21 @@ function renderNetFlow(data, container) {
   // Use full data for current period and aggregate by 学科大类 (category).
   const raw = FULLDATA.periods[currentPeriod];
   const discAll = raw.d || [];
-  const categories = Array.from(new Set(discAll.map(d => d.c || 'Other')));
+  // Keep the full 11-category taxonomy so zero-valued categories still render.
+  const categories = (FULLDATA.cats || []).map(([name]) => name);
   const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
   const k = categories.length;
 
-  // sum o/i/s per category
+  // sum o/i per category excluding discipline self-citation (s)
   const catStats = categories.map(() => ({ o: 0, i: 0, s: 0 }));
   for (let i = 0; i < discAll.length; i++) {
     const c = discAll[i].c || 'Other';
     const idx = catIndex[c];
-    catStats[idx].o += discAll[i].o || 0;
-    catStats[idx].i += discAll[i].i || 0;
-    catStats[idx].s += discAll[i].s || 0;
+    const self = discAll[i].s || 0;
+    catStats[idx].o += (discAll[i].o || 0) - self;
+    catStats[idx].i += (discAll[i].i || 0) - self;
+    // category-level self set to 0 because discipline self-citations removed
+    catStats[idx].s += 0;
   }
 
   const items = categories.map((c, idx) => ({ n: c, c: c, o: catStats[idx].o, i: catStats[idx].i, s: catStats[idx].s, net: (catStats[idx].i || 0) - (catStats[idx].o || 0) }));
@@ -243,6 +265,102 @@ function renderNetFlow(data, container) {
   svg.append('text').attr('x', midX - margin.left - 12).attr('y', 40).attr('text-anchor', 'end').attr('font-size', '12px').attr('fill', '#e74c3c').attr('font-weight', '600').text('净流出（送出人才）');
   svg.append('text').attr('x', midX - margin.left + 12).attr('y', 40).attr('text-anchor', 'start').attr('font-size', '12px').attr('fill', '#3498db').attr('font-weight', '600').text('净流入（吸纳人才）');
 }
+
+// ===== 学科开放度视图 =====
+function renderOpenness(data, container) {
+  container.innerHTML = '';
+  const disc = (data.d || []).map(d => Object.assign({}, d));
+  // openness = (o - s) / (o + i - s)
+  disc.forEach(d => {
+    const o = d.o || 0, i = d.i || 0, s = d.s || 0;
+    const denom = Math.max(1, o + i - s);
+    d.open = (o - s) / denom;
+  });
+  disc.sort((a, b) => b.open - a.open);
+  const top = disc.slice(0, Math.min(10, disc.length));
+
+  const width = Math.max(900, container.clientWidth || 900);
+  const barH = 32;
+  const maxOpen = d3.max(top, d => Math.abs(d.open)) || 1;
+  const widthPad = 40;
+  const svgWidth = Math.max(900, container.clientWidth || 900);
+  const barAreaW = svgWidth - widthPad*2;
+  const barsH = top.length * barH + 40;
+  const radius = Math.min(180, Math.floor((svgWidth - 160) / 4));
+  const donutCenterY = barsH + radius + 30;
+  const svgHeight = donutCenterY + radius + 80;
+  const svg = d3.select(container).append('svg').attr('width', svgWidth).attr('height', svgHeight);
+
+  // Top: bars (full-width)
+  const leftG = svg.append('g').attr('transform', `translate(${widthPad+180},20)`);
+  const maxBarWidth = Math.max(120, Math.min(520, barAreaW - 260));
+  const x = d3.scaleLinear().domain([0, maxOpen]).range([0, maxBarWidth]);
+  const barColor = '#4f6db6';
+  leftG.selectAll('rect').data(top).join('rect')
+    .attr('x', 180).attr('y', (d,i) => i*barH)
+    .attr('height', barH-6).attr('width', d => x(d.open))
+    .attr('fill', barColor).attr('opacity', 0.95);
+  leftG.selectAll('text.name').data(top).join('text').attr('class','name')
+  .attr('x', 175)                   // 改为 175（接近水平条起始位置 180）
+  .attr('y', (d,i) => i*barH + (barH/2))
+  .attr('dy','0.32em')
+  .attr('text-anchor', 'end')       // 关键：设置文本锚点为右对齐
+  .attr('font-size','12px')
+  .text(d => d.n);
+  leftG.selectAll('text.val').data(top).join('text').attr('class','val')
+    .attr('x', d => 180 + x(d.open) + 8).attr('y', (d,i) => i*barH + (barH/2)).attr('dy','0.32em').attr('font-size','12px').text(d => (d.open*100).toFixed(1)+'%');
+  leftG.append('text').attr('x', 10).attr('y', -6).attr('font-size','13px').attr('font-weight','700').text('按开放度排序（前10）');
+
+  // Donut below bars: category average openness
+  const categories = Array.from(new Set(disc.map(d => d.c || 'Other')));
+  const catStats = categories.map(c => ({ c, vals: [] }));
+  const idx = Object.fromEntries(categories.map((c,i)=>[c,i]));
+  disc.forEach(d => { const k = idx[d.c || 'Other']; if (k!==undefined) catStats[k].vals.push(d.open); });
+  const catAgg = catStats.map(cs => ({ c: cs.c, open: cs.vals.length ? (d3.mean(cs.vals)) : 0 }));
+  // ensure every category has a visible slice (add small floor to value)
+  const pie = d3.pie().value(d => Math.max(0.0001, Math.abs(d.open))).sort(null);
+  const arc = d3.arc().innerRadius(radius*0.5).outerRadius(radius);
+  const rightG = svg.append('g').attr('transform', `translate(${svgWidth/2},${donutCenterY})`);
+  const arcs = rightG.selectAll('.arc').data(pie(catAgg)).join('g').attr('class','arc');
+  arcs.append('path')
+    .attr('d', arc)
+    .attr('fill', d => colorForNodeObj({ c: d.data.c }))
+    .attr('stroke','#fff')
+    .attr('stroke-width',0.5)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(ev, d) {
+      d3.select(this).attr('stroke-width', 1.5);
+      showTT(ev.pageX, ev.pageY, `<div class="tt-title">${d.data.c}</div><div class="tt-row"><span>开放度</span><span>${(d.data.open * 100).toFixed(1)}%</span></div>`);
+    })
+    .on('mousemove', function(ev, d) {
+      showTT(ev.pageX, ev.pageY, `<div class="tt-title">${d.data.c}</div><div class="tt-row"><span>开放度</span><span>${(d.data.open * 100).toFixed(1)}%</span></div>`);
+    })
+    .on('mouseleave', function() {
+      d3.select(this).attr('stroke-width', 0.5);
+      hideTT();
+    });
+  arcs.append('title').text(d => `${d.data.c}: ${ (d.data.open*100).toFixed(1) }%`);
+
+  // Legend under donut: category and avg value
+  const legX = widthPad + 10;
+  const legY = donutCenterY + radius + 24;
+  const leg = svg.append('g').attr('transform', `translate(${legX},${legY})`);
+  // Legend: larger swatches, single entry per major category, two-column grid
+  // Adaptive legend columns so entries won't be clipped
+  const approxColWidth = 260;
+  const cols = Math.max(1, Math.min(4, Math.floor((svgWidth - widthPad*2) / approxColWidth)));
+  const rows = Math.ceil(catAgg.length / cols);
+  // increase svg height to accommodate legend if necessary
+  const extraLegH = rows * 22 + 24;
+  const finalSvgH = svgHeight + extraLegH;
+  svg.attr('height', finalSvgH);
+  leg.attr('transform', `translate(${widthPad + 10},${donutCenterY + radius + 18})`);
+  leg.selectAll('g').data(catAgg).join('g').attr('transform',(d,i)=>`translate(${(i%cols)*approxColWidth},${Math.floor(i/cols)*22})`).each(function(d){
+    const g = d3.select(this);
+    g.append('rect').attr('width',14).attr('height',14).attr('fill', colorForNodeObj({c:d.c})).attr('rx',2).attr('ry',2);
+    g.append('text').attr('x',18).attr('y',12).attr('font-size','12px').attr('fill','#222').text(d=>`${d.c} ${ (d.open*100).toFixed(1) }%`);
+  });
+}
 // ===== 4. HEATMAP MATRIX =====
 function renderHeatmap(data, container) {
   // Aggregate by 学科大类 (category) and render category × category heatmap
@@ -253,9 +371,10 @@ function renderHeatmap(data, container) {
   const k = categories.length;
   const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
 
-  // aggregate matrix into category × category
+  // aggregate matrix into category × category, skipping discipline self-citations
   const catMatrix = Array.from({ length: k }, () => Array.from({ length: k }, () => 0));
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    if (i === j) continue; // skip self-citation
     const vi = matrix[i] && matrix[i][j] ? matrix[i][j] : 0;
     if (!vi) continue;
     const ci = catIndex[disc[i].c || 'Other'];
@@ -435,6 +554,7 @@ function renderHeatmap(data, container) {
 // ===== 4.5 NETWORK (力导向图) =====
 function renderNetwork(data, container) {
   const disc = data.d || [], matrix = data.m || [], n = data.n || 0;
+  const totalN = disc.length;
   container.innerHTML = '';
   const width = Math.min(1200, Math.max(720, container.clientWidth || 900));
   const height = Math.max(520, Math.round(width * 0.58));
@@ -448,12 +568,15 @@ function renderNetwork(data, container) {
   const catMatrix = Array.from({ length: k }, () => Array.from({ length: k }, () => 0));
   const catStats = categories.map(() => ({ o: 0, i: 0, s: 0 }));
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < totalN; i++) {
     const ci = catIndex[disc[i].c || 'Other'];
-    catStats[ci].o += disc[i].o || 0;
-    catStats[ci].i += disc[i].i || 0;
-    catStats[ci].s += disc[i].s || 0;
-    for (let j = 0; j < n; j++) {
+    const self = disc[i].s || 0;
+    // subtract discipline self-citation from category-level o/i
+    catStats[ci].o += (disc[i].o || 0) - self;
+    catStats[ci].i += (disc[i].i || 0) - self;
+    catStats[ci].s += 0; // category self set to 0 since discipline self removed
+    for (let j = 0; j < totalN; j++) {
+      if (i === j) continue; // skip discipline self-citation
       const v = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0;
       if (!v) continue;
       const cj = catIndex[disc[j].c || 'Other'];
@@ -482,7 +605,7 @@ function renderNetwork(data, container) {
 
   // keep top edges to avoid clutter (heuristic)
   allEdges.sort((a, b) => b.value - a.value);
-  const maxEdges = Math.max(30, Math.min(500, n * 6));
+  const maxEdges = Math.max(30, Math.min(500, totalN * 6));
   const links = allEdges.slice(0, maxEdges);
 
   const nodeSizeScale = d3.scaleSqrt().domain([0, d3.max(nodes, d => d.size) || 1]).range([4, 20]);
@@ -606,7 +729,19 @@ function renderNetwork(data, container) {
 }
 
 function renderFocusSankey(mode) {
-  const data = slicedData();
+  // Use full (un-sliced) data for the selected period and merge analysis info
+  const raw = FULLDATA.periods[currentPeriod];
+  const data = { l: raw.l, d: (raw.d || []).map(dd => Object.assign({}, dd)), m: raw.m, n: (raw.d || []).length };
+  data.d.forEach(dd => {
+    const a = ANALYSIS_MAP[dd.n];
+    if (a) {
+      dd.role = a.role || 'unknown';
+      dd.pagerank = a.pagerank || 0;
+      dd.community = a.community || -1;
+    } else {
+      dd.role = 'unknown';
+    }
+  });
   const disc = data.d, matrix = data.m, n = data.n;
   const container = document.getElementById('chartArea');
   container.innerHTML = '';
@@ -622,6 +757,7 @@ function renderFocusSankey(mode) {
   const catIndex = Object.fromEntries(categories.map((c, i) => [c, i]));
   const catMatrix = Array.from({ length: k }, () => Array.from({ length: k }, () => 0));
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    if (i === j) continue; // skip discipline self-citation
     const v = (matrix[i] && matrix[i][j]) ? matrix[i][j] : 0;
     if (!v) continue;
     const ci = catIndex[disc[i].c || 'Other'];

@@ -1,13 +1,19 @@
-#!/usr/bin/env python3
-"""
-Clean the raw workbook `data/raw/Discipline_Mobility_Network.xlsx`.
 
-Rules:
-- Treat only hyphens WITHOUT surrounding spaces as the From-To separator.
-- Keep suffixes like ` - Other Topics` inside discipline names.
-- Process every sheet in the workbook.
-- Write a cleaned Excel workbook to `data/processed/Discipline_Mobility_Network.xlsx`.
-- Also write a JSON file with multiple periods for the front-end.
+"""
+Clean the raw matrix workbook `data/raw/Discipline_Mobility_Matrix.xlsx`.
+
+Expected input (per sheet): rows = disciplinary category (From),
+columns = disciplinary category (To), cells = accumulative mobility times.
+
+Sheets expected:
+- "Disciplinary Mobility for 2008–2018" (full)
+- "Disciplinary Mobility for 2009–2013" (early)
+- "Disciplinary Mobility for 2014–2018" (late)
+
+This script reads each sheet as a square matrix of categories and
+produces `data/processed/Discipline_Mobility_Network.xlsx` and
+`data/processed/Discipline_Mobility_Network.json` suitable for the
+front-end (periods -> {d: nodes, m: matrix}).
 """
 from __future__ import annotations
 
@@ -41,6 +47,162 @@ CAT_COLORS = [
 ]
 
 
+# 明确的小学科 -> 大类 映射（覆盖正则分类以确保逐一映射）
+SUBDISCIPLINE_TO_CATEGORY = {
+    "Acoustics": "Physics & Astronomy",
+    "Agriculture": "Earth & Environmental",
+    "Allergy": "Medicine & Health",
+    "Anatomy & Morphology": "Medicine & Health",
+    "Anesthesiology": "Medicine & Health",
+    "Anthropology": "Social Sciences",
+    "Archaeology": "Arts & Humanities",
+    "Architecture": "Arts & Humanities",
+    "Area Studies": "Social Sciences",
+    "Art": "Arts & Humanities",
+    "Arts & Humanities - Other Topics": "Arts & Humanities",
+    "Asian Studies": "Social Sciences",
+    "Astronomy & Astrophysics": "Physics & Astronomy",
+    "Audiology & Speech-Language Pathology": "Medicine & Health",
+    "Automation & Control Systems": "Engineering & Technology",
+    "Behavioral Sciences": "Social Sciences",
+    "Biochemistry & Molecular Biology": "Chemistry",
+    "Biodiversity & Conservation": "Earth & Environmental",
+    "Biomedical Social Sciences": "Medicine & Health",
+    "Biophysics": "Biology & Biochemistry",
+    "Biotechnology & Applied Microbiology": "Biology & Biochemistry",
+    "Business & Economics": "Social Sciences",
+    "Cardiovascular System & Cardiology": "Medicine & Health",
+    "Cell Biology": "Biology & Biochemistry",
+    "Chemistry": "Chemistry",
+    "Classics": "Arts & Humanities",
+    "Communication": "Social Sciences",
+    "Computer Science": "Mathematics & Computer Science",
+    "Construction & Building Technology": "Engineering & Technology",
+    "Criminology & Penology": "Social Sciences",
+    "Crystallography": "Chemistry",
+    "Cultural Studies": "Social Sciences",
+    "Dance": "Arts & Humanities",
+    "Demography": "Social Sciences",
+    "Dentistry, Oral Surgery & Medicine": "Medicine & Health",
+    "Dermatology": "Medicine & Health",
+    "Developmental Biology": "Biology & Biochemistry",
+    "Education & Educational Research": "Social Sciences",
+    "Electrochemistry": "Chemistry",
+    "Emergency Medicine": "Medicine & Health",
+    "Endocrinology & Metabolism": "Medicine & Health",
+    "Energy & Fuels": "Engineering & Technology",
+    "Engineering": "Engineering & Technology",
+    "Entomology": "Biology & Biochemistry",
+    "Environmental Sciences & Ecology": "Earth & Environmental",
+    "Ethnic Studies": "Social Sciences",
+    "Evolutionary Biology": "Biology & Biochemistry",
+    "Family Studies": "Social Sciences",
+    "Film, Radio & Television": "Arts & Humanities",
+    "Fisheries": "Earth & Environmental",
+    "Food Science & Technology": "Engineering & Technology",
+    "Forestry": "Earth & Environmental",
+    "Gastroenterology & Hepatology": "Medicine & Health",
+    "General & Internal Medicine": "Medicine & Health",
+    "Genetics & Heredity": "Biology & Biochemistry",
+    "Geochemistry & Geophysics": "Earth & Environmental",
+    "Geography": "Earth & Environmental",
+    "Geology": "Earth & Environmental",
+    "Geriatrics & Gerontology": "Medicine & Health",
+    "Government & Law": "Social Sciences",
+    "Health Care Sciences & Services": "Medicine & Health",
+    "Hematology": "Medicine & Health",
+    "History": "Arts & Humanities",
+    "History & Philosophy of Science": "Arts & Humanities",
+    "Imaging Science & Photographic Technology": "Engineering & Technology",
+    "Immunology": "Medicine & Health",
+    "Infectious Diseases": "Medicine & Health",
+    "Information Science & Library Science": "Social Sciences",
+    "Instruments & Instrumentation": "Engineering & Technology",
+    "Integrative & Complementary Medicine": "Medicine & Health",
+    "International Relations": "Social Sciences",
+    "Legal Medicine": "Medicine & Health",
+    "Life Sciences & Biomedicine - Other Topics": "Multidisciplinary",
+    "Linguistics": "Arts & Humanities",
+    "Literature": "Arts & Humanities",
+    "Marine & Freshwater Biology": "Biology & Biochemistry",
+    "Materials Science": "Engineering & Technology",
+    "Mathematical & Computational Biology": "Biology & Biochemistry",
+    "Mathematical Methods In Social Sciences": "Social Sciences",
+    "Mathematics": "Mathematics & Computer Science",
+    "Mechanics": "Engineering & Technology",
+    "Medical Ethics": "Medicine & Health",
+    "Medical Informatics": "Medicine & Health",
+    "Medical Laboratory Technology": "Medicine & Health",
+    "Metallurgy & Metallurgical Engineering": "Engineering & Technology",
+    "Meteorology & Atmospheric Sciences": "Earth & Environmental",
+    "Microbiology": "Biology & Biochemistry",
+    "Microscopy": "Biology & Biochemistry",
+    "Mineralogy": "Chemistry",
+    "Mining & Mineral Processing": "Engineering & Technology",
+    "Music": "Arts & Humanities",
+    "Mycology": "Biology & Biochemistry",
+    "Neurosciences & Neurology": "Medicine & Health",
+    "Nuclear Science & Technology": "Physics & Astronomy",
+    "Nursing": "Medicine & Health",
+    "Nutrition & Dietetics": "Medicine & Health",
+    "Obstetrics & Gynecology": "Medicine & Health",
+    "Oceanography": "Earth & Environmental",
+    "Oncology": "Medicine & Health",
+    "Operations Research & Management Science": "Engineering & Technology",
+    "Ophthalmology": "Medicine & Health",
+    "Optics": "Physics & Astronomy",
+    "Orthopedics": "Medicine & Health",
+    "Otorhinolaryngology": "Medicine & Health",
+    "Paleontology": "Earth & Environmental",
+    "Parasitology": "Medicine & Health",
+    "Pathology": "Medicine & Health",
+    "Pediatrics": "Medicine & Health",
+    "Pharmacology & Pharmacy": "Medicine & Health",
+    "Philosophy": "Arts & Humanities",
+    "Physical Geography": "Earth & Environmental",
+    "Physics": "Physics & Astronomy",
+    "Physiology": "Medicine & Health",
+    "Plant Sciences": "Biology & Biochemistry",
+    "Polymer Science": "Chemistry",
+    "Psychiatry": "Medicine & Health",
+    "Psychology": "Social Sciences",
+    "Public Administration": "Social Sciences",
+    "Public, Environmental & Occupational Health": "Medicine & Health",
+    "Radiology, Nuclear Medicine & Medical Imaging": "Medicine & Health",
+    "Rehabilitation": "Medicine & Health",
+    "Religion": "Arts & Humanities",
+    "Remote Sensing": "Earth & Environmental",
+    "Reproductive Biology": "Biology & Biochemistry",
+    "Research & Experimental Medicine": "Medicine & Health",
+    "Respiratory System": "Medicine & Health",
+    "Rheumatology": "Medicine & Health",
+    "Robotics": "Engineering & Technology",
+    "Science & Technology - Other Topics": "Multidisciplinary",
+    "Social Issues": "Social Sciences",
+    "Social Sciences - Other Topics": "Social Sciences",
+    "Social Work": "Social Sciences",
+    "Sociology": "Social Sciences",
+    "Spectroscopy": "Chemistry",
+    "Sport Sciences": "Medicine & Health",
+    "Substance Abuse": "Medicine & Health",
+    "Surgery": "Medicine & Health",
+    "Telecommunications": "Engineering & Technology",
+    "Theater": "Arts & Humanities",
+    "Thermodynamics": "Physics & Astronomy",
+    "Toxicology": "Medicine & Health",
+    "Transplantation": "Medicine & Health",
+    "Transportation": "Social Sciences",
+    "Tropical Medicine": "Medicine & Health",
+    "Urban Studies": "Social Sciences",
+    "Urology & Nephrology": "Medicine & Health",
+    "Veterinary Sciences": "Medicine & Health",
+    "Virology": "Medicine & Health",
+    "Water Resources": "Earth & Environmental",
+    "Women's Studies": "Social Sciences",
+    "Zoology": "Biology & Biochemistry",
+}
+
+
 def normalize_name(name: str) -> str:
     if name is None:
         return ""
@@ -55,6 +217,10 @@ def normalize_name(name: str) -> str:
 def classify_category(name: str) -> str:
     """分类学科到大类，优先级从高到低"""
     base = normalize_name(name)
+    if base in SUBDISCIPLINE_TO_CATEGORY:
+        return SUBDISCIPLINE_TO_CATEGORY[base]
+    if name in SUBDISCIPLINE_TO_CATEGORY:
+        return SUBDISCIPLINE_TO_CATEGORY[name]
     primary = re.split(r"\s*-\s*", base, maxsplit=1)[0].strip()
     key = re.sub(r"\s+", " ", primary.lower()).strip()
 
@@ -141,16 +307,41 @@ def classify_category(name: str) -> str:
     return "Other"
 
 
-def split_from_to(s: str) -> Tuple[str | None, str | None]:
-    if pd.isna(s):
-        return None, None
-    t = str(s).strip().rstrip("。.。；; ")
-    parts = PAIR_SPLIT_RE.split(t, maxsplit=1)
-    if len(parts) == 2:
-        left = parts[0].strip()
-        right = parts[1].strip()
-        return (left or None, right or None)
-    return (t or None, None)
+def _read_matrix_sheet(df: pd.DataFrame) -> Tuple[list, list]:
+    """Return (categories, matrix) given a DataFrame read from a matrix sheet.
+
+    The sheet is expected to have the row labels in the first column (index)
+    and the target categories as column headers. Values will be coerced to
+    integers (missing -> 0). If rows/columns mismatch, we align them and
+    fill missing entries with zeros.
+    """
+    # If first column is unnamed and became 'Unnamed: 0', treat it as index
+    if df.columns[0].lower().startswith("unnamed"):
+        df = df.set_index(df.columns[0])
+
+    # Ensure index and columns are strings (category names)
+    df.index = df.index.astype(str).str.strip()
+    df.columns = df.columns.astype(str).str.strip()
+
+    rows = list(df.index)
+    cols = list(df.columns)
+    cats = sorted(list(dict.fromkeys(rows + cols)), key=lambda x: x)
+
+    # Build aligned matrix
+    import numpy as _np
+
+    mat = _np.zeros((len(cats), len(cats)), dtype=int)
+    for rname in rows:
+        for cname in cols:
+            try:
+                val = pd.to_numeric(df.at[rname, cname], errors="coerce")
+            except Exception:
+                val = 0
+            if pd.isna(val):
+                val = 0
+            mat[cats.index(rname), cats.index(cname)] = int(val)
+
+    return cats, mat.tolist()
 
 
 def detect_columns(df: pd.DataFrame) -> Tuple[str, str]:
@@ -178,53 +369,17 @@ def find_times_column(df: pd.DataFrame, exclude: List[str] | None = None) -> str
     raise RuntimeError("Unable to detect Times column")
 
 
-def clean_sheet(df: pd.DataFrame, min_times: int = 1) -> Tuple[pd.DataFrame, Dict]:
-    fromto_col, times_col = detect_columns(df)
-
-    work = df[[fromto_col, times_col]].copy()
-    work[times_col] = pd.to_numeric(work[times_col].astype(str).str.replace(",", "", regex=False), errors="coerce")
-    work = work.dropna(subset=[times_col])
-
-    pairs = work[fromto_col].astype(str).apply(split_from_to)
-    work["From"] = pairs.apply(lambda x: x[0])
-    work["To"] = pairs.apply(lambda x: x[1])
-    work = work.dropna(subset=["From", "To"])
-    work[times_col] = work[times_col].astype(int)
-    work = work[work[times_col] >= min_times]
-
-    out = work.groupby(["From", "To"], dropna=False)[times_col].sum().reset_index()
-    out = out.rename(columns={times_col: "Times"})
-
-    # Build a period-like JSON payload for the front-end.
-    nodes = sorted(set(out["From"]).union(set(out["To"])))
-    flow_by_name = defaultdict(int)
-    for _, row in out.iterrows():
-        flow_by_name[row["From"]] += int(row["Times"])
-        flow_by_name[row["To"]] += int(row["Times"])
-
-    nodes = sorted(nodes, key=lambda n: (-flow_by_name[n], n))
-    idx = {n: i for i, n in enumerate(nodes)}
-    matrix = [[0] * len(nodes) for _ in nodes]
-    for _, row in out.iterrows():
-        matrix[idx[row["From"]]][idx[row["To"]]] += int(row["Times"])
+def clean_matrix_sheet(df: pd.DataFrame) -> Dict:
+    cats, matrix = _read_matrix_sheet(df)
 
     d = []
-    for name in nodes:
-        i = idx[name]
+    for i, name in enumerate(cats):
         out_sum = sum(matrix[i])
-        in_sum = sum(r[i] for r in matrix)
+        in_sum = sum(row[i] for row in matrix)
         self_sum = matrix[i][i]
-        d.append(
-            {
-                "n": name,
-                "c": classify_category(name),
-                "o": int(out_sum),
-                "i": int(in_sum),
-                "s": int(self_sum),
-            }
-        )
+        d.append({"n": name, "c": classify_category(name), "o": int(out_sum), "i": int(in_sum), "s": int(self_sum)})
 
-    return out, {"d": d, "m": matrix}
+    return {"d": d, "m": matrix}
 
 
 def sheet_to_period_key(sheet_name: str) -> Tuple[str, str]:
@@ -240,10 +395,9 @@ def sheet_to_period_key(sheet_name: str) -> Tuple[str, str]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Clean the raw Discipline Mobility workbook")
-    parser.add_argument("--input", "-i", default="../data/raw/Discipline_Mobility_Network.xlsx", help="Raw workbook path")
-    parser.add_argument("--output", "-o", default="../data/processed/Discipline_Mobility_Network.xlsx", help="Processed workbook path")
-    parser.add_argument("--min-times", type=int, default=1, help="Drop rows with Times below this threshold")
+    parser = argparse.ArgumentParser(description="Clean the raw Discipline Mobility matrix workbook")
+    parser.add_argument("--input", "-i", default="../data/raw/Discipline_Mobility_Matrix.xlsx", help="Raw matrix workbook path")
+    parser.add_argument("--output", "-o", default="../data/processed/Discipline_Mobility_Network.xlsx", help="Processed workbook path to write")
     args = parser.parse_args()
 
     base = Path(__file__).resolve().parent
@@ -262,25 +416,28 @@ def main() -> None:
     xls = pd.ExcelFile(inp)
     periods: Dict[str, Dict] = {}
 
-    with pd.ExcelWriter(out, engine="openpyxl") as writer:
-        for sheet_name in xls.sheet_names:
-            raw = pd.read_excel(inp, sheet_name=sheet_name, dtype=str)
-            cleaned, payload = clean_sheet(raw, min_times=args.min_times)
-            cleaned.to_excel(writer, sheet_name=sheet_name, index=False)
+    try:
+        with pd.ExcelWriter(out, engine="openpyxl") as writer:
+            for sheet_name in xls.sheet_names:
+                raw = pd.read_excel(inp, sheet_name=sheet_name, dtype=str, header=0)
+                payload = clean_matrix_sheet(raw)
+                # write back the matrix sheet for reference
+                df_out = pd.DataFrame(payload["m"], index=[n["n"] for n in payload["d"]], columns=[n["n"] for n in payload["d"]])
+                df_out.to_excel(writer, sheet_name=sheet_name)
 
-            key, label = sheet_to_period_key(sheet_name)
-            periods[key] = {
-                "l": label,
-                "d": payload["d"],
-                "m": payload["m"],
-            }
+                key, label = sheet_to_period_key(sheet_name)
+                periods[key] = {"l": label, "d": payload["d"], "m": payload["m"]}
+    except OSError as exc:
+        print(f"Failed to overwrite workbook {out}: {exc}", file=sys.stderr)
+        return
 
     json_out = out.with_suffix(".json")
-    json_obj = {
-        "periods": periods,
-        "cats": CAT_COLORS,
-    }
-    json_out.write_text(json.dumps(json_obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    json_obj = {"periods": periods, "cats": CAT_COLORS}
+    try:
+        json_out.write_text(json.dumps(json_obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError as exc:
+        print(f"Failed to write JSON {json_out}: {exc}", file=sys.stderr)
+        return
 
     print(f"Processed workbook written to: {out}")
     print(f"Processed JSON written to: {json_out}")

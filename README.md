@@ -1,6 +1,6 @@
 # 学科流动可视化
 
-这是一个纯前端静态页面项目（HTML + CSS + JS），用 D3 展示学科流动的弦图、桑基图、净流动与热力矩阵。
+这是一个纯前端静态页面项目（HTML + CSS + JS），用 D3 展示学科流动的净流动、热力矩阵、学科网络、角色桑基图与学科开放度。
 
 ## 本地打开
 
@@ -17,6 +17,25 @@
 5. 保存后等待 1–3 分钟，即可获得公开访问链接
 
 入口文件为 `index.html`。
+
+## 学科开放度说明
+
+开放度用于衡量一个学科更偏“流出”还是更偏“流入”。当前页面中采用的计算方式是：
+
+$$
+开放度 = \frac{o - s}{o + i - s}
+$$
+
+其中：
+
+- `o`：流出总量
+- `i`：流入总量
+- `s`：学科自留 / 自引量
+
+这个指标的取值通常在 $[-1, 1]$ 之间。数值越高，说明该学科更偏向向外输出；数值越低，说明更偏向接收外部流入。页面里的“学科开放度”视图会展示：
+
+- 左侧：开放度最高的小学科 Top 10
+- 下方：按大类汇总后的平均开放度环形图
 
 ## 清洗与分类逻辑（按当前代码实现）
 
@@ -107,15 +126,34 @@
 - 条件：满足高活跃桥接条件，或作为当前逻辑的默认兜底类别。
 - 含义：在当前实现中，除前三类之外均归入该类。
 
-## 文件说明（主要文件与目录）
+## 文件结构说明
 
-- `discipline_mobility.html`：主交互页面，承载可视化容器 `#chartArea`、视图切换控件与内联的 `renderRoleSankey()`（由 `app.js` 调用）。
-- `index.html`：项目入口页面。
-- `app.js`：前端渲染与交互逻辑核心，包含视图调度（`render()`）和主要视图渲染函数（`renderHeatmap()`、`renderNetFlow()`、`renderNetwork()`、`renderFocusSankey()` 等）。
-- `styles.css`：页面样式文件，定义布局、tooltip、图例与统计栏视觉规则。
-- `data/raw/`：原始未处理数据目录。
-- `data/processed/Discipline_Mobility_Network.json`：清洗后网络数据（periods + 节点/矩阵）。
-- `data/processed/Discipline_Mobility_Analysis.json`：角色分析输出，包含 `name`、`category`、`out`、`in`、`self`、`net`、`out_in_ratio`、`strength`、`role`，并附加 `pagerank`、`community`。
-- `outputs/`：分析脚本输出目录（如 `classification.csv`）。
-- `scripts/clean_network.py`：清洗原始 Excel，生成 processed Excel 与 Network JSON。
-- `scripts/analyze_mobility.py`：基于 Network JSON 计算角色分类，并输出 Analysis JSON 与 classification.csv。
+### 页面与前端
+
+- `index.html`：入口页，默认跳转到可视化页面。
+- `discipline_mobility.html`：主可视化页面，放置图表容器、筛选按钮和 `renderRoleSankey()` 的内联实现。
+- `app.js`：前端核心逻辑，负责读取数据、切换视图、绘制图表与处理 tooltip 交互。
+- `styles.css`：页面样式，包括布局、字体、图例、tooltip 和统计栏。
+
+### 数据与输出
+
+- `data/raw/`：原始 Excel 数据目录。
+- `data/processed/Discipline_Mobility_Network.json`：处理后的网络主数据，包含各时间段的节点列表、矩阵和大类配色。
+- `data/processed/Discipline_Mobility_Analysis.json`：角色分类与中心性分析结果。
+- `outputs/`：脚本导出的辅助结果，例如分类统计 CSV。
+
+### 脚本
+
+- `scripts/clean_network.py`：读取原始矩阵，清洗并生成 `Discipline_Mobility_Network.json` 和 Excel。
+- `scripts/analyze_mobility.py`：基于网络数据计算角色、PageRank 和社区信息，生成 `Discipline_Mobility_Analysis.json`。
+- `scripts/统计小学科.ipynb`：重新统计小学科、按 total 排序并导出 CSV。
+
+### 图表数据来源总览
+
+当前前端所有视图优先使用 `data/processed/Discipline_Mobility_Network.json`，若加载失败才回退到内嵌的 `FULLDATA`。
+
+- 净流动：使用 `Discipline_Mobility_Network.json` 中当前时间段的节点与矩阵，按大类聚合；固定展示完整 11 类大类，0 值也保留占位。
+- 热力矩阵：使用同一份网络 JSON 中的当前时间段矩阵，按大类聚合成大类 × 大类热力图。
+- 学科网络：使用同一份网络 JSON 的当前时间段原始节点与矩阵，显示学科网络结构。
+- 角色桑基图：使用 `Discipline_Mobility_Analysis.json` 中的角色分类结果，结合网络大类数据生成角色到大类的桑基图。
+- 学科开放度：使用当前时间段的网络 JSON，按小学科计算开放度，再汇总为大类平均开放度。
