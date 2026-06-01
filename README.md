@@ -64,7 +64,25 @@ data/processed/Discipline_Mobility_Network.json（前端使用的主数据）
 自动检测行标签列和列标签，对齐行列名后构建完整的 n × n 矩阵，缺失值补 0。
 
 3. 学科分类逻辑（classify_category）
-    精准匹配，分成11大类
+
+   小类名称采用 Web of Science (WoS) Subject Categories 分类体系。
+   通过 `SUBDISCIPLINE_TO_CATEGORY` 映射表将每个小类归入 10 个大类，
+   未在映射表中的小类通过正则规则兜底匹配。
+   
+   共 151 个小类，各大类包含小类数如下：
+   
+   | 大类 | 小类数 |
+   |------|--------|
+   | Medicine & Health | 51 |
+   | Social Sciences | 25 |
+   | Biology & Biochemistry | 15 |
+   | Arts & Humanities | 15 |
+   | Earth & Environmental | 14 |
+   | Engineering & Technology | 14 |
+   | Chemistry | 7 |
+   | Physics & Astronomy | 6 |
+   | Mathematics & Computer Science | 2 |
+   | Multidisciplinary | 2 |
     
 4. 节点指标计算
 
@@ -165,7 +183,7 @@ s: 自环（i == j）
 
 当前前端所有视图优先使用 `data/processed/Discipline_Mobility_Network.json`，若加载失败才回退到内嵌的 `FULLDATA`。
 
-- 净流动：使用 `Discipline_Mobility_Network.json` 中当前时间段的节点与矩阵，按大类聚合；固定展示完整 11 类大类，0 值也保留占位。
+- 净流动：使用 `Discipline_Mobility_Network.json` 中当前时间段的节点与矩阵，按大类聚合；固定展示完整 10 类大类，0 值也保留占位。
 - 热力矩阵：使用同一份网络 JSON 中的当前时间段矩阵，按大类聚合成大类 × 大类热力图。
 - 学科网络：使用同一份网络 JSON 的当前时间段原始节点与矩阵，显示学科网络结构。
 - 角色桑基图：使用 `Discipline_Mobility_Analysis.json` 中的角色分类结果，结合网络大类数据生成角色到大类的桑基图。

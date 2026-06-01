@@ -43,7 +43,6 @@ CAT_COLORS = [
     ("Mathematics & Computer Science", "#1a5276"),
     ("Arts & Humanities", "#e91e63"),
     ("Multidisciplinary", "#95a5a6"),
-    ("Other", "#bdc3c7"),
 ]
 
 
@@ -303,8 +302,8 @@ def classify_category(name: str) -> str:
     ):
         return "Engineering & Technology"
 
-    # 11. 其他（默认）
-    return "Other"
+    # 11. 兜底：归入多学科
+    return "Multidisciplinary"
 
 
 def _read_matrix_sheet(df: pd.DataFrame) -> Tuple[list, list]:
